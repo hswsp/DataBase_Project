@@ -1,0 +1,273 @@
+package manager.view;
+
+import java.awt.Dimension;
+import java.awt.EventQueue;
+import java.awt.Font;
+import java.awt.SystemColor;
+import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.util.Vector;
+
+import javax.swing.GroupLayout;
+import javax.swing.GroupLayout.Alignment;
+import javax.swing.ImageIcon;
+import javax.swing.JFrame;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.border.EmptyBorder;
+import javax.swing.table.DefaultTableModel;
+
+import manager.dao.BookTypeDao;
+import manager.entity.BookType;
+import manager.util.DbUtil;
+import manager.util.ShowConfirmDialog;
+
+public class MainFrm extends JFrame {
+
+	 private JPanel contentPane;
+	 private JTable BookTypeTable;
+	//设置跟随分辨率变化窗口
+			Toolkit kit = Toolkit.getDefaultToolkit();
+		    Dimension screenSize = kit.getScreenSize();
+			private int screenHeight = (int) screenSize.getHeight();
+		    private int screenWidth = (int) screenSize.getWidth();
+		    private double enlargement_x=screenWidth/1920;
+		    private double enlargement_y=screenHeight/1080;
+		   
+		    private DbUtil dbUtil=new DbUtil();
+		    private BookTypeDao bookTypeDao=new BookTypeDao();
+	/**
+	 * Launch the application. 
+	 */
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					MainFrm frame = new MainFrm();
+					frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+
+	/**
+	 * Create the frame.
+	 */
+	public MainFrm() {
+		setTitle("\u56FE\u4E66\u7BA1\u7406\u7CFB\u7EDF\u4E3B\u754C\u9762");
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setBounds(100, 100, 835, 635);
+		
+		contentPane = new JPanel();
+		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		setContentPane(contentPane);
+		
+		JScrollPane scrollPane = new JScrollPane();
+		GroupLayout gl_contentPane = new GroupLayout(contentPane);
+		gl_contentPane.setHorizontalGroup(
+			gl_contentPane.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_contentPane.createSequentialGroup()
+					.addGap(134)
+					.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 2886, GroupLayout.PREFERRED_SIZE)
+					.addContainerGap(154, Short.MAX_VALUE))
+		);
+		gl_contentPane.setVerticalGroup(
+			gl_contentPane.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_contentPane.createSequentialGroup()
+					.addGap(194)
+					.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 648, GroupLayout.PREFERRED_SIZE)
+					.addContainerGap(826, Short.MAX_VALUE))
+		);
+		
+		BookTypeTable = new JTable();
+		BookTypeTable.setFont(new Font("宋体", Font.PLAIN, 35));
+		BookTypeTable.setModel(new DefaultTableModel(
+			new Object[][] {
+			},
+			new String[] {
+				"\u7F16\u53F7", "\u56FE\u4E66\u7C7B\u522B\u540D\u79F0", "\u56FE\u4E66\u7C7B\u522B\u63CF\u8FF0"
+			}
+		));
+		BookTypeTable.getColumnModel().getColumn(0).setPreferredWidth(95);
+		BookTypeTable.getColumnModel().getColumn(1).setPreferredWidth(225);
+		BookTypeTable.getColumnModel().getColumn(2).setPreferredWidth(228);
+		scrollPane.setViewportView(BookTypeTable);
+		contentPane.setLayout(gl_contentPane);
+		//修改表头大小和字体大小
+		BookTypeTable.getTableHeader().setPreferredSize(new Dimension((int)(1*enlargement_x),(int)(40*enlargement_y)));
+		BookTypeTable.getTableHeader().setFont(new Font("宋体", Font.PLAIN, (int)(35*enlargement_y)));
+		BookTypeTable.setRowHeight((int)(40*enlargement_y));
+		this.fillTable(new BookType());
+		
+		JMenuBar MainMenuBar = new JMenuBar();
+		MainMenuBar.setBackground(SystemColor.info);
+		MainMenuBar.setForeground(SystemColor.info);
+		setJMenuBar(MainMenuBar);
+		
+		JMenu DataServeMenu = new JMenu("\u57FA\u672C\u6570\u636E\u7EF4\u62A4");
+		DataServeMenu.setFont(new Font("宋体", Font.PLAIN, 35));
+		DataServeMenu.setIcon(new ImageIcon(MainFrm.class.getResource("/manager/image/base.png")));
+		MainMenuBar.add(DataServeMenu);
+//		DataServeMenu.setPreferredSize(new Dimension((int)(220*enlargement_x),(int)(30*enlargement_y)));
+		
+		JMenu CategoryMgr = new JMenu("\u56FE\u4E66\u7C7B\u522B\u7BA1\u7406");
+		CategoryMgr.setFont(new Font("宋体", Font.PLAIN, 35));
+		CategoryMgr.setIcon(new ImageIcon(MainFrm.class.getResource("/manager/image/bookTypeManager.png")));
+		DataServeMenu.add(CategoryMgr);
+		
+		JMenuItem CategoryServ = new JMenuItem("\u56FE\u4E66\u7C7B\u522B\u7EF4\u62A4");
+		CategoryServ.setFont(new Font("宋体", Font.PLAIN, 35));
+		CategoryServ.setIcon(new ImageIcon(MainFrm.class.getResource("/manager/image/edit.png")));
+		CategoryMgr.add(CategoryServ);
+		
+		JMenuItem CategoryAdd = new JMenuItem("\u56FE\u4E66\u7C7B\u522B\u6DFB\u52A0");
+		CategoryAdd.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				BookTypeAddFrm bookTypeAddFrm=new BookTypeAddFrm();
+				bookTypeAddFrm.setVisible(true);
+				//Table.add(bookTypeAddFrm);
+				//bookTypeAddFrm.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+			}
+		});
+		CategoryAdd.setFont(new Font("宋体", Font.PLAIN, 35));
+		CategoryAdd.setIcon(new ImageIcon(MainFrm.class.getResource("/manager/image/add.png")));
+		CategoryMgr.add(CategoryAdd);
+		
+		JMenu BookMgr = new JMenu("\u56FE\u4E66\u7BA1\u7406");
+		BookMgr.setFont(new Font("宋体", Font.PLAIN, 35));
+		BookMgr.setIcon(new ImageIcon(MainFrm.class.getResource("/manager/image/bookManager.png")));
+		DataServeMenu.add(BookMgr);
+		
+		JMenuItem BookAdd = new JMenuItem("\u56FE\u4E66\u6DFB\u52A0");
+		BookAdd.setFont(new Font("宋体", Font.PLAIN, 35));
+		BookAdd.setIcon(new ImageIcon(MainFrm.class.getResource("/manager/image/add.png")));
+		BookMgr.add(BookAdd);
+		
+		JMenuItem BookServ = new JMenuItem("\u56FE\u4E66\u7EF4\u62A4");
+		BookServ.setFont(new Font("宋体", Font.PLAIN, 35));
+		BookServ.setIcon(new ImageIcon(MainFrm.class.getResource("/manager/image/edit.png")));
+		BookMgr.add(BookServ);
+		
+		JMenuItem Exit = new JMenuItem("\u5B89\u5168\u9000\u51FA");
+		Exit.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				ShowConfirmDialog confrm=new ShowConfirmDialog(null,"提示","是否退出系统");
+//				synchronized(confrm)
+//				{
+//					if(confrm.getResult()==-1)
+//				{
+//				     try {
+//						wait();
+//					} catch (InterruptedException e1) {
+//						// TODO Auto-generated catch block
+//						e1.printStackTrace();
+//					}
+//				     notifyAll();
+//				}
+//					}
+//			int result=JOptionPane.showConfirmDialog(null,"是否退出系统");
+					new Thread(
+						new Runnable() {							 
+						    @Override
+						public void run(){
+//						    	synchronized(confrm)
+//						    	{
+							do
+							{
+								try {
+									Thread.sleep(10);
+								} catch (InterruptedException e) {
+									// TODO Auto-generated catch block
+									e.printStackTrace();
+								}
+							}while(confrm.getResult()==-1);							
+					if(confrm.getResult()==0)
+				          {
+						     dispose(); 
+				          }		
+//					System.out.println(confrm.getResult());	
+//						    	}
+				}						
+			}).start();
+			}
+		});
+		Exit.setFont(new Font("宋体", Font.PLAIN, 35));
+		Exit.setIcon(new ImageIcon(MainFrm.class.getResource("/manager/image/exit.png")));
+		DataServeMenu.add(Exit);
+		
+		JMenu AboutUsMenu = new JMenu("\u5173\u4E8E\u6211\u4EEC");
+		AboutUsMenu.setFont(new Font("宋体", Font.PLAIN, 35));
+		AboutUsMenu.setIcon(new ImageIcon(MainFrm.class.getResource("/manager/image/about.png")));
+		MainMenuBar.add(AboutUsMenu);
+		
+		JMenuItem Itemblog = new JMenuItem("\u6211\u7684\u535A\u5BA2");
+		Itemblog.setFont(new Font("宋体", Font.PLAIN, 35));
+		Itemblog.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				//跳转到我的博客
+				new Thread() {
+					//重写run方法
+					public void run() {
+						//构造命令
+						String cmd = "cmd.exe /c start ";//cmd /c start dir 会打开一个新窗口后执行dir指令				
+						//构造本地文件路径或者网页URL
+						String file = "http://www.cnblogs.com/satire/";
+						//String file = "C:/Users/Wentasy/Desktop/core_java_3_api/index.html";						
+						try {
+							//执行操作
+							Runtime.getRuntime().exec(cmd + file);
+						} catch (Exception ignore) {
+							//打印异常
+							ignore.printStackTrace();//打印toString()结果和栈层次到System.err，即错误输出流。
+						}
+					}
+				}.start();//启动线程
+			//}
+			}
+		});
+		Itemblog.setIcon(new ImageIcon(MainFrm.class.getResource("/manager/image/about.png")));
+		AboutUsMenu.add(Itemblog);
+							
+		//设置JFrame最大化
+		this.setExtendedState(JFrame.MAXIMIZED_BOTH); 
+	}
+	
+	/**
+	 * 初始化表格
+	 * @param bookType
+	 */
+	private void fillTable(BookType bookType){
+		DefaultTableModel dtm=(DefaultTableModel) BookTypeTable.getModel();
+		dtm.setRowCount(0); // 设置成0行
+		Connection con=null;
+		try{
+			con=dbUtil.getCon();
+			ResultSet rs=bookTypeDao.list(con, bookType);
+			while(rs.next()){//遍历
+				Vector v=new Vector();
+				v.add(rs.getString("id"));
+				v.add(rs.getString("bookTypeName"));
+				v.add(rs.getString("bookTypeDesc"));
+				dtm.addRow(v);
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+		}finally{//不管什么情况都执行，关闭连接
+			try {
+				dbUtil.closeCon(con);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}
+}

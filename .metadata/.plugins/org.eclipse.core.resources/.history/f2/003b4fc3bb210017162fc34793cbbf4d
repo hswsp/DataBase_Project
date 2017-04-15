@@ -1,0 +1,208 @@
+package manager.view;
+
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.EventQueue;
+import java.awt.Toolkit;
+
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
+import javax.swing.GroupLayout;
+import javax.swing.GroupLayout.Alignment;
+import javax.swing.JLabel;
+import java.awt.Font;
+import javax.swing.JTextField;
+import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.JRadioButton;
+import javax.swing.ButtonGroup;
+import javax.swing.JScrollBar;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+import javax.swing.JComboBox;
+import javax.swing.JButton;
+import javax.swing.ImageIcon;
+
+public class BookAddFrm extends JFrame {
+
+	private JPanel contentPane;
+
+	//设置跟随分辨率变化窗口
+			Toolkit kit = Toolkit.getDefaultToolkit();
+		    Dimension screenSize = kit.getScreenSize();
+			private int screenHeight = (int) screenSize.getHeight();
+		    private int screenWidth = (int) screenSize.getWidth();
+		    private double enlargement_x=screenWidth/1920;
+		    private double enlargement_y=screenHeight/1080;
+
+		    private int windowWidth ; //获得当前窗口宽
+		    private int windowHeight; //获得当前窗口高
+		    private JTextField textField;
+		    private final ButtonGroup buttonGroup = new ButtonGroup();
+		    private JTextField textField_1;
+		    private JTextField textField_2;
+	/**
+	 * Launch the application.
+	 */
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					BookAddFrm frame = new BookAddFrm();
+					frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+
+	/**
+	 * Create the frame.
+	 */
+	public BookAddFrm() {
+		setResizable(false);
+		setTitle("\u56FE\u4E66\u6DFB\u52A0");
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		//setBounds(100, 100, 450, 300);
+		setBounds(100,100,(int)( 1600*enlargement_x), (int)(1400*enlargement_y));//设置初始位置（无所谓，后面重置），大小		
+		windowWidth = this.getWidth(); //获得窗口宽
+		windowHeight = this.getHeight(); //获得窗口高
+		this.setLocation(screenWidth / 2 - windowWidth / 2, screenHeight / 2 - windowHeight / 2);//设置窗口居中显示
+		contentPane = new JPanel();
+		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		setContentPane(contentPane);
+		
+		JLabel label = new JLabel("\u56FE\u4E66\u540D\u79F0");
+		label.setFont(new Font("宋体", Font.PLAIN, 35));
+		
+		textField = new JTextField();
+		textField.setFont(new Font("宋体", Font.PLAIN, 35));
+		textField.setColumns(10);
+		
+		JLabel label_1 = new JLabel("\u56FE\u4E66\u4F5C\u8005");
+		label_1.setFont(new Font("宋体", Font.PLAIN, 35));
+		
+		JLabel label_2 = new JLabel("\u4F5C\u8005\u6027\u522B");
+		label_2.setFont(new Font("宋体", Font.PLAIN, 35));
+		
+		JRadioButton radioButton = new JRadioButton("\u7537");
+		buttonGroup.add(radioButton);
+		radioButton.setSelected(true);
+		radioButton.setFont(new Font("宋体", Font.PLAIN, 35));
+		
+		JRadioButton radioButton_1 = new JRadioButton("\u5973");
+		buttonGroup.add(radioButton_1);
+		radioButton_1.setFont(new Font("宋体", Font.PLAIN, 35));
+		
+		JLabel label_3 = new JLabel("\u56FE\u4E66\u4EF7\u683C");
+		label_3.setFont(new Font("宋体", Font.PLAIN, 35));
+		
+		JLabel label_4 = new JLabel("\u56FE\u4E66\u63CF\u8FF0");
+		label_4.setFont(new Font("宋体", Font.PLAIN, 35));
+		
+		JScrollPane scrollPane = new JScrollPane();
+		
+		textField_1 = new JTextField();
+		textField_1.setFont(new Font("宋体", Font.PLAIN, 35));
+		textField_1.setColumns(10);
+		
+		textField_2 = new JTextField();
+		textField_2.setFont(new Font("宋体", Font.PLAIN, 35));
+		textField_2.setColumns(10);
+		
+		JLabel label_5 = new JLabel("\u56FE\u4E66\u5E03\u5C40");
+		label_5.setFont(new Font("宋体", Font.PLAIN, 35));
+		
+		JComboBox comboBox = new JComboBox();
+		comboBox.setFont(new Font("宋体", Font.PLAIN, 35));
+		
+		JButton button = new JButton("\u6DFB\u52A0");
+		button.setIcon(new ImageIcon(BookAddFrm.class.getResource("/manager/image/add.png")));
+		button.setFont(new Font("宋体", Font.PLAIN, 35));
+		
+		JButton button_1 = new JButton("\u91CD\u7F6E");
+		button_1.setIcon(new ImageIcon(BookAddFrm.class.getResource("/manager/image/reset.png")));
+		button_1.setFont(new Font("宋体", Font.PLAIN, 35));
+		GroupLayout gl_contentPane = new GroupLayout(contentPane);
+		gl_contentPane.setHorizontalGroup(
+			gl_contentPane.createParallelGroup(Alignment.TRAILING)
+				.addGroup(gl_contentPane.createSequentialGroup()
+					.addGap(136)
+					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_contentPane.createSequentialGroup()
+							.addComponent(button)
+							.addPreferredGap(ComponentPlacement.RELATED, 1078, Short.MAX_VALUE)
+							.addComponent(button_1))
+						.addGroup(gl_contentPane.createSequentialGroup()
+							.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+								.addComponent(label_2, GroupLayout.PREFERRED_SIZE, 181, GroupLayout.PREFERRED_SIZE)
+								.addGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING)
+									.addComponent(label_5)
+									.addComponent(label_4)))
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+								.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 1132, GroupLayout.PREFERRED_SIZE)
+								.addGroup(gl_contentPane.createSequentialGroup()
+									.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING, false)
+										.addComponent(comboBox, 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+										.addGroup(gl_contentPane.createSequentialGroup()
+											.addComponent(radioButton)
+											.addGap(105)
+											.addComponent(radioButton_1)))
+									.addGap(207)
+									.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+										.addComponent(label_1)
+										.addComponent(label_3)))))
+						.addGroup(gl_contentPane.createSequentialGroup()
+							.addComponent(label)
+							.addGap(47)
+							.addComponent(textField, GroupLayout.PREFERRED_SIZE, 392, GroupLayout.PREFERRED_SIZE)
+							.addGap(299)
+							.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+								.addComponent(textField_2, 454, 454, 454)
+								.addComponent(textField_1, GroupLayout.DEFAULT_SIZE, 446, Short.MAX_VALUE))))
+					.addGap(116))
+		);
+		gl_contentPane.setVerticalGroup(
+			gl_contentPane.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_contentPane.createSequentialGroup()
+					.addGap(119)
+					.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
+						.addComponent(label)
+						.addComponent(textField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(textField_1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(label_1))
+					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_contentPane.createSequentialGroup()
+							.addGap(94)
+							.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
+								.addComponent(label_2, GroupLayout.PREFERRED_SIZE, 47, GroupLayout.PREFERRED_SIZE)
+								.addComponent(radioButton)
+								.addComponent(radioButton_1)
+								.addComponent(label_3))
+							.addGap(116)
+							.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
+								.addComponent(label_5)
+								.addComponent(comboBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
+						.addGroup(gl_contentPane.createSequentialGroup()
+							.addGap(85)
+							.addComponent(textField_2, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
+					.addGap(125)
+					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+						.addComponent(label_4)
+						.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 495, GroupLayout.PREFERRED_SIZE))
+					.addPreferredGap(ComponentPlacement.RELATED, 97, Short.MAX_VALUE)
+					.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
+						.addComponent(button)
+						.addComponent(button_1))
+					.addGap(94))
+		);
+		
+		JTextArea textArea = new JTextArea();
+		textArea.setLineWrap(true);
+		textArea.setFont(new Font("宋体", Font.PLAIN, 35));
+		scrollPane.setViewportView(textArea);
+		contentPane.setLayout(gl_contentPane);
+	}
+}

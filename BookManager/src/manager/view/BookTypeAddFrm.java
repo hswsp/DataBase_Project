@@ -28,6 +28,7 @@ import manager.util.StringUtil;
 import manager.util.showMessageFrame;
 import javax.swing.JTextPane;
 import java.awt.Color;
+import javax.swing.JScrollPane;
 
 public class BookTypeAddFrm extends JFrame {
 
@@ -111,54 +112,56 @@ public class BookTypeAddFrm extends JFrame {
 		});
 		reset.setIcon(new ImageIcon(BookTypeAddFrm.class.getResource("/manager/image/reset.png")));
 		reset.setFont(new Font("宋体", Font.PLAIN, 35));
+		
+		JScrollPane DescSP = new JScrollPane();
 		GroupLayout gl_contentPane = new GroupLayout(contentPane);
 		gl_contentPane.setHorizontalGroup(
 			gl_contentPane.createParallelGroup(Alignment.TRAILING)
-				.addGroup(gl_contentPane.createSequentialGroup()
+				.addGroup(Alignment.LEADING, gl_contentPane.createSequentialGroup()
+					.addGap(103)
 					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+						.addComponent(BookDesc)
 						.addGroup(gl_contentPane.createSequentialGroup()
-							.addGap(236)
-							.addComponent(Add)
-							.addPreferredGap(ComponentPlacement.RELATED, 754, Short.MAX_VALUE)
-							.addComponent(reset)
-							.addGap(76))
-						.addGroup(gl_contentPane.createSequentialGroup()
-							.addGap(103)
+							.addComponent(BookName)
+							.addGap(120)
 							.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
-								.addComponent(BookName)
-								.addComponent(BookDesc))
-							.addGap(104)
-							.addGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING)
-								.addComponent(BookTypeDescTxt, GroupLayout.DEFAULT_SIZE, 895, Short.MAX_VALUE)
-								.addComponent(BookTypeNameTxt, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 895, Short.MAX_VALUE))))
-					.addGap(72))
+								.addComponent(DescSP, GroupLayout.PREFERRED_SIZE, 863, GroupLayout.PREFERRED_SIZE)
+								.addGroup(gl_contentPane.createSequentialGroup()
+									.addComponent(BookTypeNameTxt)
+									.addPreferredGap(ComponentPlacement.RELATED)))))
+					.addGap(88))
+				.addGroup(Alignment.LEADING, gl_contentPane.createSequentialGroup()
+					.addGap(273)
+					.addComponent(Add)
+					.addPreferredGap(ComponentPlacement.RELATED, 688, Short.MAX_VALUE)
+					.addComponent(reset)
+					.addGap(177))
 		);
-		BookTypeDescTxt.setLineWrap(true);
 		gl_contentPane.setVerticalGroup(
-			gl_contentPane.createParallelGroup(Alignment.LEADING)
+			gl_contentPane.createParallelGroup(Alignment.TRAILING)
 				.addGroup(gl_contentPane.createSequentialGroup()
-					.addGap(106)
-					.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
+					.addContainerGap(130, Short.MAX_VALUE)
+					.addGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING)
 						.addComponent(BookName)
 						.addComponent(BookTypeNameTxt, GroupLayout.PREFERRED_SIZE, 53, GroupLayout.PREFERRED_SIZE))
-					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
-						.addGroup(gl_contentPane.createSequentialGroup()
-							.addGap(132)
-							.addComponent(BookDesc))
-						.addGroup(gl_contentPane.createSequentialGroup()
-							.addGap(76)
-							.addComponent(BookTypeDescTxt, GroupLayout.PREFERRED_SIZE, 179, GroupLayout.PREFERRED_SIZE)))
-					.addGap(202)
+					.addGap(146)
+					.addComponent(BookDesc)
+					.addGap(6)
+					.addComponent(DescSP, GroupLayout.PREFERRED_SIZE, 278, GroupLayout.PREFERRED_SIZE)
+					.addGap(82)
 					.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
 						.addComponent(Add)
 						.addComponent(reset))
-					.addGap(169))
+					.addGap(43))
 		);
+		DescSP.add(BookTypeDescTxt);
+		DescSP.setViewportView(BookTypeDescTxt);
+		BookTypeDescTxt.setLineWrap(true);
 		BookTypeDescTxt.setFont(new Font("宋体", Font.PLAIN, 35));
-		contentPane.setLayout(gl_contentPane);
 		
 		// 设置文本域边框
-				BookTypeDescTxt.setBorder(new LineBorder(new Color(127, 157, 185)));
+		BookTypeDescTxt.setBorder(new LineBorder(new Color(127, 157, 185)));
+		contentPane.setLayout(gl_contentPane);
 	}
 	
 	/**

@@ -1,6 +1,5 @@
 package manager.view;
 
-import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Font;
@@ -8,23 +7,34 @@ import java.awt.SystemColor;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.util.Vector;
 
+import javax.swing.GroupLayout;
+import javax.swing.GroupLayout.Alignment;
 import javax.swing.ImageIcon;
-import javax.swing.JDesktopPane;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
-import javax.swing.UIManager;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.border.EmptyBorder;
+import javax.swing.table.DefaultTableModel;
 
+import manager.dao.BookTypeDao;
+import manager.entity.BookType;
+import manager.util.DbUtil;
 import manager.util.ShowConfirmDialog;
+import javax.swing.JDesktopPane;
+import java.awt.Color;
 
 public class MainFrm extends JFrame {
 
-	private JPanel contentPane;
-	private JDesktopPane Table;
+	 private JPanel contentPane;
+	 private JDesktopPane Table; 
 	//设置跟随分辨率变化窗口
 			Toolkit kit = Toolkit.getDefaultToolkit();
 		    Dimension screenSize = kit.getScreenSize();
@@ -32,7 +42,7 @@ public class MainFrm extends JFrame {
 		    private int screenWidth = (int) screenSize.getWidth();
 		    private double enlargement_x=screenWidth/1920;
 		    private double enlargement_y=screenHeight/1080;
-
+		   
 	/**
 	 * Launch the application. 
 	 */
@@ -60,12 +70,32 @@ public class MainFrm extends JFrame {
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
-		contentPane.setLayout(new BorderLayout(0, 0));
 		
 		Table = new JDesktopPane();
-		Table.setBackground(UIManager.getColor("Button.highlight"));
-		contentPane.add(Table, BorderLayout.CENTER);
-			
+		Table.setBackground(SystemColor.inactiveCaptionBorder);
+		GroupLayout gl_contentPane = new GroupLayout(contentPane);
+		gl_contentPane.setHorizontalGroup(
+			gl_contentPane.createParallelGroup(Alignment.LEADING)
+				.addComponent(Table, GroupLayout.DEFAULT_SIZE, 3174, Short.MAX_VALUE)
+		);
+		gl_contentPane.setVerticalGroup(
+			gl_contentPane.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_contentPane.createSequentialGroup()
+					.addGap(1)
+					.addComponent(Table, GroupLayout.DEFAULT_SIZE, 1667, Short.MAX_VALUE))
+		);
+		GroupLayout gl_Table = new GroupLayout(Table);
+		gl_Table.setHorizontalGroup(
+			gl_Table.createParallelGroup(Alignment.LEADING)
+				.addGap(0, 3174, Short.MAX_VALUE)
+		);
+		gl_Table.setVerticalGroup(
+			gl_Table.createParallelGroup(Alignment.LEADING)
+				.addGap(0, 1667, Short.MAX_VALUE)
+		);
+		Table.setLayout(gl_Table);
+		contentPane.setLayout(gl_contentPane);
+		
 		JMenuBar MainMenuBar = new JMenuBar();
 		MainMenuBar.setBackground(SystemColor.info);
 		MainMenuBar.setForeground(SystemColor.info);
@@ -83,17 +113,21 @@ public class MainFrm extends JFrame {
 		DataServeMenu.add(CategoryMgr);
 		
 		JMenuItem CategoryServ = new JMenuItem("\u56FE\u4E66\u7C7B\u522B\u7EF4\u62A4");
+		CategoryServ.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent maintenance) {
+				BookTypeManagerFrm bookTypeManagerFrm=new BookTypeManagerFrm();
+				bookTypeManagerFrm.setVisible(true);
+			}
+		});
 		CategoryServ.setFont(new Font("宋体", Font.PLAIN, 35));
 		CategoryServ.setIcon(new ImageIcon(MainFrm.class.getResource("/manager/image/edit.png")));
 		CategoryMgr.add(CategoryServ);
 		
 		JMenuItem CategoryAdd = new JMenuItem("\u56FE\u4E66\u7C7B\u522B\u6DFB\u52A0");
 		CategoryAdd.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
+			public void actionPerformed(ActionEvent Add) {
 				BookTypeAddFrm bookTypeAddFrm=new BookTypeAddFrm();
-				bookTypeAddFrm.setVisible(true);
-				//Table.add(bookTypeAddFrm);
-				//bookTypeAddFrm.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+				bookTypeAddFrm.setVisible(true);				
 			}
 		});
 		CategoryAdd.setFont(new Font("宋体", Font.PLAIN, 35));
@@ -106,6 +140,12 @@ public class MainFrm extends JFrame {
 		DataServeMenu.add(BookMgr);
 		
 		JMenuItem BookAdd = new JMenuItem("\u56FE\u4E66\u6DFB\u52A0");
+		BookAdd.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				BookAddFrm bookAddFrm=new BookAddFrm();
+				bookAddFrm.setVisible(true);			
+			}
+		});
 		BookAdd.setFont(new Font("宋体", Font.PLAIN, 35));
 		BookAdd.setIcon(new ImageIcon(MainFrm.class.getResource("/manager/image/add.png")));
 		BookMgr.add(BookAdd);
@@ -150,7 +190,7 @@ public class MainFrm extends JFrame {
 							}while(confrm.getResult()==-1);							
 					if(confrm.getResult()==0)
 				          {
-						     dispose(); 
+						     dispose(); //清除主窗口
 				          }		
 //					System.out.println(confrm.getResult());	
 //						    	}
@@ -194,11 +234,8 @@ public class MainFrm extends JFrame {
 		});
 		Itemblog.setIcon(new ImageIcon(MainFrm.class.getResource("/manager/image/about.png")));
 		AboutUsMenu.add(Itemblog);
-		
-			
-		
+							
 		//设置JFrame最大化
 		this.setExtendedState(JFrame.MAXIMIZED_BOTH); 
 	}
-
 }

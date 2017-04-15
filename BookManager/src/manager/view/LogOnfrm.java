@@ -188,8 +188,8 @@ private void LoginAction(ActionEvent evt) {
 		String password=new String(this.passwordTxt.getPassword());//返回char型
 		if(StringUtil.isEmpty(userName))
 		{
-			showMessageFrame note=new showMessageFrame(null,"\n用户名不能为空\n",showMessageFrame.NOTE);
-			//JOptionPane.showMessageDialog(null, "用户名不能为空","Attention", JOptionPane.INFORMATION_MESSAGE);//第一个为parentcomponent,写null表示最顶层，第二个为提示信息
+			showMessageFrame note=new showMessageFrame(null,"\n用户名不能为空\n",showMessageFrame.NOTE);//第一个为parentcomponent,写null表示最顶层，第二个为提示信息
+			//JOptionPane.showMessageDialog(null, "用户名不能为空","Attention", JOptionPane.INFORMATION_MESSAGE);
 			return;
 		}
 		if(StringUtil.isEmpty(password))
@@ -223,7 +223,16 @@ private void LoginAction(ActionEvent evt) {
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		}finally{
+			try {
+				dbutil.closeCon(con);
+			    } catch (Exception e) 
+			{
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
+		
 	}
 
 /**
