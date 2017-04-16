@@ -31,6 +31,7 @@ import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
 
+import manager.dao.BookDao;
 import manager.dao.BookTypeDao;
 import manager.entity.BookType;
 import manager.util.DbUtil;
@@ -45,6 +46,7 @@ public class BookTypeManagerFrm extends JFrame {
 	private JTextArea BookTypeDescTxt ;
 	private DbUtil dbUtil=new DbUtil();
 	private BookTypeDao bookTypeDao=new BookTypeDao();
+	private BookDao bookDao=new BookDao();
 	private JTextField Search_BookTypeTxt;
 	private JTextField IDTxt;
 	private JTextField bookTypeNameTxt;
@@ -113,7 +115,7 @@ public class BookTypeManagerFrm extends JFrame {
 		
 		JPanel panel = new JPanel();
 		panel.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "\u8868\u5355\u64CD\u4F5C", TitledBorder.LEADING, 
-				TitledBorder.TOP,new Font("宋体", Font.PLAIN, 35), new Color(0, 0, 0)));//第二个参数为标题，倒数第二个参数为修改标题字体
+				TitledBorder.TOP,new Font("宋体", Font.PLAIN, 30), new Color(0, 0, 0)));//第二个参数为标题，倒数第二个参数为修改标题字体
 		GroupLayout gl_contentPane = new GroupLayout(contentPane);
 		gl_contentPane.setHorizontalGroup(
 			gl_contentPane.createParallelGroup(Alignment.TRAILING)
@@ -335,7 +337,8 @@ public class BookTypeManagerFrm extends JFrame {
 	 */
 	private void bookTypeDeleteActionEvent(ActionEvent evt) {
 		String id=IDTxt.getText();
-		if(StringUtil.isEmpty(id)){
+		if(StringUtil.isEmpty(id))
+		{
 			showMessageFrame note=new showMessageFrame(null,"请选择要删除的记录",showMessageFrame.NOTE);
 			return;
 		}
@@ -362,6 +365,13 @@ public class BookTypeManagerFrm extends JFrame {
 						Connection con=null;
 						try{
 							con=dbUtil.getCon();
+							boolean flag=bookDao.existBookByBookTypeId(con, id);
+							if(flag)
+							{
+								showMessageFrame note=new showMessageFrame(null,"当前图书类别下有图书，不能删除此类别!",
+										showMessageFrame.NOTE);
+								return;
+							}
 							int deleteNum=bookTypeDao.Delete(con, id);
 							if(deleteNum==1){
 								showMessageFrame note=new showMessageFrame(null,"删除成功",showMessageFrame.NOTE);

@@ -2,9 +2,10 @@
 <qualifiedTypeNameHistroy>
 <fullyQualifiedTypeName name="javax.swing.plaf.basic.BasicInternalFrameUI"/>
 <fullyQualifiedTypeName name="java.awt.Insets"/>
-<fullyQualifiedTypeName name="java.sql.Connection"/>
 <fullyQualifiedTypeName name="manager.util.DbUtil"/>
 <fullyQualifiedTypeName name="manager.dao.BookTypeDao"/>
-<fullyQualifiedTypeName name="manager.dao.BookDao"/>
+<fullyQualifiedTypeName name="java.sql.Connection"/>
 <fullyQualifiedTypeName name="manager.entity.Book"/>
+<fullyQualifiedTypeName name="java.util.Vector"/>
+<fullyQualifiedTypeName name="manager.dao.BookDao"/>
 </qualifiedTypeNameHistroy>

@@ -39,9 +39,11 @@ public class BookTypeDao {
 	public ResultSet list(Connection con,BookType bookType)throws Exception{
 		StringBuffer sb=new StringBuffer("select * from t_bookType");
 		if(StringUtil.isNotEmpty(bookType.getBookTypeName())){
-			sb.append(" and bookTypeName like '%"+bookType.getBookTypeName()+"%'");//如果有多个条件（这里就一个），where没地方写，故而采用此算法
+			sb.append(" and bookTypeName like '%"+bookType.getBookTypeName()+"%'");
+			//如果有多个条件（这里就一个），where没地方写，故而采用此算法
 		}
-		PreparedStatement pstmt=con.prepareStatement(sb.toString().replaceFirst("and", "where"));//转换成字符串，载把第一个and换成where
+		PreparedStatement pstmt=con.prepareStatement(sb.toString().replaceFirst("and", "where"));
+		//转换成字符串，则把第一个and换成where
 		return pstmt.executeQuery();
 	}
 	/**

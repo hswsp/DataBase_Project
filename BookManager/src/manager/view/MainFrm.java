@@ -7,29 +7,19 @@ import java.awt.SystemColor;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.util.Vector;
 
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.ImageIcon;
+import javax.swing.JDesktopPane;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
 import javax.swing.border.EmptyBorder;
-import javax.swing.table.DefaultTableModel;
 
-import manager.dao.BookTypeDao;
-import manager.entity.BookType;
-import manager.util.DbUtil;
 import manager.util.ShowConfirmDialog;
-import javax.swing.JDesktopPane;
-import java.awt.Color;
 
 public class MainFrm extends JFrame {
 
@@ -151,6 +141,12 @@ public class MainFrm extends JFrame {
 		BookMgr.add(BookAdd);
 		
 		JMenuItem BookServ = new JMenuItem("\u56FE\u4E66\u7EF4\u62A4");
+		BookServ.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				BookManagerFrm bookManagerFrm=new BookManagerFrm();
+				bookManagerFrm.setVisible(true);				
+			}
+		});
 		BookServ.setFont(new Font("ËÎÌו", Font.PLAIN, 35));
 		BookServ.setIcon(new ImageIcon(MainFrm.class.getResource("/manager/image/edit.png")));
 		BookMgr.add(BookServ);

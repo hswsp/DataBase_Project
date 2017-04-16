@@ -1,0 +1,108 @@
+package manager.view;
+
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.EventQueue;
+import java.awt.Toolkit;
+
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
+import javax.swing.JScrollPane;
+import javax.swing.GroupLayout;
+import javax.swing.GroupLayout.Alignment;
+import javax.swing.JTable;
+import java.awt.Font;
+import javax.swing.table.DefaultTableModel;
+
+public class BookManagerFrm extends JFrame {
+
+	//设置跟随分辨率变化窗口
+	Toolkit kit = Toolkit.getDefaultToolkit();
+    Dimension screenSize = kit.getScreenSize();
+	private int screenHeight = (int) screenSize.getHeight();
+    private int screenWidth = (int) screenSize.getWidth();
+    private double enlargement_x=screenWidth/1920;
+    private double enlargement_y=screenHeight/1080;
+
+    private int windowWidth ; //获得窗口宽
+    private int windowHeight; //获得窗口高
+	private JPanel contentPane;
+	private JTable table;
+
+	/**
+	 * Launch the application.
+	 */
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					BookManagerFrm frame = new BookManagerFrm();
+					frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+
+	/**
+	 * Create the frame.
+	 */
+	public BookManagerFrm() {
+		setResizable(false);
+		setTitle("\u56FE\u4E66\u7BA1\u7406");
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		setBounds(100,100,(int)( 1800*enlargement_x), (int)(1400*enlargement_y));//设置初始位置（无所谓，后面重置），大小		
+		windowWidth = this.getWidth(); //获得窗口宽
+		windowHeight = this.getHeight(); //获得窗口高
+		this.setLocation(screenWidth / 2 - windowWidth / 2, screenHeight / 2 - windowHeight / 2);//设置窗口居中显示
+		contentPane = new JPanel();
+		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		setContentPane(contentPane);
+		
+		JScrollPane scrollPane = new JScrollPane();
+		GroupLayout gl_contentPane = new GroupLayout(contentPane);
+		gl_contentPane.setHorizontalGroup(
+			gl_contentPane.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_contentPane.createSequentialGroup()
+					.addGap(162)
+					.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 1479, GroupLayout.PREFERRED_SIZE)
+					.addContainerGap(143, Short.MAX_VALUE))
+		);
+		gl_contentPane.setVerticalGroup(
+			gl_contentPane.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_contentPane.createSequentialGroup()
+					.addGap(186)
+					.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 374, GroupLayout.PREFERRED_SIZE)
+					.addContainerGap(768, Short.MAX_VALUE))
+		);
+		
+		table = new JTable();
+		table.setFont(new Font("宋体", Font.PLAIN, 35));
+		table.setModel(new DefaultTableModel(
+			new Object[][] {
+			},
+			new String[] {
+				"\u7F16\u53F7", "\u56FE\u4E66\u540D\u79F0", "\u56FE\u4E66\u4F5C\u8005", "\u4F5C\u8005\u6027\u522B", "\u56FE\u4E66\u4EF7\u683C", "\u56FE\u4E66\u63CF\u8FF0", "\u56FE\u4E66\u7C7B\u522B"
+			}
+		) {
+			boolean[] columnEditables = new boolean[] {
+				false, false, false, false, false, false, false
+			};
+			public boolean isCellEditable(int row, int column) {
+				return columnEditables[column];
+			}
+		});
+		table.getColumnModel().getColumn(0).setPreferredWidth(96);
+		table.getColumnModel().getColumn(1).setPreferredWidth(203);
+		table.getColumnModel().getColumn(2).setPreferredWidth(177);
+		table.getColumnModel().getColumn(3).setPreferredWidth(143);
+		table.getColumnModel().getColumn(4).setPreferredWidth(152);
+		table.getColumnModel().getColumn(5).setPreferredWidth(465);
+		table.getColumnModel().getColumn(6).setPreferredWidth(162);
+		
+		scrollPane.setViewportView(table);
+		contentPane.setLayout(gl_contentPane);
+	}
+}
