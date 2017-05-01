@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
 import manager.entity.Book;
+import manager.entity.User;
 import manager.util.StringUtil;
 
 /**
@@ -23,7 +24,7 @@ public class BookDao {
 	 */
 	public int add(Connection con,Book book)throws Exception//返回影响几条记录
 	{
-		String sql="insert into t_book values(null,?,?,?,?,?,?)";
+		String sql="insert into t_book values(null,?,?,?,?,?,?,?)";
 		PreparedStatement pstmt=con.prepareStatement(sql);//创建对象，得到SQL语句
 		pstmt.setString(1, book.getBookName());//传递参数
 		pstmt.setString(2, book.getAuthor());
@@ -31,6 +32,7 @@ public class BookDao {
 		pstmt.setFloat(4, book.getPrice());
 		pstmt.setInt(5, book.getBookTypeId());
 		pstmt.setString(6, book.getBookDesc());
+		pstmt.setInt(7, book.getBookNum());
 		return pstmt.executeUpdate();//返回执行结果
 	}
 	
@@ -59,7 +61,33 @@ public class BookDao {
 		return pstmt.executeQuery();//执行
 	}
 
-	
+	/**
+	 * 根据书ID主查询
+	 * @param con
+	 * @param book
+	 * @return
+	 * @throws Exception
+	 */
+	public static Book BookSearch(Connection con,Book book)throws Exception{
+		Book resultBook=null;
+		StringBuffer sb=new StringBuffer("select * from t_book where id=?");		
+		PreparedStatement pstmt=con.prepareStatement(sb.toString());
+		pstmt.setInt(1, book.getId());
+		ResultSet rs=pstmt.executeQuery();//执行
+		if(rs.next()){//如果查到了，则实例化
+			resultBook=new Book();
+			resultBook.setId(rs.getInt("id"));//getInt("id")
+			resultBook.setBookName(rs.getString("bookName"));
+			resultBook.setAuthor(rs.getString("author"));
+			resultBook.setSex(rs.getString("sex"));
+			resultBook.setPrice(rs.getFloat("price"));
+			resultBook.setBookTypeId(rs.getInt("bookTypeId"));
+			resultBook.setBookDesc(rs.getString("BookDesc"));
+			resultBook.setBookNum(rs.getInt("number"));
+			resultBook.setPublisher(rs.getString("publisher"));
+		}
+		return resultBook;
+	}
 	/**
 	 * 图书信息删除
 	 * @param con
@@ -94,6 +122,26 @@ public class BookDao {
 		pstmt.setInt(6, book.getBookTypeId());
 		pstmt.setInt(7, book.getId());
 		return pstmt.executeUpdate();
+	}
+	
+	/**
+	 * 图书借阅
+	 * @param con
+	 * @param book
+	 * @return
+	 * @throws Exception
+	 */
+	public int borrow(Connection con,Book book)throws Exception
+	{
+		String sql="update t_book set number=? where id=?";
+		PreparedStatement pstmt=con.prepareStatement(sql);
+		if(book.getBookNum()<=0)return -1;
+		else
+		{
+			pstmt.setInt(1, book.getBookNum()-1);
+		    pstmt.setInt(2, book.getId());
+		    return pstmt.executeUpdate();
+		}
 	}
 	
 	/**

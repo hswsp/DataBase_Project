@@ -15,8 +15,8 @@ public class Book {
 	private Integer bookTypeId; // 图书类别Id
 	private String bookTypeName; // 图书类名名称
 	private String bookDesc; // 备注
-	
-	
+	private Integer bookNum;//图书数量
+	private String publisher;//出版社
 	
 
 	public Book() //有参够造必须加无参
@@ -25,6 +25,17 @@ public class Book {
 		// TODO Auto-generated constructor stub
 	}
 	
+	public Book(int id) {
+		super();
+		this.id = id;
+	}
+
+	public Book(String bookName, Integer bookTypeId) {
+		super();
+		this.bookName = bookName;
+		this.bookTypeId = bookTypeId;
+	}
+
 	public Book(String bookName, String author, Integer bookTypeId) 
 	{
 		super();
@@ -102,6 +113,22 @@ public class Book {
 	}
 	public void setBookDesc(String bookDesc) {
 		this.bookDesc = bookDesc;
+	}
+
+	public Integer getBookNum() {
+		return bookNum;
+	}
+
+	public void setBookNum(Integer bookNum) {
+		this.bookNum = bookNum;
+	}
+
+	public String getPublisher() {
+		return publisher;
+	}
+
+	public void setPublisher(String publisher) {
+		this.publisher = publisher;
 	}
 	
 	

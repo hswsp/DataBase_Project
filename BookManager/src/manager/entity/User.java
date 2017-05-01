@@ -7,11 +7,11 @@ package manager.entity;
  */
 public class User {
 
-	private int id; // 编号
+	private String id; // 编号
 	private String userName; // 用户名
 	private String password; // 密码
-	
-	
+	private int borrowNumRem;//可借书数量
+	private float balance;
 	
 	public User() {
 		super();
@@ -19,19 +19,43 @@ public class User {
 	}
 	
 	
-	
-	public User(String userName, String password) {
+	public User(String id) {
 		super();
-		this.userName = userName;
+		this.id = id;
+	}
+
+
+	public User(String userID, String password) {
+		super();
+		this.id = userID;
 		this.password = password;
 	}
 
+	public int getBorrowNumRem() {
+		return borrowNumRem;
+	}
 
 
-	public int getId() {
+
+	public void setBorrowNumRem(int borrowNumRem) {
+		this.borrowNumRem = borrowNumRem;
+	}
+
+
+	public float getBalance() {
+		return balance;
+	}
+
+
+	public void setBalance(float balance) {
+		this.balance = balance;
+	}
+
+
+	public String getId() {
 		return id;
 	}
-	public void setId(int id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 	public String getUserName() {

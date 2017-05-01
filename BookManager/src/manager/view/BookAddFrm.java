@@ -49,20 +49,21 @@ public class BookAddFrm extends JFrame {
 	private JRadioButton femaleJRB; 
 
 	//设置跟随分辨率变化窗口
-			Toolkit kit = Toolkit.getDefaultToolkit();
-		    Dimension screenSize = kit.getScreenSize();
-			private int screenHeight = (int) screenSize.getHeight();
-		    private int screenWidth = (int) screenSize.getWidth();
-		    private double enlargement_x=screenWidth/1920;
-		    private double enlargement_y=screenHeight/1080;
+	Toolkit kit = Toolkit.getDefaultToolkit();
+    Dimension screenSize = kit.getScreenSize();
+	private int screenHeight = (int) screenSize.getHeight();
+    private int screenWidth = (int) screenSize.getWidth();
+    private double enlargement_x=screenWidth/1920;
+    private double enlargement_y=screenHeight/1080;
 
-		    private int windowWidth ; //获得当前窗口宽
-		    private int windowHeight; //获得当前窗口高
-		   
-		    
-		    private DbUtil  dbUtil=new DbUtil();
-		    private BookTypeDao bookTypeDao=new BookTypeDao();
-			private BookDao bookDao=new BookDao();
+    private int windowWidth ; //获得当前窗口宽
+    private int windowHeight; //获得当前窗口高
+   
+    
+    private DbUtil  dbUtil=new DbUtil();
+    private BookTypeDao bookTypeDao=new BookTypeDao();
+	private BookDao bookDao=new BookDao();
+	private JTextField purNumTxt;
 
 	/**
 	 * Launch the application.
@@ -157,6 +158,13 @@ public class BookAddFrm extends JFrame {
 		});
 		button_1.setIcon(new ImageIcon(BookAddFrm.class.getResource("/manager/image/reset.png")));
 		button_1.setFont(new Font("宋体", Font.PLAIN, 35));
+		
+		JLabel NumJL = new JLabel("\u8D2D\u8FDB\u6570\u91CF");
+		NumJL.setFont(new Font("宋体", Font.PLAIN, 35));
+		
+		purNumTxt = new JTextField();
+		purNumTxt.setFont(new Font("宋体", Font.PLAIN, 35));
+		purNumTxt.setColumns(10);
 		GroupLayout gl_contentPane = new GroupLayout(contentPane);
 		gl_contentPane.setHorizontalGroup(
 			gl_contentPane.createParallelGroup(Alignment.TRAILING)
@@ -185,12 +193,16 @@ public class BookAddFrm extends JFrame {
 													.addGap(105)
 													.addComponent(femaleJRB)))
 											.addGap(179)
-											.addComponent(label_3))
+											.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+												.addComponent(NumJL)
+												.addComponent(label_3)))
 										.addComponent(label_1))
 									.addGap(46)
-									.addGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING)
-										.addComponent(authorTxt, GroupLayout.DEFAULT_SIZE, 484, Short.MAX_VALUE)
-										.addComponent(priceTxt, GroupLayout.DEFAULT_SIZE, 508, Short.MAX_VALUE)))
+									.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+										.addComponent(purNumTxt, GroupLayout.PREFERRED_SIZE, 245, GroupLayout.PREFERRED_SIZE)
+										.addGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING)
+											.addComponent(authorTxt, GroupLayout.DEFAULT_SIZE, 508, Short.MAX_VALUE)
+											.addComponent(priceTxt, GroupLayout.DEFAULT_SIZE, 508, Short.MAX_VALUE))))
 								.addComponent(DescSP, GroupLayout.PREFERRED_SIZE, 1132, GroupLayout.PREFERRED_SIZE))
 							.addGap(4))
 						.addGroup(gl_contentPane.createSequentialGroup()
@@ -218,7 +230,9 @@ public class BookAddFrm extends JFrame {
 					.addGap(116)
 					.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
 						.addComponent(label_5)
-						.addComponent(bookTypeJCB, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+						.addComponent(bookTypeJCB, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(NumJL)
+						.addComponent(purNumTxt, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 					.addGap(125)
 					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
 						.addComponent(label_4)

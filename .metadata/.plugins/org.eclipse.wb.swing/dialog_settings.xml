@@ -7,9 +7,9 @@
 		<item value="626" key="height"/>
 	</section>
 	<section name="org.eclipse.wb.internal.swing.model.property.editor.border.BorderDialog">
-		<item value="530" key="x"/>
+		<item value="458" key="x"/>
 		<item value="540" key="width"/>
-		<item value="223" key="y"/>
+		<item value="318" key="y"/>
 		<item value="454" key="height"/>
 	</section>
 	<section name="org.eclipse.wb.internal.swing.model.property.editor.icon.IconPropertyEditor$ImageDialog">

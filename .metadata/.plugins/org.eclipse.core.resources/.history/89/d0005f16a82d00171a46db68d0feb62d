@@ -1,0 +1,147 @@
+package manager.view;
+
+import java.awt.Dimension;
+import java.awt.EventQueue;
+import java.awt.Font;
+import java.awt.Image;
+import java.awt.Toolkit;
+
+import javax.swing.BorderFactory;
+import javax.swing.GroupLayout;
+import javax.swing.GroupLayout.Alignment;
+import javax.swing.ImageIcon;
+import javax.swing.JFrame;
+import javax.swing.JInternalFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
+import javax.swing.plaf.basic.BasicInternalFrameUI;
+
+import manager.util.PictureUtil;
+
+
+public class mamagerbulletin extends JFrame {
+
+	private JPanel TutorJp;
+	//设置跟随分辨率变化窗口
+		Toolkit kit = Toolkit.getDefaultToolkit();
+	    Dimension screenSize = kit.getScreenSize();
+		private int screenHeight = (int) screenSize.getHeight();
+	    private int screenWidth = (int) screenSize.getWidth();
+	    private double enlargement_x=screenWidth/1920;
+	    private double enlargement_y=screenHeight/1080;
+	/**
+	 * Launch the application.
+	 */
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					mamagerbulletin frame = new mamagerbulletin();
+					frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+
+	/**
+	 * Create the frame.
+	 */
+	public mamagerbulletin() {
+		setTitle("\u6D4B\u8BD5");
+		
+		TutorJp = new JPanel();
+		TutorJp.setBorder(new EmptyBorder(5, 5, 5, 5));
+		setContentPane(TutorJp);
+		
+		JInternalFrame internalFrame = new JInternalFrame("\u56FE\u4E66\u67E5\u8BE2\u4E0E\u501F\u9605");
+		BasicInternalFrameUI ui = (BasicInternalFrameUI)internalFrame.getUI();
+		ui.setNorthPane(null);
+		
+		internalFrame.setBorder(BorderFactory.createEmptyBorder());
+		internalFrame.setVisible(true);
+		
+		JInternalFrame internalFrame_1 = new JInternalFrame("\u4E2A\u4EBA\u4FE1\u606F\u8BBE\u7F6E");
+		BasicInternalFrameUI ui_1 = (BasicInternalFrameUI)internalFrame_1.getUI();
+		ui_1.setNorthPane(null);
+		internalFrame_1.setBorder(BorderFactory.createEmptyBorder());
+		internalFrame_1.getContentPane().setFont(new Font("宋体", Font.PLAIN, 35));
+		internalFrame_1.setVisible(true);
+		GroupLayout gl_TutorJp = new GroupLayout(TutorJp);
+		gl_TutorJp.setHorizontalGroup(
+			gl_TutorJp.createParallelGroup(Alignment.TRAILING)
+				.addComponent(internalFrame, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 720, Short.MAX_VALUE)
+				.addComponent(internalFrame_1, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 720, Short.MAX_VALUE)
+		);
+		gl_TutorJp.setVerticalGroup(
+			gl_TutorJp.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_TutorJp.createSequentialGroup()
+					.addComponent(internalFrame, GroupLayout.PREFERRED_SIZE, 280, GroupLayout.PREFERRED_SIZE)
+					.addGap(115)
+					.addComponent(internalFrame_1, GroupLayout.PREFERRED_SIZE, 293, GroupLayout.PREFERRED_SIZE)
+					.addContainerGap(74, Short.MAX_VALUE))
+		);
+		GroupLayout groupLayout_1 = new GroupLayout(internalFrame_1.getContentPane());
+		groupLayout_1.setHorizontalGroup(
+			groupLayout_1.createParallelGroup(Alignment.LEADING)
+				.addGap(0, 704, Short.MAX_VALUE)
+		);
+		groupLayout_1.setVerticalGroup(
+			groupLayout_1.createParallelGroup(Alignment.LEADING)
+				.addGap(0, 230, Short.MAX_VALUE)
+		);
+		internalFrame_1.getContentPane().setLayout(groupLayout_1);
+		
+	
+		JLabel label = new JLabel("",JLabel.CENTER);
+		
+		//label.setOpaque(true);
+		label.setFont(new Font("宋体", Font.PLAIN, 35));
+		int width = 300,height = 100; //这是图片和JLable的宽度和高度   
+		ImageIcon icon = new ImageIcon("src/res/dayly_op.png");  
+		//改变图片大小          
+		icon.setImage(icon.getImage().getScaledInstance(width,height,Image.SCALE_DEFAULT));//80和100为大小 可以自由设置       
+		label.setIcon(icon);  
+		
+		GroupLayout groupLayout = new GroupLayout(internalFrame.getContentPane());
+		groupLayout.setHorizontalGroup(
+			groupLayout.createParallelGroup(Alignment.LEADING)
+				.addGroup(groupLayout.createSequentialGroup()
+					.addGap(241)
+					.addComponent(label, GroupLayout.PREFERRED_SIZE, width, GroupLayout.PREFERRED_SIZE)
+					.addContainerGap(256, Short.MAX_VALUE))
+		);
+		groupLayout.setVerticalGroup(
+			groupLayout.createParallelGroup(Alignment.LEADING)
+				.addGroup(groupLayout.createSequentialGroup()
+					.addComponent(label, GroupLayout.PREFERRED_SIZE, height, GroupLayout.PREFERRED_SIZE)
+					.addContainerGap(155, Short.MAX_VALUE))
+		);
+		//mntmNewMenuItem_1.setHorizontalAlignment(SwingConstants.CENTER);
+		
+		
+		
+		internalFrame.getContentPane().setLayout(groupLayout);
+		
+		//Rectangle clip=MenuItem_search.getClipBounds();
+//		JMenuBar menuBar = new JMenuBar();
+//		menuBar.setFont(new Font("宋体", Font.PLAIN, 35));
+//		internalFrame.setJMenuBar(menuBar);
+		TutorJp.setLayout(gl_TutorJp);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setBounds(100, 100, 762, 860);
+		
+//		String imgPath = "D://Database//DataBase_Project//BookManager//src//manager//image//frame.jpg"; 
+//		Dimension dimension = new Dimension(668, 157);  //图片大小
+//		TutorJp.setPreferredSize(dimension);
+//        final Image imageBg = Toolkit.getDefaultToolkit()  
+//                .getImage(imgPath);  
+//        ImageIcon imageIcon = new ImageIcon(imageBg.getScaledInstance  
+//                (dimension.width, dimension.height, Image.SCALE_FAST));
+//        final Point origin = new Point(10, 30);  
+//        final Rectangle rectangle = new Rectangle(origin, dimension);
+
+	}
+}

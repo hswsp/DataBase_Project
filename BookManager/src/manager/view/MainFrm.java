@@ -23,9 +23,9 @@ import manager.util.ShowConfirmDialog;
 
 public class MainFrm extends JFrame {
 
-	 private JPanel contentPane;
-	 private JDesktopPane Table; 
-	//设置跟随分辨率变化窗口
+	        private JPanel contentPane;
+	        private JDesktopPane Table; 
+	        //设置跟随分辨率变化窗口
 			Toolkit kit = Toolkit.getDefaultToolkit();
 		    Dimension screenSize = kit.getScreenSize();
 			private int screenHeight = (int) screenSize.getHeight();
@@ -53,7 +53,7 @@ public class MainFrm extends JFrame {
 	 * Create the frame.
 	 */
 	public MainFrm() {
-		setTitle("\u56FE\u4E66\u7BA1\u7406\u7CFB\u7EDF\u4E3B\u754C\u9762");
+		setTitle("\u56FE\u4E66\u7BA1\u7406\u5458\u7CFB\u7EDF\u4E3B\u754C\u9762");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 835, 635);
 		
@@ -129,7 +129,7 @@ public class MainFrm extends JFrame {
 		BookMgr.setIcon(new ImageIcon(MainFrm.class.getResource("/manager/image/bookManager.png")));
 		DataServeMenu.add(BookMgr);
 		
-		JMenuItem BookAdd = new JMenuItem("\u56FE\u4E66\u6DFB\u52A0");
+		JMenuItem BookAdd = new JMenuItem("\u56FE\u4E66\u91C7\u8D2D");
 		BookAdd.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				BookAddFrm bookAddFrm=new BookAddFrm();

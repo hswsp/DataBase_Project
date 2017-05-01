@@ -57,7 +57,8 @@ public class showMessageFrame extends javax.swing.JFrame {
             }
             pack();
             setBounds((int)(width / 2 ),(int)(height/2 ),
-            		(int)(500*enlargement_x),(int)(100*enlargement_y));         
+            		(int)(500*enlargement_x),(int)(100*enlargement_y));
+            pack();
             try {
                 Thread.sleep(3000);//ÔËÐÐ3000ms
             } catch (InterruptedException e1) {
