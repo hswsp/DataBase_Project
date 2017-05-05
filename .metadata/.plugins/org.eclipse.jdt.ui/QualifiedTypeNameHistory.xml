@@ -6,14 +6,12 @@
 <fullyQualifiedTypeName name="java.sql.Connection"/>
 <fullyQualifiedTypeName name="manager.entity.Book"/>
 <fullyQualifiedTypeName name="java.util.Vector"/>
-<fullyQualifiedTypeName name="manager.dao.BookDao"/>
 <fullyQualifiedTypeName name="manager.util.ResizePicture"/>
 <fullyQualifiedTypeName name="java.awt.GraphicsDevice"/>
 <fullyQualifiedTypeName name="manager.dao.managerDao"/>
 <fullyQualifiedTypeName name="manager.entity.Manager"/>
 <fullyQualifiedTypeName name="java.security.MessageDigest"/>
 <fullyQualifiedTypeName name="manager.util.MD5Util"/>
-<fullyQualifiedTypeName name="manager.util.Dialogutil"/>
 <fullyQualifiedTypeName name="javax.swing.border.EmptyBorder"/>
 <fullyQualifiedTypeName name="java.awt.event.ComponentAdapter"/>
 <fullyQualifiedTypeName name="java.awt.event.ComponentEvent"/>
@@ -21,4 +19,20 @@
 <fullyQualifiedTypeName name="javax.swing.plaf.basic.BasicInternalFrameUI"/>
 <fullyQualifiedTypeName name="javax.swing.BorderFactory"/>
 <fullyQualifiedTypeName name="manager.util.PictureUtil"/>
+<fullyQualifiedTypeName name="manager.util.Dialogutil"/>
+<fullyQualifiedTypeName name="manager.dao.BookDao"/>
+<fullyQualifiedTypeName name="java.util.Date"/>
+<fullyQualifiedTypeName name="manager.entity.BookRecommend"/>
+<fullyQualifiedTypeName name="javax.swing.ListSelectionModel"/>
+<fullyQualifiedTypeName name="manager.entity.HisBorrow"/>
+<fullyQualifiedTypeName name="java.awt.FlowLayout"/>
+<fullyQualifiedTypeName name="java.util.Arrays"/>
+<fullyQualifiedTypeName name="manager.util.DateUtil"/>
+<fullyQualifiedTypeName name="manager.entity.DateInt"/>
+<fullyQualifiedTypeName name="org.jfree.chart.axis.NumberAxis"/>
+<fullyQualifiedTypeName name="org.jfree.chart.axis.NumberTickUnit"/>
+<fullyQualifiedTypeName name="manager.entity.User"/>
+<fullyQualifiedTypeName name="java.awt.event.WindowAdapter"/>
+<fullyQualifiedTypeName name="java.awt.event.WindowEvent"/>
+<fullyQualifiedTypeName name="manager.dao.UserDao"/>
 </qualifiedTypeNameHistroy>

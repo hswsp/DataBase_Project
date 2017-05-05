@@ -16,42 +16,28 @@ public class User {
 	public User() {
 		super();
 		// TODO Auto-generated constructor stub
-	}
-	
-	
+	}	
 	public User(String id) {
 		super();
 		this.id = id;
 	}
-
-
 	public User(String userID, String password) {
 		super();
 		this.id = userID;
 		this.password = password;
 	}
-
 	public int getBorrowNumRem() {
 		return borrowNumRem;
 	}
-
-
-
 	public void setBorrowNumRem(int borrowNumRem) {
 		this.borrowNumRem = borrowNumRem;
 	}
-
-
 	public float getBalance() {
 		return balance;
 	}
-
-
 	public void setBalance(float balance) {
 		this.balance = balance;
 	}
-
-
 	public String getId() {
 		return id;
 	}
@@ -71,5 +57,9 @@ public class User {
 		this.password = password;
 	}
 	
+	public void balanceRedu(float reduce)
+	{
+		this.balance-=reduce;
+	}
 	
 }

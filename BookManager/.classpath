@@ -3,5 +3,7 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
 	<classpathentry kind="lib" path="src/jdbc/mysql-connector-java-5.1.41-bin.jar"/>
+	<classpathentry kind="lib" path="D:/Database/DataBase_Project/BookManager/src/jdbc/jcommon-1.0.13.jar"/>
+	<classpathentry kind="lib" path="D:/Database/DataBase_Project/BookManager/src/jdbc/jfreechart-1.0.13.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

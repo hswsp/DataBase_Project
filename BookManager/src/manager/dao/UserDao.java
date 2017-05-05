@@ -6,6 +6,10 @@ import java.sql.ResultSet;
 
 import manager.entity.Book;
 import manager.entity.User;
+import manager.util.DateUtil;
+import manager.util.Dialogutil;
+import manager.util.StringUtil;
+import manager.util.showMessageFrame;
 
 
 /**
@@ -59,6 +63,13 @@ public class UserDao {
 		return pstmt.executeUpdate();	
 	}
 	
+	/**
+	 * 根据id查找用户
+	 * @param con
+	 * @param user
+	 * @return
+	 * @throws Exception
+	 */
 	public User SearchUser(Connection con,User user)throws Exception
 	{
 		User resultUser=null;
@@ -97,4 +108,22 @@ public class UserDao {
 		    return pstmt.executeUpdate();
 		}
 	}
+	
+	/**
+	 * 修改用户名和密码
+	 * @param con
+	 * @param user
+	 * @return
+	 * @throws Exception
+	 */
+	public static int Edit(Connection con,User user)throws Exception
+	{
+		
+		StringBuffer sql=new StringBuffer("update t_user set userName=? where id=?");
+		PreparedStatement pstmt=con.prepareStatement(sql.toString());
+		pstmt.setString(1, user.getUserName());
+		 pstmt.setString(2, user.getId());
+		return pstmt.executeUpdate();			
+    }
+
 }

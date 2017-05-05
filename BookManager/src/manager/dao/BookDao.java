@@ -62,7 +62,7 @@ public class BookDao {
 	}
 
 	/**
-	 * 根据书ID主查询
+	 * 根据书ID主查询,用于图书借阅中初始化Borrow
 	 * @param con
 	 * @param book
 	 * @return
@@ -76,7 +76,7 @@ public class BookDao {
 		ResultSet rs=pstmt.executeQuery();//执行
 		if(rs.next()){//如果查到了，则实例化
 			resultBook=new Book();
-			resultBook.setId(rs.getInt("id"));//getInt("id")
+			resultBook.setId(rs.getInt("id"));
 			resultBook.setBookName(rs.getString("bookName"));
 			resultBook.setAuthor(rs.getString("author"));
 			resultBook.setSex(rs.getString("sex"));
