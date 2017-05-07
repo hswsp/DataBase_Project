@@ -5,7 +5,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
 import manager.entity.Book;
-import manager.entity.User;
 import manager.util.StringUtil;
 
 /**
@@ -24,7 +23,7 @@ public class BookDao {
 	 */
 	public int add(Connection con,Book book)throws Exception//返回影响几条记录
 	{
-		String sql="insert into t_book values(null,?,?,?,?,?,?,?)";
+		String sql="insert into t_book values(null,?,?,?,?,?,?,?,?)";
 		PreparedStatement pstmt=con.prepareStatement(sql);//创建对象，得到SQL语句
 		pstmt.setString(1, book.getBookName());//传递参数
 		pstmt.setString(2, book.getAuthor());
@@ -33,6 +32,7 @@ public class BookDao {
 		pstmt.setInt(5, book.getBookTypeId());
 		pstmt.setString(6, book.getBookDesc());
 		pstmt.setInt(7, book.getBookNum());
+		pstmt.setString(8, book.getPublisher());		
 		return pstmt.executeUpdate();//返回执行结果
 	}
 	
@@ -95,11 +95,11 @@ public class BookDao {
 	 * @return
 	 * @throws Exception
 	 */
-	public int delete(Connection con,String id)throws Exception
+	public int delete(Connection con,int id)throws Exception
 	{
 		String sql="delete from t_book where id=?";
 		PreparedStatement pstmt=con.prepareStatement(sql);
-		pstmt.setString(1, id);
+		pstmt.setInt(1, id);
 		return pstmt.executeUpdate();//修改
 	}
 	

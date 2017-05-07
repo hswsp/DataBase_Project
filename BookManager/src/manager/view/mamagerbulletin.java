@@ -13,14 +13,12 @@ import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
-import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
 import javax.swing.plaf.basic.BasicInternalFrameUI;
 import javax.swing.JButton;
 import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.SwingConstants;
 import javax.swing.border.TitledBorder;
-import javax.swing.border.CompoundBorder;
 import javax.swing.UIManager;
 import java.awt.Color;
 import java.awt.event.ActionListener;
@@ -42,6 +40,7 @@ public class mamagerbulletin extends JFrame {
 	 */
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
+			@Override
 			public void run() {
 				try {
 					mamagerbulletin frame = new mamagerbulletin();
@@ -291,7 +290,7 @@ public class mamagerbulletin extends JFrame {
 		);
 		RecommendJP.setLayout(null);
 		
-		JLabel RecomJLb = new JLabel("",JLabel.CENTER);
+		JLabel RecomJLb = new JLabel("",SwingConstants.CENTER);
 		RecomJLb.setBounds(254, 41, 256, 73);
 		RecomJLb.setFont(new Font("宋体", Font.PLAIN, 35));
 		RecommendJP.add(RecomJLb);
@@ -301,13 +300,20 @@ public class mamagerbulletin extends JFrame {
 		JPanel ExitJPL = new JPanel();
 		ExitJPL.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "\u5B89\u5168\u9000\u51FA\u7CFB\u7EDF", 
 				TitledBorder.LEADING, TitledBorder.TOP, new Font("宋体", Font.PLAIN, 35), Color.DARK_GRAY));
+		
+		JLabel WwlcomeJL = new JLabel("New label");
+		WwlcomeJL.setFont(new Font("华文行楷", Font.PLAIN, 40));
 		GroupLayout gl_TutorJp = new GroupLayout(TutorJp);
 		gl_TutorJp.setHorizontalGroup(
 			gl_TutorJp.createParallelGroup(Alignment.LEADING)
-				.addComponent(SearchJIF, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 736, Short.MAX_VALUE)
-				.addComponent(ID_JIF, GroupLayout.DEFAULT_SIZE, 736, Short.MAX_VALUE)
-				.addComponent(RecomJIF, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 739, Short.MAX_VALUE)
+				.addComponent(SearchJIF, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 741, Short.MAX_VALUE)
+				.addComponent(ID_JIF, GroupLayout.DEFAULT_SIZE, 741, Short.MAX_VALUE)
+				.addComponent(RecomJIF, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 741, Short.MAX_VALUE)
 				.addComponent(ExitJPL, GroupLayout.DEFAULT_SIZE, 741, Short.MAX_VALUE)
+				.addGroup(gl_TutorJp.createSequentialGroup()
+					.addGap(263)
+					.addComponent(WwlcomeJL)
+					.addContainerGap(342, Short.MAX_VALUE))
 		);
 		gl_TutorJp.setVerticalGroup(
 			gl_TutorJp.createParallelGroup(Alignment.LEADING)
@@ -319,7 +325,9 @@ public class mamagerbulletin extends JFrame {
 					.addComponent(RecomJIF, GroupLayout.PREFERRED_SIZE, 296, GroupLayout.PREFERRED_SIZE)
 					.addPreferredGap(ComponentPlacement.UNRELATED)
 					.addComponent(ExitJPL, GroupLayout.PREFERRED_SIZE, 260, GroupLayout.PREFERRED_SIZE)
-					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+					.addPreferredGap(ComponentPlacement.RELATED, 73, Short.MAX_VALUE)
+					.addComponent(WwlcomeJL)
+					.addGap(47))
 		);
 		
 		JButton button = new JButton("\u5B89\u5168\u9000\u51FA");
@@ -354,7 +362,7 @@ public class mamagerbulletin extends JFrame {
 				.addComponent(panel, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 431, Short.MAX_VALUE)
 		);
 		
-		JLabel IDJLB = new JLabel("",JLabel.CENTER);
+		JLabel IDJLB = new JLabel("",SwingConstants.CENTER);
 		
 		IDJLB.setFont(new Font("宋体", Font.PLAIN, 35));
 		
@@ -364,12 +372,14 @@ public class mamagerbulletin extends JFrame {
 		JButton PreBorrowInfo = new JButton("\u5F53\u524D\u501F\u9605");
 		PreBorrowInfo.setFont(new Font("宋体", Font.PLAIN, 35));
 		PreBorrowInfo.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 			}
 		});
 		
 		JButton HistoryBorrow = new JButton("\u501F\u9605\u5386\u53F2");
 		HistoryBorrow.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 			}
 		});
@@ -430,7 +440,7 @@ public class mamagerbulletin extends JFrame {
 		);
 		
 	
-		JLabel Daily_Op = new JLabel("",JLabel.CENTER);
+		JLabel Daily_Op = new JLabel("",SwingConstants.CENTER);
 		Daily_Op.setFont(new Font("宋体", Font.PLAIN, 35));
 		//添加图片
 		Daily_Op.setIcon(icon);
@@ -443,6 +453,7 @@ public class mamagerbulletin extends JFrame {
 		RecommendJP.add(RecomJB);
 		JButton SearchButton = new JButton("\u56FE\u4E66\u67E5\u8BE2");
 		SearchButton.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 			}
 		});
@@ -450,6 +461,7 @@ public class mamagerbulletin extends JFrame {
 		
 		JButton BorrowButton = new JButton("\u56FE\u4E66\u501F\u9605");
 		BorrowButton.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 			}
 		});
@@ -501,7 +513,7 @@ public class mamagerbulletin extends JFrame {
 ////		internalFrame.setJMenuBar(menuBar);
 		TutorJp.setLayout(gl_TutorJp);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 773, 1675);		
+		setBounds(100, 100, 772, 1848);		
 //		String imgPath = "D://Database//DataBase_Project//BookManager//src//manager//image//frame.jpg"; 
 //		Dimension dimension = new Dimension(668, 157);  //图片大小
 //		TutorJp.setPreferredSize(dimension);

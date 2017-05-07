@@ -5,6 +5,7 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 
 import manager.entity.DateInt;
+import manager.entity.MyDate;
 
 public class DateUtil {
 
@@ -12,9 +13,9 @@ public class DateUtil {
 	public static Date DateAdd(Date OriginDate,int day) {  
 		Calendar calendar =new GregorianCalendar();  
 		calendar.setTime(OriginDate);  
-		calendar.add(calendar.DATE, day);  
+		calendar.add(Calendar.DATE, day);  
 		// calendar的time转成java.util.Date格式日期  
-		java.util.Date utilDate = (java.util.Date)calendar.getTime();  
+		java.util.Date utilDate = calendar.getTime();  
 //		calendar.add(calendar.DATE, 6);  
 //		utilDate = (java.util.Date)calendar.getTime();  
 		//java.util.Date日期转换成转成java.sql.Date格式  
@@ -74,7 +75,7 @@ public class DateUtil {
 	 */
 	public static void getdate(Date OriginDate,DateInt date)
 	{
-		Calendar calendar =new GregorianCalendar();  
+		Calendar calendar =new GregorianCalendar(); 
 		calendar.setTime(OriginDate);
 		int year=calendar.get(Calendar.YEAR);   
 		//得到年 
@@ -87,4 +88,25 @@ public class DateUtil {
 		date.setMonth(month);
 		date.setYear(year);
 	}
+	
+	/**
+	 * 获得当前精确时间
+	 * @param date
+	 */
+	public static void getdateWithMinute(MyDate date)
+	{
+		Date now = new Date(System.currentTimeMillis()); //获取当前时间
+		//SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");//可以方便地修改日期格式
+		//String hehe = dateFormat.format( now ); //修改格式
+		Calendar c = Calendar.getInstance();//可以对每个时间域单独修改	
+		//c.setTime(now);
+		date.setYear( c.get(Calendar.YEAR)); 
+		date.setMonth(c.get(Calendar.MONTH));
+		date.setDay(c.get(Calendar.DATE));
+		date.setHour(c.get(Calendar.HOUR_OF_DAY));
+		date.setMinute(c.get(Calendar.MINUTE));
+		date.setSecond(c.get(Calendar.SECOND));
+		
+	}
+	
 }

@@ -44,7 +44,20 @@ public class Book {
 		this.bookTypeId = bookTypeId;
 	}
 	
-	public Book(int id, String bookName, String author, String sex, Float price, Integer bookTypeId, String bookDesc) {
+	public Book(int id, String bookName, String author, String sex, Float price, Integer bookTypeId,
+			 String bookDesc) {
+		super();
+		this.id = id;
+		this.bookName = bookName;
+		this.author = author;
+		this.sex = sex;
+		this.price = price;
+		this.bookTypeId = bookTypeId;		
+		this.bookDesc = bookDesc;
+	}
+
+	public Book(int id, String bookName, String author, String sex, Float price, 
+			Integer bookTypeId, String bookDesc,Integer bookNum,String publisher) {
 		super();
 		this.id = id;
 		this.bookName = bookName;
@@ -53,6 +66,8 @@ public class Book {
 		this.price = price;
 		this.bookTypeId = bookTypeId;
 		this.bookDesc = bookDesc;
+		this.bookNum=bookNum;
+		this.publisher=publisher;
 	}
 
 	public Book(String bookName, String author, String sex, Float price, Integer bookTypeId, String bookDesc) 

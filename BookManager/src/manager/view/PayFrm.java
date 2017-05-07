@@ -1,6 +1,5 @@
 package manager.view;
 
-import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Toolkit;
@@ -9,8 +8,8 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import manager.dao.UserDao;
 import manager.entity.User;
-import manager.util.DateUtil;
 import manager.util.DbUtil;
 import manager.util.Dialogutil;
 import manager.util.StringUtil;
@@ -20,13 +19,13 @@ import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JLabel;
 import java.awt.Font;
-import java.awt.GraphicsConfiguration;
 import java.awt.HeadlessException;
 
 import javax.swing.ImageIcon;
 import javax.swing.JTextField;
 import javax.swing.JRadioButton;
 import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.WindowConstants;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
@@ -35,7 +34,7 @@ import java.sql.PreparedStatement;
 import java.awt.event.ActionEvent;
 
 public class PayFrm extends JFrame {
-	
+	private userMainFrm userMainFrm;//传递主界面类，用于修改一些信息
 	//设置跟随分辨率变化窗口
 	Toolkit kit = Toolkit.getDefaultToolkit();
     Dimension screenSize = kit.getScreenSize();
@@ -55,12 +54,14 @@ public class PayFrm extends JFrame {
 	private User user;
 	private float payNum;
 	private String payWay;
+	//private UserDao userDao=new UserDao();
 	private DbUtil  dbUtil=new DbUtil();
 	/**
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
+			@Override
 			public void run() {
 				try {
 					PayFrm frame = new PayFrm();
@@ -82,11 +83,12 @@ public class PayFrm extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public PayFrm(String PresentUser) //
+	public PayFrm(String PresentUser,userMainFrm userMainFrm) //
 	{
+		this.userMainFrm=userMainFrm;
 		setResizable(false);
 		setTitle("\u7F34\u7EB3\u8D39\u7528");
-		setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);//EXIT_ON_CLOSEHIDE_ON_CLOSE
 		setBounds(screenWidth * 2/7, screenHeight / 3, (int)(1300*enlargement_x),(int)(1100*enlargement_y));
 		windowWidth = this.getWidth(); //获得窗口宽
 		windowHeight = this.getHeight(); //获得窗口高
@@ -111,6 +113,7 @@ public class PayFrm extends JFrame {
 		
 		JRadioButton radioButton = new JRadioButton("5");
 		radioButton.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				if(radioButton.isSelected())
 				   payNum=5;			
@@ -121,6 +124,7 @@ public class PayFrm extends JFrame {
 		
 		JRadioButton Jrb10 = new JRadioButton("10");
 		Jrb10.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				if(Jrb10.isSelected())
 					   payNum=10;			
@@ -131,6 +135,7 @@ public class PayFrm extends JFrame {
 		
 		JRadioButton Jrb20 = new JRadioButton("20");
 		Jrb20.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				if(Jrb20.isSelected())
 					   payNum=20;		
@@ -141,6 +146,7 @@ public class PayFrm extends JFrame {
 		
 		JRadioButton Jrb50 = new JRadioButton("50");
 		Jrb50.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				if(Jrb50.isSelected())
 					   payNum=50;		
@@ -154,6 +160,7 @@ public class PayFrm extends JFrame {
 		
 		JRadioButton cashJrb = new JRadioButton("\u73B0\u91D1");
 		cashJrb.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				if(cashJrb.isSelected())
 					   payWay="现金";		
@@ -168,6 +175,7 @@ public class PayFrm extends JFrame {
 		
 		JRadioButton yinglianJrb = new JRadioButton("\u94F6\u8054");
 		yinglianJrb.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				if(yinglianJrb.isSelected())
 					   payWay="银联";		
@@ -182,6 +190,7 @@ public class PayFrm extends JFrame {
 		
 		JRadioButton rdbtnVisa = new JRadioButton("VISA");
 		rdbtnVisa.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				if(rdbtnVisa.isSelected())
 					   payWay="VISA";		
@@ -196,6 +205,7 @@ public class PayFrm extends JFrame {
 		
 		JRadioButton AlipayJrb = new JRadioButton("\u652F\u4ED8\u5B9D");
 		AlipayJrb.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				if(AlipayJrb.isSelected())
 					   payWay="支付宝";		
@@ -209,15 +219,28 @@ public class PayFrm extends JFrame {
 		lblNewLabel_3.setFont(new Font("宋体", Font.PLAIN, 40));
 		
 		JButton ConfirmJb = new JButton("\u786E\u5B9A");
+		ConfirmJb.setIcon(new ImageIcon(PayFrm.class.getResource("/manager/image/confirm.png")));
 		ConfirmJb.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				payOpration(e);
 			}
 		});
 		ConfirmJb.setFont(new Font("宋体", Font.PLAIN, 35));
+		
+		JButton ExitButton = new JButton("\u5B89\u5168\u9000\u51FA");
+		ExitButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				userMainFrm.IsOpened=false;
+				dispose();	 
+			}
+		});
+		ExitButton.setIcon(new ImageIcon(PayFrm.class.getResource("/manager/image/exit.png")));
+		ExitButton.setFont(new Font("新宋体", Font.PLAIN, 35));
 		GroupLayout gl_Jrb5 = new GroupLayout(Jrb5);
 		gl_Jrb5.setHorizontalGroup(
-			gl_Jrb5.createParallelGroup(Alignment.LEADING)
+			gl_Jrb5.createParallelGroup(Alignment.TRAILING)
 				.addGroup(gl_Jrb5.createSequentialGroup()
 					.addGap(190)
 					.addGroup(gl_Jrb5.createParallelGroup(Alignment.LEADING)
@@ -241,8 +264,8 @@ public class PayFrm extends JFrame {
 									.addComponent(Jrb20)
 									.addGap(66)
 									.addComponent(Jrb50))
-								.addGroup(gl_Jrb5.createParallelGroup(Alignment.TRAILING, false)
-									.addGroup(Alignment.LEADING, gl_Jrb5.createSequentialGroup()
+								.addGroup(gl_Jrb5.createParallelGroup(Alignment.LEADING, false)
+									.addGroup(gl_Jrb5.createSequentialGroup()
 										.addGroup(gl_Jrb5.createParallelGroup(Alignment.TRAILING)
 											.addGroup(gl_Jrb5.createSequentialGroup()
 												.addComponent(yinglianJrb)
@@ -256,16 +279,18 @@ public class PayFrm extends JFrame {
 										.addComponent(rdbtnVisa)
 										.addPreferredGap(ComponentPlacement.RELATED)
 										.addComponent(lblNewLabel_2))
-									.addComponent(IDTxt, Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 571, GroupLayout.PREFERRED_SIZE)))))
+									.addComponent(IDTxt, GroupLayout.PREFERRED_SIZE, 571, GroupLayout.PREFERRED_SIZE)))))
 					.addContainerGap(105, Short.MAX_VALUE))
-				.addGroup(Alignment.TRAILING, gl_Jrb5.createSequentialGroup()
-					.addContainerGap(618, Short.MAX_VALUE)
+				.addGroup(Alignment.LEADING, gl_Jrb5.createSequentialGroup()
+					.addGap(339)
 					.addComponent(ConfirmJb)
-					.addGap(563))
+					.addPreferredGap(ComponentPlacement.RELATED, 269, Short.MAX_VALUE)
+					.addComponent(ExitButton)
+					.addGap(254))
 		);
 		gl_Jrb5.setVerticalGroup(
-			gl_Jrb5.createParallelGroup(Alignment.LEADING)
-				.addGroup(Alignment.TRAILING, gl_Jrb5.createSequentialGroup()
+			gl_Jrb5.createParallelGroup(Alignment.TRAILING)
+				.addGroup(gl_Jrb5.createSequentialGroup()
 					.addGap(154)
 					.addGroup(gl_Jrb5.createParallelGroup(Alignment.BASELINE)
 						.addComponent(IDJL)
@@ -298,9 +323,11 @@ public class PayFrm extends JFrame {
 									.addComponent(cashJrb)
 									.addComponent(lblNewLabel_1)
 									.addComponent(yinglianJrb)))))
-					.addGap(108)
-					.addComponent(ConfirmJb)
-					.addGap(86))
+					.addGap(109)
+					.addGroup(gl_Jrb5.createParallelGroup(Alignment.BASELINE)
+						.addComponent(ConfirmJb)
+						.addComponent(ExitButton, GroupLayout.PREFERRED_SIZE, 73, GroupLayout.PREFERRED_SIZE))
+					.addGap(85))
 		);
 		Jrb5.setLayout(gl_Jrb5);
 		//this.IsOpened=IsOpened;
@@ -333,6 +360,7 @@ public class PayFrm extends JFrame {
 			}
 			else
 			{
+				//修改缴纳费用记录
 				String sql="insert into t_pay values(?,?,?,?,null)";//主键不填，自动赋值
 				//获取当前时间
 				java.sql.Date currentDate = new java.sql.Date(System.currentTimeMillis());
@@ -341,11 +369,16 @@ public class PayFrm extends JFrame {
 				pstmt.setDate(2, currentDate);
 				pstmt.setFloat(3, payNum);
 				pstmt.setString(4, payWay);//传递参数
-				int pay=pstmt.executeUpdate();
-				if(pay==1)
+				int pay=pstmt.executeUpdate();				
+				//修改用户余额
+				user.setBalance(payNum);
+				int num=UserDao.Recharge(con, user);
+				if(pay==1&&num==1)
 				{
 					showMessageFrame SucNote=new showMessageFrame(null,"缴纳费用成功！",showMessageFrame.NORMAL);	
 					dispose();	
+					this.userMainFrm.balanceTxt.setText(Float.toString(user.getBalance()));
+					this.userMainFrm.IsOpened=false;
 					return;										
 				}
 			}

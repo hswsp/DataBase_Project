@@ -3,6 +3,8 @@ package manager.util;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 
 /**
@@ -39,6 +41,105 @@ public class DbUtil {
 		}
 	}
 	
+    /**
+     * 关闭连接表对象  
+     * @param pstmt
+     */
+    public static void close(java.sql.PreparedStatement pstmt){  
+        if (pstmt!=null) {  
+            try {  
+                pstmt.close();  
+            } catch (SQLException e) {  
+                e.printStackTrace();  
+            }     
+        }  
+    }  
+    
+    /**
+     * 关闭结果集，释放资源
+     * @param rs
+     */
+    public static void close(ResultSet rs) {  
+        if(rs!=null){  
+            try {  
+                rs.close();  
+            } catch (SQLException e) {  
+                e.printStackTrace();  
+            }  
+        }  
+    }  
+    
+   /**
+    * 关闭自动提交事务
+    * @param conn
+    */
+    public static void beginTransaction(Connection conn){  
+        if (conn!=null) {  
+            try {  
+                if(conn.getAutoCommit()){  
+                    conn.setAutoCommit(false);  
+                }  
+            } catch (SQLException e) {  
+                // TODO Auto-generated catch block  
+                e.printStackTrace();  
+            }  
+        }  
+    }  
+    /**
+     * 提交事务
+     * @param conn
+     */
+    public static void commitTransaction(Connection conn){  
+        try {  
+            if(conn!=null){  
+                if (!conn.getAutoCommit()) {  
+                    conn.commit();  
+                }  
+            }  
+        } catch (Exception e) {  
+            // TODO: handle exception  
+        }  
+    }  
+     
+    /**
+     * 回滚事务
+     * @param conn
+     */
+    public static void rollbackTransaction (Connection conn) {  
+        try {  
+            if(conn!=null){  
+                if (!conn.getAutoCommit()) {  
+                    conn.rollback();  
+                }  
+            }  
+        } catch (Exception e) {  
+            // TODO: handle exception  
+        }  
+    }  
+    
+    /**
+     * 将是否自动提交事务权限取反
+     * @param conn
+     */
+    public static void resetTransaction(Connection conn){  
+        try {  
+            if(conn!=null)
+            {  
+                if (conn.getAutoCommit()) {  
+                    conn.setAutoCommit(false);  
+                }else{  
+                    conn.setAutoCommit(true);  
+                }  
+            }  
+        } catch (Exception e) {  
+            // TODO: handle exception  
+        }  
+    }  
+    
+    /**
+     * 主函数，测试使用
+     * @param args
+     */
 	public static void main(String[] args) {
 		DbUtil dbUtil=new DbUtil();
 		try {
@@ -50,5 +151,6 @@ public class DbUtil {
 			System.out.println("数据库连接失败");
 		}
 	}
+	
 	
 }

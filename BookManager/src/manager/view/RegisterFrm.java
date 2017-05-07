@@ -30,6 +30,7 @@ import manager.util.StringUtil;
 import manager.util.showMessageFrame;
 import javax.swing.JRadioButton;
 import javax.swing.ButtonGroup;
+import javax.swing.ImageIcon;
 
 public class RegisterFrm extends JFrame {
 
@@ -58,6 +59,7 @@ public class RegisterFrm extends JFrame {
 	 */
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
+			@Override
 			public void run() {
 				try {
 					RegisterFrm frame = new RegisterFrm();
@@ -89,6 +91,7 @@ public class RegisterFrm extends JFrame {
 		JLabel label = new JLabel("");
 		
 		JLabel lblid = new JLabel("\u65B0\u7528\u6237ID");
+		lblid.setIcon(new ImageIcon(RegisterFrm.class.getResource("/manager/image/ReaderName.png")));
 		lblid.setFont(new Font("宋体", Font.PLAIN, 35));
 		
 		IDTxt = new JTextField();
@@ -97,6 +100,7 @@ public class RegisterFrm extends JFrame {
 		//IDTxt.setText("ID只能为数字");
 		
 		JLabel label_1 = new JLabel("\u65B0\u7528\u6237\u540D");
+		label_1.setIcon(new ImageIcon(RegisterFrm.class.getResource("/manager/image/userName.png")));
 		label_1.setFont(new Font("宋体", Font.PLAIN, 35));
 		
 		UserNameTxt = new JTextField();
@@ -104,10 +108,13 @@ public class RegisterFrm extends JFrame {
 		UserNameTxt.setColumns(10);
 		
 		JLabel label_2 = new JLabel("\u767B\u5F55\u5BC6\u7801");
+		label_2.setIcon(new ImageIcon(RegisterFrm.class.getResource("/manager/image/password.png")));
 		label_2.setFont(new Font("宋体", Font.PLAIN, 35));
 		
 		JButton button = new JButton("\u6CE8\u518C");
+		button.setIcon(new ImageIcon(RegisterFrm.class.getResource("/manager/image/confirm.png")));
 		button.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) 
 			{
 				IDTxt.setFont(new Font("宋体", Font.PLAIN, 35));
@@ -119,7 +126,9 @@ public class RegisterFrm extends JFrame {
 		button.setFont(new Font("宋体", Font.PLAIN, 35));
 		
 		JButton revertJb = new JButton("退出");
+		revertJb.setIcon(new ImageIcon(RegisterFrm.class.getResource("/manager/image/exit.png")));
 		revertJb.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				ResetValueAction(e);
 			}
@@ -130,16 +139,19 @@ public class RegisterFrm extends JFrame {
 		PasswordTxt.setFont(new Font("宋体", Font.PLAIN, 35));
 		
 		JLabel label_3 = new JLabel("\u5BC6\u7801\u786E\u8BA4");
+		label_3.setIcon(new ImageIcon(RegisterFrm.class.getResource("/manager/image/password.png")));
 		label_3.setFont(new Font("宋体", Font.PLAIN, 35));
 		
 		PassAgainTxt = new JPasswordField();
 		PassAgainTxt.setFont(new Font("宋体", Font.PLAIN, 35));
 		
 		JLabel kindJb = new JLabel("用户类型");
+		kindJb.setIcon(new ImageIcon(RegisterFrm.class.getResource("/manager/image/ReaderID.png")));
 		kindJb.setFont(new Font("宋体", Font.PLAIN, 35));
 		
 		JRadioButton readerJrb = new JRadioButton("读者");
 		readerJrb.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) 
 			{
 				if(readerJrb.isSelected())
@@ -154,6 +166,7 @@ public class RegisterFrm extends JFrame {
 		
 		JRadioButton managerJrb = new JRadioButton("管理员");
 		managerJrb.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				if(managerJrb.isSelected())
 					kind=1;			
@@ -168,37 +181,37 @@ public class RegisterFrm extends JFrame {
 				.addGroup(gl_contentPane.createSequentialGroup()
 					.addGap(269)
 					.addComponent(button)
-					.addPreferredGap(ComponentPlacement.RELATED, 502, Short.MAX_VALUE)
+					.addPreferredGap(ComponentPlacement.RELATED, 356, Short.MAX_VALUE)
 					.addComponent(revertJb)
 					.addGap(207))
 				.addGroup(gl_contentPane.createSequentialGroup()
 					.addGap(153)
 					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
-						.addComponent(label_2)
 						.addGroup(gl_contentPane.createSequentialGroup()
 							.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
 								.addComponent(kindJb)
+								.addComponent(label_2)
 								.addComponent(label_3))
 							.addGap(45)
-							.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
-								.addGroup(gl_contentPane.createSequentialGroup()
-									.addComponent(readerJrb)
-									.addPreferredGap(ComponentPlacement.RELATED, 319, Short.MAX_VALUE)
-									.addComponent(managerJrb))
-								.addGroup(gl_contentPane.createSequentialGroup()
-									.addPreferredGap(ComponentPlacement.RELATED)
-									.addComponent(PasswordTxt, GroupLayout.DEFAULT_SIZE, 583, Short.MAX_VALUE))
-								.addComponent(PassAgainTxt, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 583, Short.MAX_VALUE))
+							.addComponent(readerJrb)
+							.addPreferredGap(ComponentPlacement.RELATED, 251, Short.MAX_VALUE)
+							.addComponent(managerJrb)
 							.addGap(263))
 						.addGroup(gl_contentPane.createSequentialGroup()
-							.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
-								.addComponent(label_1)
-								.addComponent(lblid))
-							.addGap(44)
-							.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
-								.addComponent(UserNameTxt, GroupLayout.DEFAULT_SIZE, 583, Short.MAX_VALUE)
-								.addComponent(IDTxt, GroupLayout.DEFAULT_SIZE, 583, Short.MAX_VALUE))
-							.addGap(263))))
+							.addGap(10)
+							.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING, false)
+								.addGroup(gl_contentPane.createSequentialGroup()
+									.addComponent(lblid)
+									.addGap(36)
+									.addComponent(IDTxt))
+								.addGroup(gl_contentPane.createSequentialGroup()
+									.addComponent(label_1)
+									.addPreferredGap(ComponentPlacement.UNRELATED)
+									.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+										.addComponent(PassAgainTxt, GroupLayout.DEFAULT_SIZE, 545, Short.MAX_VALUE)
+										.addComponent(PasswordTxt, GroupLayout.DEFAULT_SIZE, 545, Short.MAX_VALUE)
+										.addComponent(UserNameTxt, GroupLayout.DEFAULT_SIZE, 541, Short.MAX_VALUE))))))
+					.addContainerGap())
 				.addGroup(gl_contentPane.createSequentialGroup()
 					.addGap(261)
 					.addComponent(label_4)
@@ -208,24 +221,24 @@ public class RegisterFrm extends JFrame {
 			gl_contentPane.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_contentPane.createSequentialGroup()
 					.addComponent(label)
-					.addGap(108)
+					.addGap(98)
 					.addComponent(label_4)
-					.addGap(105)
-					.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
+					.addGap(82)
+					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
 						.addComponent(lblid)
 						.addComponent(IDTxt, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-					.addGap(90)
+					.addGap(68)
 					.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
 						.addComponent(label_1)
 						.addComponent(UserNameTxt, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-					.addGap(78)
+					.addGap(69)
 					.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
 						.addComponent(label_2)
 						.addComponent(PasswordTxt, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-					.addGap(93)
+					.addGap(85)
 					.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
 						.addComponent(label_3)
-						.addComponent(PassAgainTxt, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+						.addComponent(PassAgainTxt, GroupLayout.PREFERRED_SIZE, 56, GroupLayout.PREFERRED_SIZE))
 					.addGap(89)
 					.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
 						.addComponent(kindJb)

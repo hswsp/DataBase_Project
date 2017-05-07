@@ -18,18 +18,19 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.WindowConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 
 import manager.dao.BookDao;
 import manager.dao.BookTypeDao;
+import manager.dao.bookRecomDao;
 import manager.entity.Book;
 import manager.entity.BookType;
 import manager.util.DbUtil;
@@ -39,11 +40,11 @@ import manager.util.showMessageFrame;
 public class BookAddFrm extends JFrame {
 
 	private JPanel contentPane;
-	private JTextField bookNameTxt;
+	public JTextField bookNameTxt;
 	private final ButtonGroup buttonGroup = new ButtonGroup();
 	private JTextField authorTxt;
 	private JTextField priceTxt;
-	private JComboBox bookTypeJCB;
+	public JComboBox bookTypeJCB;
 	private JTextArea bookDescTxt;
 	private JRadioButton manJRB;
 	private JRadioButton femaleJRB; 
@@ -64,12 +65,17 @@ public class BookAddFrm extends JFrame {
     private BookTypeDao bookTypeDao=new BookTypeDao();
 	private BookDao bookDao=new BookDao();
 	private JTextField purNumTxt;
+	private JTextField publisherTxt;
 
+	//**********************用于和推荐界面交互******************************/
+	public boolean IsOpenFromRecom=false;
+	public int RecomID=0;
 	/**
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
+			@Override
 			public void run() {
 				try {
 					BookAddFrm frame = new BookAddFrm();
@@ -87,9 +93,9 @@ public class BookAddFrm extends JFrame {
 	public BookAddFrm() {
 		setResizable(false);
 		setTitle("\u56FE\u4E66\u6DFB\u52A0");
-		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 		//setBounds(100, 100, 450, 300);
-		setBounds(100,100,(int)( 1600*enlargement_x), (int)(1400*enlargement_y));//设置初始位置（无所谓，后面重置），大小		
+		setBounds(100,100,(int)( 1800*enlargement_x), (int)(1600*enlargement_y));//设置初始位置（无所谓，后面重置），大小		
 		windowWidth = this.getWidth(); //获得窗口宽
 		windowHeight = this.getHeight(); //获得窗口高
 		this.setLocation(screenWidth / 2 - windowWidth / 2, screenHeight / 2 - windowHeight / 2);//设置窗口居中显示
@@ -98,6 +104,7 @@ public class BookAddFrm extends JFrame {
 		setContentPane(contentPane);
 		
 		JLabel label = new JLabel("\u56FE\u4E66\u540D\u79F0");
+		label.setIcon(new ImageIcon(BookAddFrm.class.getResource("/manager/image/green_book.png")));
 		label.setFont(new Font("宋体", Font.PLAIN, 35));
 		
 		bookNameTxt = new JTextField();
@@ -105,9 +112,11 @@ public class BookAddFrm extends JFrame {
 		bookNameTxt.setColumns(10);
 		
 		JLabel label_1 = new JLabel("\u56FE\u4E66\u4F5C\u8005");
+		label_1.setIcon(new ImageIcon(BookAddFrm.class.getResource("/manager/image/iBooks_Author.png")));
 		label_1.setFont(new Font("宋体", Font.PLAIN, 35));
 		
 		JLabel label_2 = new JLabel("\u4F5C\u8005\u6027\u522B");
+		label_2.setIcon(new ImageIcon(BookAddFrm.class.getResource("/manager/image/gender.png")));
 		label_2.setFont(new Font("宋体", Font.PLAIN, 35));
 		
 		manJRB = new JRadioButton("\u7537");
@@ -120,9 +129,11 @@ public class BookAddFrm extends JFrame {
 		femaleJRB.setFont(new Font("宋体", Font.PLAIN, 35));
 		
 		JLabel label_3 = new JLabel("\u56FE\u4E66\u4EF7\u683C");
+		label_3.setIcon(new ImageIcon(BookAddFrm.class.getResource("/manager/image/price_tag.png")));
 		label_3.setFont(new Font("宋体", Font.PLAIN, 35));
 		
 		JLabel label_4 = new JLabel("\u56FE\u4E66\u63CF\u8FF0");
+		label_4.setIcon(new ImageIcon(BookAddFrm.class.getResource("/manager/image/bookTypeDesc.png")));
 		label_4.setFont(new Font("宋体", Font.PLAIN, 35));
 		
 		JScrollPane DescSP = new JScrollPane();
@@ -136,6 +147,7 @@ public class BookAddFrm extends JFrame {
 		priceTxt.setColumns(10);
 		
 		JLabel label_5 = new JLabel("\u56FE\u4E66\u7C7B\u522B");
+		label_5.setIcon(new ImageIcon(BookAddFrm.class.getResource("/manager/image/Evernote_Book.png")));
 		label_5.setFont(new Font("宋体", Font.PLAIN, 35));
 		
 	    bookTypeJCB = new JComboBox();
@@ -143,6 +155,7 @@ public class BookAddFrm extends JFrame {
 		
 		JButton button = new JButton("\u6DFB\u52A0");
 		button.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				bookAddActionPerformed(e);
 			}
@@ -152,6 +165,7 @@ public class BookAddFrm extends JFrame {
 		
 		JButton button_1 = new JButton("\u91CD\u7F6E");
 		button_1.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				resetValueActionPerformed(e);
 			}
@@ -160,11 +174,20 @@ public class BookAddFrm extends JFrame {
 		button_1.setFont(new Font("宋体", Font.PLAIN, 35));
 		
 		JLabel NumJL = new JLabel("\u8D2D\u8FDB\u6570\u91CF");
+		NumJL.setIcon(new ImageIcon(BookAddFrm.class.getResource("/manager/image/BookNum.png")));
 		NumJL.setFont(new Font("宋体", Font.PLAIN, 35));
 		
 		purNumTxt = new JTextField();
 		purNumTxt.setFont(new Font("宋体", Font.PLAIN, 35));
 		purNumTxt.setColumns(10);
+		
+		JLabel label_6 = new JLabel("\u51FA\u7248\u793E");
+		label_6.setIcon(new ImageIcon(BookAddFrm.class.getResource("/manager/image/Publishing.png")));
+		label_6.setFont(new Font("宋体", Font.PLAIN, 35));
+		
+		publisherTxt = new JTextField();
+		publisherTxt.setFont(new Font("宋体", Font.PLAIN, 35));
+		publisherTxt.setColumns(10);
 		GroupLayout gl_contentPane = new GroupLayout(contentPane);
 		gl_contentPane.setHorizontalGroup(
 			gl_contentPane.createParallelGroup(Alignment.TRAILING)
@@ -173,42 +196,43 @@ public class BookAddFrm extends JFrame {
 					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
 						.addGroup(gl_contentPane.createSequentialGroup()
 							.addComponent(button)
-							.addPreferredGap(ComponentPlacement.RELATED, 1086, Short.MAX_VALUE)
+							.addPreferredGap(ComponentPlacement.RELATED, 1190, Short.MAX_VALUE)
 							.addComponent(button_1))
 						.addGroup(gl_contentPane.createSequentialGroup()
 							.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
-								.addComponent(label_2, GroupLayout.PREFERRED_SIZE, 181, GroupLayout.PREFERRED_SIZE)
+								.addComponent(label_2, GroupLayout.PREFERRED_SIZE, 232, GroupLayout.PREFERRED_SIZE)
 								.addGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING)
-									.addComponent(label_5)
-									.addComponent(label_4)))
-							.addPreferredGap(ComponentPlacement.RELATED)
+									.addComponent(label_4)
+									.addComponent(label_5))
+								.addComponent(NumJL)
+								.addComponent(label))
+							.addGap(75)
 							.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+								.addComponent(bookNameTxt, GroupLayout.DEFAULT_SIZE, 1287, Short.MAX_VALUE)
 								.addGroup(gl_contentPane.createSequentialGroup()
-									.addGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING)
+									.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING, false)
 										.addGroup(gl_contentPane.createSequentialGroup()
-											.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING, false)
-												.addComponent(bookTypeJCB, 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-												.addGroup(gl_contentPane.createSequentialGroup()
-													.addComponent(manJRB)
-													.addGap(105)
-													.addComponent(femaleJRB)))
-											.addGap(179)
-											.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
-												.addComponent(NumJL)
-												.addComponent(label_3)))
-										.addComponent(label_1))
-									.addGap(46)
+											.addComponent(manJRB)
+											.addPreferredGap(ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+											.addComponent(femaleJRB)
+											.addGap(170))
+										.addGroup(gl_contentPane.createSequentialGroup()
+											.addGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING, false)
+												.addComponent(purNumTxt, Alignment.LEADING)
+												.addComponent(bookTypeJCB, Alignment.LEADING, 0, 363, Short.MAX_VALUE))
+											.addGap(146)))
+									.addGap(77)
 									.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
-										.addComponent(purNumTxt, GroupLayout.PREFERRED_SIZE, 245, GroupLayout.PREFERRED_SIZE)
-										.addGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING)
-											.addComponent(authorTxt, GroupLayout.DEFAULT_SIZE, 508, Short.MAX_VALUE)
-											.addComponent(priceTxt, GroupLayout.DEFAULT_SIZE, 508, Short.MAX_VALUE))))
-								.addComponent(DescSP, GroupLayout.PREFERRED_SIZE, 1132, GroupLayout.PREFERRED_SIZE))
-							.addGap(4))
-						.addGroup(gl_contentPane.createSequentialGroup()
-							.addComponent(label)
-							.addGap(47)
-							.addComponent(bookNameTxt, GroupLayout.PREFERRED_SIZE, 392, GroupLayout.PREFERRED_SIZE)))
+										.addComponent(label_3)
+										.addComponent(label_6)
+										.addComponent(label_1))
+									.addGap(26)
+									.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+										.addComponent(authorTxt, GroupLayout.DEFAULT_SIZE, 502, Short.MAX_VALUE)
+										.addComponent(priceTxt)
+										.addComponent(publisherTxt, GroupLayout.DEFAULT_SIZE, 502, Short.MAX_VALUE)))
+								.addComponent(DescSP, GroupLayout.DEFAULT_SIZE, 1210, Short.MAX_VALUE))
+							.addGap(15)))
 					.addGap(116))
 		);
 		gl_contentPane.setVerticalGroup(
@@ -217,27 +241,32 @@ public class BookAddFrm extends JFrame {
 					.addGap(119)
 					.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
 						.addComponent(label)
-						.addComponent(bookNameTxt, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(authorTxt, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(label_1))
+						.addComponent(bookNameTxt, GroupLayout.PREFERRED_SIZE, 59, GroupLayout.PREFERRED_SIZE))
 					.addGap(94)
 					.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
-						.addComponent(label_2, GroupLayout.PREFERRED_SIZE, 47, GroupLayout.PREFERRED_SIZE)
+						.addComponent(label_2)
 						.addComponent(manJRB)
 						.addComponent(femaleJRB)
-						.addComponent(priceTxt, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(label_3))
+						.addComponent(label_1)
+						.addComponent(authorTxt, GroupLayout.PREFERRED_SIZE, 56, GroupLayout.PREFERRED_SIZE))
 					.addGap(116)
 					.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
 						.addComponent(label_5)
 						.addComponent(bookTypeJCB, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(NumJL)
-						.addComponent(purNumTxt, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-					.addGap(125)
+						.addComponent(label_3)
+						.addComponent(priceTxt, GroupLayout.PREFERRED_SIZE, 56, GroupLayout.PREFERRED_SIZE))
+					.addGap(112)
 					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
+							.addComponent(purNumTxt, GroupLayout.PREFERRED_SIZE, 56, GroupLayout.PREFERRED_SIZE)
+							.addComponent(label_6)
+							.addComponent(publisherTxt, GroupLayout.PREFERRED_SIZE, 55, GroupLayout.PREFERRED_SIZE))
+						.addComponent(NumJL))
+					.addGap(133)
+					.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
 						.addComponent(label_4)
-						.addComponent(DescSP, GroupLayout.PREFERRED_SIZE, 495, GroupLayout.PREFERRED_SIZE))
-					.addPreferredGap(ComponentPlacement.RELATED, 93, Short.MAX_VALUE)
+						.addComponent(DescSP, GroupLayout.PREFERRED_SIZE, 357, GroupLayout.PREFERRED_SIZE))
+					.addPreferredGap(ComponentPlacement.RELATED, 497, Short.MAX_VALUE)
 					.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
 						.addComponent(button)
 						.addComponent(button_1))
@@ -266,6 +295,11 @@ public class BookAddFrm extends JFrame {
 		try{
 			con=dbUtil.getCon();
 			ResultSet rs=bookTypeDao.list(con, new BookType());
+			//添加第一项ID=-1
+			bookType=new BookType();
+			bookType.setBookTypeName("请选择...");
+			bookType.setId(-1);//请选择的ID为-1
+			this.bookTypeJCB.addItem(bookType);
 			while(rs.next()){
 				bookType=new BookType();
 				bookType.setId(rs.getInt("id"));
@@ -288,6 +322,8 @@ public class BookAddFrm extends JFrame {
 		this.priceTxt.setText("");
 		this.manJRB.setSelected(true);
 		this.bookDescTxt.setText("");
+		this.purNumTxt.setText("");
+		this.publisherTxt.setText("");
 		if(this.bookTypeJCB.getItemCount()>0)//图书类别项大于0,才操作
 		{
 			this.bookTypeJCB.setSelectedIndex(0);//选中第一项
@@ -337,15 +373,28 @@ public class BookAddFrm extends JFrame {
 		//获取类别
 		BookType bookType=(BookType) bookTypeJCB.getSelectedItem();
 		int bookTypeId=bookType.getId();		
-		Book book=new Book(bookName,author, sex, Float.parseFloat(price) , bookTypeId,  bookDesc);//Float.parseFloat（）表示转成float
-		
+		//获取数量
+		Integer booknum=Integer.parseInt(purNumTxt.getText());
+		//出版社
+		String publisher=publisherTxt.getText();
+		Book book=new Book(bookTypeId, bookName,author, sex, Float.parseFloat(price) , 
+				bookTypeId,bookDesc,booknum,publisher);//Float.parseFloat（）表示转成float		
 		Connection con=null;
 		try{
 			con=dbUtil.getCon();
 			int addNum=bookDao.add(con, book);
-			if(addNum==1){
+			if(addNum==1)
+			{
 				showMessageFrame note=new showMessageFrame(null,"图书添加成功！",showMessageFrame.NORMAL);
 				ResetValue();
+				if(IsOpenFromRecom==true)
+				{
+					bookRecomDao bookRecomdelete=new bookRecomDao();
+					bookRecomdelete.delete(con, RecomID);//删除推荐条目
+					this.dispose();
+					RecommandFrm recom=new RecommandFrm();
+					recom.setVisible(true);
+				}
 			}else{
 				showMessageFrame note=new showMessageFrame(null,"图书添加失败！",showMessageFrame.NOTE);
 			}

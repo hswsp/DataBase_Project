@@ -18,6 +18,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.WindowConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 
@@ -26,7 +27,6 @@ import manager.entity.BookType;
 import manager.util.DbUtil;
 import manager.util.StringUtil;
 import manager.util.showMessageFrame;
-import javax.swing.JTextPane;
 import java.awt.Color;
 import javax.swing.JScrollPane;
 
@@ -55,6 +55,7 @@ public class BookTypeAddFrm extends JFrame {
 	 */
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
+			@Override
 			public void run() {
 				try {
 					BookTypeAddFrm frame = new BookTypeAddFrm();
@@ -73,7 +74,7 @@ public class BookTypeAddFrm extends JFrame {
 		setResizable(false);
 		setTitle("\u56FE\u4E66\u7C7B\u522B\u6DFB\u52A0");
 		//setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 		//setBounds(100, 100, 892, 619);
 		setBounds(100,100,(int)( 1400*enlargement_x), (int)(900*enlargement_y));//设置初始位置（无所谓，后面重置），大小		
 		windowWidth = this.getWidth(); //获得窗口宽
@@ -84,9 +85,11 @@ public class BookTypeAddFrm extends JFrame {
 		setContentPane(contentPane);
 		
 		JLabel BookName = new JLabel("\u56FE\u4E66\u7C7B\u522B\u6DFB\u52A0");
+		BookName.setIcon(new ImageIcon(BookTypeAddFrm.class.getResource("/manager/image/green_book.png")));
 		BookName.setFont(new Font("宋体", Font.PLAIN, 35));
 		
 		JLabel BookDesc = new JLabel("\u56FE\u4E66\u7C7B\u522B\u63CF\u8FF0");
+		BookDesc.setIcon(new ImageIcon(BookTypeAddFrm.class.getResource("/manager/image/bookTypeDesc.png")));
 		BookDesc.setFont(new Font("宋体", Font.PLAIN, 35));
 		
 		BookTypeNameTxt = new JTextField();
@@ -99,6 +102,7 @@ public class BookTypeAddFrm extends JFrame {
 		Add.setIcon(new ImageIcon(BookTypeAddFrm.class.getResource("/manager/image/add.png")));
 		Add.setFont(new Font("宋体", Font.PLAIN, 35));
 		Add.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent evt) {
 				bookTypeAddActionPerformed(evt);
 			}			
@@ -106,6 +110,7 @@ public class BookTypeAddFrm extends JFrame {
 		
 		JButton reset = new JButton("\u91CD\u7F6E");
 		reset.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				resetValueActionPerformed(e);
 			}
@@ -116,38 +121,35 @@ public class BookTypeAddFrm extends JFrame {
 		JScrollPane DescSP = new JScrollPane();
 		GroupLayout gl_contentPane = new GroupLayout(contentPane);
 		gl_contentPane.setHorizontalGroup(
-			gl_contentPane.createParallelGroup(Alignment.TRAILING)
-				.addGroup(Alignment.LEADING, gl_contentPane.createSequentialGroup()
+			gl_contentPane.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_contentPane.createSequentialGroup()
 					.addGap(103)
 					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
 						.addComponent(BookDesc)
-						.addGroup(gl_contentPane.createSequentialGroup()
-							.addComponent(BookName)
-							.addGap(120)
-							.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
-								.addComponent(DescSP, GroupLayout.PREFERRED_SIZE, 863, GroupLayout.PREFERRED_SIZE)
-								.addGroup(gl_contentPane.createSequentialGroup()
-									.addComponent(BookTypeNameTxt)
-									.addPreferredGap(ComponentPlacement.RELATED)))))
-					.addGap(88))
-				.addGroup(Alignment.LEADING, gl_contentPane.createSequentialGroup()
+						.addComponent(BookName))
+					.addGap(120)
+					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING, false)
+						.addComponent(DescSP, 0, 0, Short.MAX_VALUE)
+						.addComponent(BookTypeNameTxt, GroupLayout.DEFAULT_SIZE, 800, Short.MAX_VALUE))
+					.addGap(72))
+				.addGroup(gl_contentPane.createSequentialGroup()
 					.addGap(273)
 					.addComponent(Add)
-					.addPreferredGap(ComponentPlacement.RELATED, 688, Short.MAX_VALUE)
+					.addPreferredGap(ComponentPlacement.RELATED, 671, Short.MAX_VALUE)
 					.addComponent(reset)
 					.addGap(177))
 		);
 		gl_contentPane.setVerticalGroup(
 			gl_contentPane.createParallelGroup(Alignment.TRAILING)
 				.addGroup(gl_contentPane.createSequentialGroup()
-					.addContainerGap(130, Short.MAX_VALUE)
-					.addGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING)
-						.addComponent(BookName)
-						.addComponent(BookTypeNameTxt, GroupLayout.PREFERRED_SIZE, 53, GroupLayout.PREFERRED_SIZE))
-					.addGap(146)
-					.addComponent(BookDesc)
-					.addGap(6)
-					.addComponent(DescSP, GroupLayout.PREFERRED_SIZE, 278, GroupLayout.PREFERRED_SIZE)
+					.addContainerGap(73, Short.MAX_VALUE)
+					.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
+						.addComponent(BookTypeNameTxt, GroupLayout.PREFERRED_SIZE, 70, GroupLayout.PREFERRED_SIZE)
+						.addComponent(BookName))
+					.addGap(180)
+					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+						.addComponent(BookDesc)
+						.addComponent(DescSP, GroupLayout.PREFERRED_SIZE, 278, GroupLayout.PREFERRED_SIZE))
 					.addGap(82)
 					.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
 						.addComponent(Add)

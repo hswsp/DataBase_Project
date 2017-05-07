@@ -71,6 +71,7 @@ public class LogOnfrm extends JFrame {
 //		        //TODO exception
 //		    }
 		EventQueue.invokeLater(new Runnable() {
+			@Override
 			public void run() {
 				try {
 					LogOnfrm frame = new LogOnfrm();
@@ -101,7 +102,7 @@ public class LogOnfrm extends JFrame {
 		
 		kind=0;//初值
 		setResizable(false);
-		setTitle("\u7BA1\u7406\u5458\u767B\u5F55");
+		setTitle("\u6B22\u8FCE\u4F7F\u7528\u53F3\u66F4\u4E8C\u56FE\u4E66\u7BA1\u7406\u7CFB\u7EDF");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(screenWidth * 2/7, screenHeight / 3, (int)(1300*enlargement_x),(int)(1100*enlargement_y));
 		//参数分别为前两个是左上角位置，后两个是窗体大小
@@ -140,6 +141,7 @@ public class LogOnfrm extends JFrame {
 		JButton Login_Button = new JButton("\u767B\u5F55");
 		Login_Button.setFont(new Font("宋体", Font.PLAIN, 30));
 		Login_Button.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				LoginAction(e);
 			}
@@ -149,6 +151,7 @@ public class LogOnfrm extends JFrame {
 		JButton Reset_Button = new JButton("\u91CD\u7F6E");
 		Reset_Button.setFont(new Font("宋体", Font.PLAIN, 30));
 		Reset_Button.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				ResetValueAction(e);
 			}
@@ -160,6 +163,7 @@ public class LogOnfrm extends JFrame {
 		
 		JButton LogonButton = new JButton("\u6CE8\u518C");
 		LogonButton.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				dispose();
 				RegisterFrm RegisterWindow=new RegisterFrm();
@@ -171,6 +175,7 @@ public class LogOnfrm extends JFrame {
 		
 		userJrb = new JRadioButton("\u8BFB\u8005");
 		userJrb.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) 
 			{
 				if(userJrb.isSelected())
@@ -183,6 +188,7 @@ public class LogOnfrm extends JFrame {
 		
 		managerJrb = new JRadioButton("\u7BA1\u7406\u5458");
 		managerJrb.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 			 if(managerJrb.isSelected())
 			 {
@@ -195,21 +201,22 @@ public class LogOnfrm extends JFrame {
 		managerJrb.setFont(new Font("宋体", Font.PLAIN, 35));
 		GroupLayout gl_contentPane = new GroupLayout(contentPane);
 		gl_contentPane.setHorizontalGroup(
-			gl_contentPane.createParallelGroup(Alignment.TRAILING)
+			gl_contentPane.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_contentPane.createSequentialGroup()
 					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
 						.addGroup(gl_contentPane.createSequentialGroup()
 							.addGap(137)
 							.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
-								.addComponent(User_Label, GroupLayout.PREFERRED_SIZE, 151, GroupLayout.PREFERRED_SIZE)
-								.addComponent(Password_Label, GroupLayout.PREFERRED_SIZE, 133, GroupLayout.PREFERRED_SIZE))
-							.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+								.addComponent(Password_Label, GroupLayout.DEFAULT_SIZE, 201, Short.MAX_VALUE)
+								.addComponent(User_Label, GroupLayout.PREFERRED_SIZE, 195, GroupLayout.PREFERRED_SIZE))
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING)
 								.addGroup(gl_contentPane.createSequentialGroup()
 									.addGap(46)
 									.addGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING)
 										.addComponent(userJrb)
 										.addComponent(Login_Button, GroupLayout.PREFERRED_SIZE, 171, GroupLayout.PREFERRED_SIZE))
-									.addPreferredGap(ComponentPlacement.RELATED, 258, Short.MAX_VALUE)
+									.addPreferredGap(ComponentPlacement.RELATED, 114, Short.MAX_VALUE)
 									.addGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING)
 										.addGroup(gl_contentPane.createSequentialGroup()
 											.addComponent(managerJrb)
@@ -219,16 +226,13 @@ public class LogOnfrm extends JFrame {
 												.addComponent(LogonButton, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
 												.addComponent(Reset_Button, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 170, Short.MAX_VALUE))
 											.addGap(41))))
-								.addGroup(gl_contentPane.createSequentialGroup()
-									.addPreferredGap(ComponentPlacement.UNRELATED)
-									.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
-										.addComponent(UserIDTxt, GroupLayout.PREFERRED_SIZE, 717, GroupLayout.PREFERRED_SIZE)
-										.addComponent(passwordTxt, GroupLayout.DEFAULT_SIZE, 812, Short.MAX_VALUE)))))
+								.addComponent(passwordTxt)
+								.addComponent(UserIDTxt, GroupLayout.DEFAULT_SIZE, 689, Short.MAX_VALUE)))
 						.addGroup(gl_contentPane.createSequentialGroup()
 							.addGap(205)
 							.addComponent(LogonJL)))
 					.addGap(252))
-				.addGroup(Alignment.LEADING, gl_contentPane.createSequentialGroup()
+				.addGroup(gl_contentPane.createSequentialGroup()
 					.addGap(374)
 					.addComponent(Title_Label, GroupLayout.PREFERRED_SIZE, 514, GroupLayout.PREFERRED_SIZE)
 					.addContainerGap(396, Short.MAX_VALUE))
@@ -240,8 +244,8 @@ public class LogOnfrm extends JFrame {
 					.addComponent(Title_Label, GroupLayout.PREFERRED_SIZE, 150, GroupLayout.PREFERRED_SIZE)
 					.addGap(74)
 					.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
-						.addComponent(User_Label, GroupLayout.DEFAULT_SIZE, 49, Short.MAX_VALUE)
-						.addComponent(UserIDTxt, GroupLayout.PREFERRED_SIZE, 49, GroupLayout.PREFERRED_SIZE))
+						.addComponent(User_Label, GroupLayout.DEFAULT_SIZE, 64, Short.MAX_VALUE)
+						.addComponent(UserIDTxt, GroupLayout.PREFERRED_SIZE, 56, GroupLayout.PREFERRED_SIZE))
 					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
 						.addGroup(gl_contentPane.createSequentialGroup()
 							.addGap(235)
@@ -251,8 +255,8 @@ public class LogOnfrm extends JFrame {
 						.addGroup(gl_contentPane.createSequentialGroup()
 							.addGap(102)
 							.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
-								.addComponent(Password_Label, GroupLayout.PREFERRED_SIZE, 51, GroupLayout.PREFERRED_SIZE)
-								.addComponent(passwordTxt, GroupLayout.PREFERRED_SIZE, 53, GroupLayout.PREFERRED_SIZE))))
+								.addComponent(Password_Label, GroupLayout.PREFERRED_SIZE, 63, GroupLayout.PREFERRED_SIZE)
+								.addComponent(passwordTxt, GroupLayout.PREFERRED_SIZE, 58, GroupLayout.PREFERRED_SIZE))))
 					.addGap(82)
 					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
 						.addComponent(Login_Button, GroupLayout.PREFERRED_SIZE, 70, GroupLayout.PREFERRED_SIZE)
@@ -308,6 +312,7 @@ private void LoginAction(ActionEvent evt)
 		//Md5Str=MD5Util.convertMD5(password);//两次解密t
 		User user=new User(userID,password);
 		Manager manager =new Manager(userID,password);
+		
 		Connection con=null;		
 		try {
 			con=dbutil.getCon();
@@ -322,7 +327,7 @@ private void LoginAction(ActionEvent evt)
 //					JOptionPane.showMessageDialog(null, LogSuc,"Success", JOptionPane.INFORMATION_MESSAGE);
 					//showMessageFrame LogSuc=new showMessageFrame(contentPane,"登录成功！",showMessageFrame.NORMAL);					
 					dispose();									
-					userMainFrm UserMainWindow=new userMainFrm(userID);//
+					userMainFrm UserMainWindow=new userMainFrm(currentUser);//userID
 					UserMainWindow.setVisible(true);				    																					
 					//MainWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 				}
@@ -343,7 +348,7 @@ private void LoginAction(ActionEvent evt)
 //					//应该为登录窗口销毁，打开主界面，这里还没写，测试
 					//showMessageFrame LogSuc=new showMessageFrame(contentPane,"登录成功！",showMessageFrame.NORMAL);
 					dispose();										
-					MainFrm MainWindow=new MainFrm();
+					MainFrm MainWindow=new MainFrm(currentUser);
 				    MainWindow.setVisible(true);	
 					//MainWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 				}

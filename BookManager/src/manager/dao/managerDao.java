@@ -5,7 +5,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
 import manager.entity.Manager;
-import manager.entity.User;
 
 public class managerDao {
 	/**
@@ -17,10 +16,10 @@ public class managerDao {
 	 */
 	public Manager login(Connection con,Manager user)throws Exception{
 		Manager resultUser=null;
-		String sql="select * from t_manager where userName=? and password=?";
+		String sql="select * from t_manager where id=? and password=?";
 		PreparedStatement pstmt=con.prepareStatement(sql);
 		//对问号设置
-		pstmt.setString(1, user.getUserName());
+		pstmt.setString(1, user.getId());
 		pstmt.setString(2, user.getPassword());
 		ResultSet rs=pstmt.executeQuery();
 		if(rs.next()){//如果查到了，则实例化

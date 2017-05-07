@@ -1,14 +1,6 @@
 package manager.util;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Dimension;
-/**
- * 对话框工具类
- * @author asus-pc
- *
- */
-import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
@@ -17,15 +9,12 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.border.EmptyBorder;
-import javax.swing.border.LineBorder;
-import java.awt.SystemColor;
 import javax.swing.UIManager;
 /**
  * 用于弹出按确定消失的提示框
@@ -75,9 +64,9 @@ public class Dialogutil extends JDialog implements ActionListener{
             					.addGap(123)
             					.addComponent(MassageTXt, GroupLayout.PREFERRED_SIZE,(int)(Txtsize*35*enlargement_x), GroupLayout.PREFERRED_SIZE))
             				.addGroup(gl_contentPane.createSequentialGroup()
-            					.addGap(209)
+            					.addGap(123+(int)(Txtsize/2.7*35*enlargement_x))//置于中间
             					.addComponent(confirmJb)))
-            			.addContainerGap(92, Short.MAX_VALUE))
+            			.addContainerGap(123, Short.MAX_VALUE))
             );
             gl_contentPane.setVerticalGroup(
             	gl_contentPane.createParallelGroup(Alignment.LEADING)
@@ -91,7 +80,7 @@ public class Dialogutil extends JDialog implements ActionListener{
             //MassageTXt.setBorder(new LineBorder(new Color(127, 157, 185)));
             MassageTXt.setBorder(new EmptyBorder(0,0,0,0));
             contentPane.setLayout(gl_contentPane);
-            setBounds((int)(width / 2-180* enlargement_x),(int)(height/2 ),558,318);
+            setBounds((int)(width / 2-180* enlargement_x),height/2,558,318);
             // 调整对话框布局大小
             pack();    
             setVisible(true);     
@@ -99,7 +88,8 @@ public class Dialogutil extends JDialog implements ActionListener{
         /**
          * 事件处理
          */
-        public void actionPerformed(ActionEvent event)
+        @Override
+		public void actionPerformed(ActionEvent event)
         {    
             Object source = event.getSource();         
             if ((source == confirmJb))

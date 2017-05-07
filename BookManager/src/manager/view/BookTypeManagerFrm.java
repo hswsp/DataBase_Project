@@ -26,6 +26,7 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.UIManager;
+import javax.swing.WindowConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
@@ -68,6 +69,7 @@ public class BookTypeManagerFrm extends JFrame {
 	 */
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
+			@Override
 			public void run() {
 				try {
 					BookTypeManagerFrm frame = new BookTypeManagerFrm();
@@ -85,7 +87,7 @@ public class BookTypeManagerFrm extends JFrame {
 	public BookTypeManagerFrm() {
 		setTitle("\u56FE\u4E66\u7C7B\u522B\u7EF4\u62A4");
 		setResizable(false);
-		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 		//setBounds(100, 100, 680, 522);
 		setBounds(100,100,(int)( 1600*enlargement_x), (int)(1400*enlargement_y));//设置初始位置（无所谓，后面重置），大小		
 		windowWidth = this.getWidth(); //获得窗口宽
@@ -98,6 +100,7 @@ public class BookTypeManagerFrm extends JFrame {
 		JScrollPane SearchScroll = new JScrollPane();
 			
 		JLabel BookTypeLabel = new JLabel("\u56FE\u4E66\u7C7B\u522B\u540D\u79F0");
+		BookTypeLabel.setIcon(new ImageIcon(BookTypeManagerFrm.class.getResource("/manager/image/Evernote_Book.png")));
 		BookTypeLabel.setFont(new Font("宋体", Font.PLAIN, 35));
 		
 		Search_BookTypeTxt = new JTextField();
@@ -106,6 +109,7 @@ public class BookTypeManagerFrm extends JFrame {
 		
 		JButton SearchButton = new JButton("\u641C\u7D22");
 		SearchButton.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				bookTypeSearchActionPerformed(e);
 			}
@@ -128,7 +132,7 @@ public class BookTypeManagerFrm extends JFrame {
 							.addComponent(BookTypeLabel)
 							.addGap(50)
 							.addComponent(Search_BookTypeTxt, GroupLayout.PREFERRED_SIZE, 758, GroupLayout.PREFERRED_SIZE)
-							.addPreferredGap(ComponentPlacement.RELATED, 85, Short.MAX_VALUE)
+							.addPreferredGap(ComponentPlacement.RELATED, 37, Short.MAX_VALUE)
 							.addComponent(SearchButton)))
 					.addGap(192))
 		);
@@ -138,13 +142,13 @@ public class BookTypeManagerFrm extends JFrame {
 					.addGap(166)
 					.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
 						.addComponent(BookTypeLabel)
-						.addComponent(Search_BookTypeTxt, GroupLayout.PREFERRED_SIZE, 47, GroupLayout.PREFERRED_SIZE)
+						.addComponent(Search_BookTypeTxt, GroupLayout.PREFERRED_SIZE, 60, GroupLayout.PREFERRED_SIZE)
 						.addComponent(SearchButton))
 					.addGap(139)
 					.addComponent(SearchScroll, GroupLayout.PREFERRED_SIZE, 284, GroupLayout.PREFERRED_SIZE)
 					.addGap(97)
 					.addComponent(panel, GroupLayout.PREFERRED_SIZE, 534, GroupLayout.PREFERRED_SIZE)
-					.addContainerGap(59, Short.MAX_VALUE))
+					.addContainerGap(35, Short.MAX_VALUE))
 		);
 		
 		JLabel label = new JLabel("\u7F16\u53F7");
@@ -163,10 +167,12 @@ public class BookTypeManagerFrm extends JFrame {
 		bookTypeNameTxt.setColumns(10);
 		
 		JLabel label_2 = new JLabel("\u63CF\u8FF0");
+		label_2.setIcon(new ImageIcon(BookTypeManagerFrm.class.getResource("/manager/image/bookTypeDesc.png")));
 		label_2.setFont(new Font("宋体", Font.PLAIN, 35));
 		
 		JButton ModifyButton = new JButton("\u4FEE\u6539");
 		ModifyButton.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				bookTypeUpdateActionEvent(e);
 			}
@@ -178,6 +184,7 @@ public class BookTypeManagerFrm extends JFrame {
 		
 		JButton DeleteButton = new JButton("\u5220\u9664");
 		DeleteButton.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				bookTypeDeleteActionEvent(e);
 			}
@@ -192,28 +199,29 @@ public class BookTypeManagerFrm extends JFrame {
 		GroupLayout gl_panel = new GroupLayout(panel);
 		gl_panel.setHorizontalGroup(
 			gl_panel.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_panel.createSequentialGroup()
-					.addGap(73)
-					.addGroup(gl_panel.createParallelGroup(Alignment.LEADING, false)
+				.addGroup(Alignment.TRAILING, gl_panel.createSequentialGroup()
+					.addGroup(gl_panel.createParallelGroup(Alignment.TRAILING)
 						.addGroup(gl_panel.createSequentialGroup()
-							.addComponent(label_2)
-							.addGap(28)
-							.addComponent(DescScroll, GroupLayout.PREFERRED_SIZE, 924, GroupLayout.PREFERRED_SIZE))
+							.addGap(73)
+							.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
+								.addGroup(gl_panel.createSequentialGroup()
+									.addComponent(label_2)
+									.addGap(28)
+									.addComponent(DescScroll))
+								.addGroup(gl_panel.createSequentialGroup()
+									.addComponent(label)
+									.addPreferredGap(ComponentPlacement.UNRELATED)
+									.addComponent(IDTxt, GroupLayout.PREFERRED_SIZE, 152, GroupLayout.PREFERRED_SIZE)
+									.addGap(104)
+									.addComponent(label_1)
+									.addGap(99)
+									.addComponent(bookTypeNameTxt, GroupLayout.DEFAULT_SIZE, 370, Short.MAX_VALUE))))
 						.addGroup(gl_panel.createSequentialGroup()
-							.addComponent(label)
-							.addPreferredGap(ComponentPlacement.UNRELATED)
-							.addComponent(IDTxt, GroupLayout.PREFERRED_SIZE, 152, GroupLayout.PREFERRED_SIZE)
-							.addGap(104)
-							.addComponent(label_1)
-							.addGap(99)
-							.addComponent(bookTypeNameTxt, GroupLayout.PREFERRED_SIZE, 361, GroupLayout.PREFERRED_SIZE)))
-					.addContainerGap(143, Short.MAX_VALUE))
-				.addGroup(gl_panel.createSequentialGroup()
-					.addGap(108)
-					.addComponent(ModifyButton)
-					.addPreferredGap(ComponentPlacement.RELATED, 807, Short.MAX_VALUE)
-					.addComponent(DeleteButton)
-					.addGap(77))
+							.addGap(108)
+							.addComponent(ModifyButton)
+							.addPreferredGap(ComponentPlacement.RELATED, 654, Short.MAX_VALUE)
+							.addComponent(DeleteButton)))
+					.addGap(156))
 		);
 		gl_panel.setVerticalGroup(
 			gl_panel.createParallelGroup(Alignment.LEADING)
@@ -223,12 +231,12 @@ public class BookTypeManagerFrm extends JFrame {
 						.addComponent(label)
 						.addComponent(IDTxt, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 						.addComponent(label_1)
-						.addComponent(bookTypeNameTxt, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+						.addComponent(bookTypeNameTxt, GroupLayout.PREFERRED_SIZE, 55, GroupLayout.PREFERRED_SIZE))
 					.addGap(68)
 					.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
-						.addComponent(DescScroll, GroupLayout.PREFERRED_SIZE, 191, GroupLayout.PREFERRED_SIZE)
-						.addComponent(label_2))
-					.addPreferredGap(ComponentPlacement.UNRELATED, 43, Short.MAX_VALUE)
+						.addComponent(label_2)
+						.addComponent(DescScroll, GroupLayout.PREFERRED_SIZE, 191, GroupLayout.PREFERRED_SIZE))
+					.addPreferredGap(ComponentPlacement.RELATED, 25, Short.MAX_VALUE)
 					.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE)
 						.addComponent(ModifyButton)
 						.addComponent(DeleteButton))
@@ -260,6 +268,7 @@ public class BookTypeManagerFrm extends JFrame {
 				boolean[] columnEditables = new boolean[] {//不可修改
 					false, false, false
 				};
+				@Override
 				public boolean isCellEditable(int row, int column) {
 					return columnEditables[column];
 				}

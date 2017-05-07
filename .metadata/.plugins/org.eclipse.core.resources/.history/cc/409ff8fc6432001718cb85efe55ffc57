@@ -1,0 +1,39 @@
+package manager.util;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+
+
+
+/**
+ * 用于手动申请管理员账号。
+ * @author asus-pc
+ *
+ */
+public class ManagerAccountUtil {
+	static String userName="manager";
+	static String password="manager";
+	
+	public static void main(String[] args) 
+	{
+		
+	String Md5Str=MD5Util.string2MD5(password);
+	password=MD5Util.convertMD5(Md5Str);
+	DbUtil dbUtil=new DbUtil();
+	Connection con=null;
+	try {
+		con=dbUtil.getCon();
+		String sql="insert into t_manager values(null,?,?)";//要匹配数量！,最大本数为8
+		PreparedStatement pstmt=con.prepareStatement(sql);
+		pstmt.setString(1, userName);
+		pstmt.setString(2, password);
+		int num= pstmt.executeUpdate();	
+		if(num==1)
+		return;
+	} catch (Exception e2) {
+		// TODO Auto-generated catch block
+		e2.printStackTrace();
+	}
+	}
+
+}

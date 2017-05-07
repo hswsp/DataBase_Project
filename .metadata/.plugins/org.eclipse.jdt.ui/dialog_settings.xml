@@ -58,6 +58,22 @@
 		<item value="510" key="DIALOG_X_ORIGIN"/>
 		<item value="8" key="DIALOG_Y_ORIGIN"/>
 	</section>
+	<section name="FatJarPackageWizard">
+		<item value="D:\Database\DataBase_Project" key="FatJarPackageWizardPage.ANTSCRIPT_LOCATION"/>
+		<item value="LogOnfrm - BookManager" key="FatJarPackageWizardPage.LAUNCH_CONFIGURATION_SELECTION_NAME"/>
+		<item value="D:\Database\Library.jar" key="FatJarPackageWizardPage.DESTINATION_PATH_SELECTION"/>
+		<item value="false" key="FatJarPackageWizardPage.ANTSCRIPT_SAVE"/>
+		<item value="2" key="FatJarPackageWizardPage.LIBRARY_HANDLING"/>
+		<list key="FatJarPackageWizardPage.DESTINATION_NAMES_ID">
+			<item value="D:\Database\Library.jar"/>
+			<item value="D:\Database\DataBase_Project\右更二图书管理系统.jar"/>
+			<item value="D:\Database\DataBase_Project\BookManagerSystem.jar"/>
+		</list>
+		<list key="FatJarPackageWizardPage.ANTSCRIPT_LOCATION_HISTORY">
+			<item value="D:\Database\DataBase_Project.xml"/>
+			<item value=".xml"/>
+		</list>
+	</section>
 	<section name="SourceActionDialog.methods">
 		<item value="true" key="IgnoreDefault"/>
 		<item value="false" key="SynchronizedModifier"/>

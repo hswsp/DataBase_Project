@@ -5,6 +5,7 @@ import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.Frame;
 import java.awt.HeadlessException;
 import java.awt.Image;
 import java.awt.Toolkit;
@@ -14,10 +15,7 @@ import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.Arrays;
 import java.util.Vector;
@@ -40,7 +38,9 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.ListSelectionModel;
+import javax.swing.SwingConstants;
 import javax.swing.UIManager;
+import javax.swing.WindowConstants;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 import javax.swing.plaf.basic.BasicInternalFrameUI;
@@ -57,6 +57,7 @@ import manager.entity.BookType;
 import manager.entity.Borrow;
 import manager.entity.DateInt;
 import manager.entity.HisBorrow;
+import manager.entity.MyDate;
 import manager.entity.User;
 import manager.util.DateUtil;
 import manager.util.DbUtil;
@@ -70,7 +71,7 @@ import manager.util.showMessageFrame;
 public class userMainFrm extends JFrame {
     //当前用户信息
 	private String PresentUser;
-	private User presentUser=new User();
+	private User presentUser;//=new User()
 	private final int TotalBookCanBorrow=8;
 	
   //设置跟随分辨率变化窗口
@@ -83,8 +84,9 @@ public class userMainFrm extends JFrame {
     private final static double split_scale=0.25;
     private int windowWidth ; //获得窗口宽
     private int windowHeight; //获得窗口高
+    private MyDate date=new MyDate();//当前时间
     //容器组件
-    private JPanel contentPane;
+   // private JPanel contentPane;
     private JSplitPane splitPane = new JSplitPane();
     private JPanel TutorJp = new JPanel();
     private JPanel OperationJp = new JPanel();
@@ -112,7 +114,7 @@ public class userMainFrm extends JFrame {
     private JTextField ReaderName;
     private JTextField bookTotalTxt;
     private JTextField bookBorTxt;
-    private JTextField balanceTxt;
+    public JTextField balanceTxt;
     private JTextField NewNameTxt;
     private JLabel NewNameJL;
    	private JTextField RecomNameTxt;
@@ -138,7 +140,7 @@ public class userMainFrm extends JFrame {
 	/**************************修改用户信息变量*********************************************/
 	private boolean IsEditName=false;
 	private PayFrm payfrm;
-	private boolean IsOpened=false;
+	public boolean IsOpened=false;
    //JDBC接口	
     private DbUtil  dbUtil=new DbUtil();
     private UserDao userdao=new UserDao();
@@ -153,12 +155,13 @@ public class userMainFrm extends JFrame {
 	 */
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
+			@Override
 			public void run() {
 				try {
 					userMainFrm frame = new userMainFrm();
 //					frame.setVisible(true);
-//					frame.splitPane.setDividerLocation(split_scale);//设定分割面板的左右比例(这时候就生效了，如果放在setVisible(true)这据之前就不会有效果。
-//					frame.splitPane.setEnabled(false);            //设置分隔条禁止拖动  					
+//				    frame.splitPane.setDividerLocation(split_scale);//设定分割面板的左右比例(这时候就生效了，如果放在setVisible(true)这据之前就不会有效果。
+//				    frame.splitPane.setEnabled(false);            //设置分隔条禁止拖动  					
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -175,30 +178,25 @@ public class userMainFrm extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public userMainFrm (String User) //
+	public userMainFrm (User curUser) //String User
 	{
-		 PresentUser=User;//单窗口调试请注释		
+		presentUser=curUser;
+		PresentUser=curUser.getId();//单窗口调试请注释		
 //		button.setIcon(new ImageIcon(userMainFrm.class.getResource("/manager/image/search.png")));
 //		button.setFont(new Font("宋体", Font.PLAIN, 35));
 //		textField.setFont(new Font("宋体", Font.PLAIN, 35));
 //		textField.setColumns(10);
 //		lblNewLabel.setFont(new Font("宋体", Font.PLAIN, 35));
 		setTitle("\u7528\u6237\u4E3B\u754C\u9762");
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		//设置JFrame最大化,要放在setVisible之后才能刷新，否则只执行一次
-		setExtendedState(JFrame.MAXIMIZED_BOTH); 
-		//setResizable(false);
-	//	setBounds(0, 0, screenWidth,screenHeight);
 		setSize(new Dimension(screenSize.width,screenSize.height));
-		
+		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);//EXIT_ON_CLOSE	
+		//setResizable(false);
+	    //	setBounds(0, 0, screenWidth,screenHeight);		
 		windowWidth = this.getWidth(); //获得窗口宽
-		windowHeight = this.getHeight();
-
-		
+		windowHeight = this.getHeight();		
 		//分屏
 		this.getContentPane().add(splitPane, java.awt.BorderLayout.CENTER);
-		splitPane.add(TutorJp, JSplitPane.LEFT);
-		
+		splitPane.add(TutorJp, JSplitPane.LEFT);		
 		GroupLayout gl_TutorJp = new GroupLayout(TutorJp);
 		JLayeredPane SearchJlp = new JLayeredPane();
 
@@ -207,8 +205,7 @@ public class userMainFrm extends JFrame {
 //		SearchJlp.add(label_1);
 	//*************************************左边************************************************/		
 		TutorJp.setLayout(gl_TutorJp);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 762, 1120);
+		//setBounds(100, 100, 762, 1120);
 		//创立三个内窗口
 		JInternalFrame SearchJIF = new JInternalFrame("\u56FE\u4E66\u67E5\u8BE2\u4E0E\u501F\u9605");
 		SearchJIF.getContentPane().setFont(new Font("宋体", Font.PLAIN, 35));
@@ -254,6 +251,20 @@ public class userMainFrm extends JFrame {
 		RecomJIF.getContentPane().setLayout(groupLayout_2);
 		RecomJIF.setVisible(true);
 		
+		//欢迎标语
+		//欢迎标签
+        DateUtil.getdateWithMinute(date);
+        String welcomeString;
+        if(date.getHour()<12)
+        {
+        	welcomeString="上午好,"+this.presentUser.getUserName();
+        }
+        else
+        {
+        	welcomeString="下午好,"+this.presentUser.getUserName();
+        }
+		JLabel WwlcomeJL = new JLabel(welcomeString);
+		WwlcomeJL.setFont(new Font("华文行楷", Font.PLAIN, 40));
 		//GroupLayout gl_TutorJp = new GroupLayout(TutorJp);
 		gl_TutorJp.setHorizontalGroup(
 				gl_TutorJp.createParallelGroup(Alignment.LEADING)
@@ -261,6 +272,10 @@ public class userMainFrm extends JFrame {
 					.addComponent(ID_JIF, GroupLayout.DEFAULT_SIZE, 736, Short.MAX_VALUE)
 					.addComponent(RecomJIF, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 736, Short.MAX_VALUE)
 					.addComponent(ExitJPL, GroupLayout.DEFAULT_SIZE, 741, Short.MAX_VALUE)
+					.addGroup(gl_TutorJp.createSequentialGroup()
+							.addGap(263)
+							.addComponent(WwlcomeJL)
+							.addContainerGap(342, Short.MAX_VALUE))
 			);
 			gl_TutorJp.setVerticalGroup(
 				gl_TutorJp.createParallelGroup(Alignment.LEADING)
@@ -270,9 +285,12 @@ public class userMainFrm extends JFrame {
 						.addComponent(ID_JIF, GroupLayout.PREFERRED_SIZE, 491, GroupLayout.PREFERRED_SIZE)
 						.addPreferredGap(ComponentPlacement.UNRELATED)
 						.addComponent(RecomJIF, GroupLayout.DEFAULT_SIZE, 298,GroupLayout.PREFERRED_SIZE )
-						.addComponent(ExitJPL, GroupLayout.PREFERRED_SIZE, 260, GroupLayout.PREFERRED_SIZE)
-						.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))//Short.MAX_VALUE
-					   
+						.addComponent(ExitJPL, GroupLayout.PREFERRED_SIZE, 260, GroupLayout.PREFERRED_SIZE)						
+					   .addPreferredGap(ComponentPlacement.RELATED, 40, Short.MAX_VALUE)//
+					   .addComponent(WwlcomeJL)
+					   //.addGap(47)
+					   .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)//Short.MAX_VALUE
+					   )
 			);
 		
 		//为每一个InterJframe增添组件	
@@ -290,19 +308,21 @@ public class userMainFrm extends JFrame {
 		);
 		
 		//标签
-		JLabel IDJLB = new JLabel("",JLabel.CENTER);		
+		JLabel IDJLB = new JLabel("",SwingConstants.CENTER);		
 		IDJLB.setFont(new Font("宋体", Font.PLAIN, 35));
-		JLabel RecomJLb = new JLabel("",JLabel.CENTER);
+		JLabel RecomJLb = new JLabel("",SwingConstants.CENTER);
 		RecomJLb.setBounds(254, 41, 256, 73);
 		RecomJLb.setFont(new Font("宋体", Font.PLAIN, 35));
 		RecommendJP.add(RecomJLb);
 		
-		JLabel Daily_Op = new JLabel("",JLabel.CENTER);
+		JLabel Daily_Op = new JLabel("",SwingConstants.CENTER);
 		Daily_Op.setBounds(247, 43, 264, 91);
 		Daily_Op.setFont(new Font("宋体", Font.PLAIN, 35));
 		
 		JButton CertificateJB = new JButton("\u8BC1\u4EF6\u4FE1\u606F");
+		CertificateJB.setIcon(new ImageIcon(userMainFrm.class.getResource("/manager/image/certificate.png")));
 		CertificateJB.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				ResetValue();
 				ShowSelect=4;				
@@ -312,8 +332,10 @@ public class userMainFrm extends JFrame {
 		CertificateJB.setFont(new Font("宋体", Font.PLAIN, 35));
 		
 		JButton PreBorrowInfo = new JButton("\u5F53\u524D\u501F\u9605");
+		PreBorrowInfo.setIcon(new ImageIcon(userMainFrm.class.getResource("/manager/image/PreBook.net.png")));
 		PreBorrowInfo.setFont(new Font("宋体", Font.PLAIN, 35));
 		PreBorrowInfo.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				ResetValue();
 				ShowSelect=2;				
@@ -322,7 +344,9 @@ public class userMainFrm extends JFrame {
 		});
 		
 		JButton HistoryBorrow = new JButton("\u501F\u9605\u5386\u53F2");
+		HistoryBorrow.setIcon(new ImageIcon(userMainFrm.class.getResource("/manager/image/HisBook.png")));
 		HistoryBorrow.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				ResetValue();
 				ShowSelect=3;				
@@ -340,13 +364,13 @@ public class userMainFrm extends JFrame {
 					.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
 						.addGroup(gl_panel.createSequentialGroup()
 							.addGap(188)
-							.addComponent(IDJLB, GroupLayout.PREFERRED_SIZE, 280, GroupLayout.PREFERRED_SIZE))
+							.addComponent(IDJLB, GroupLayout.PREFERRED_SIZE, 370, GroupLayout.PREFERRED_SIZE))
 						.addGroup(gl_panel.createSequentialGroup()
 							.addGap(255)
 							.addGroup(gl_panel.createParallelGroup(Alignment.TRAILING, false)
 								.addComponent(HistoryBorrow, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
 								.addComponent(PreBorrowInfo, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-								.addComponent(CertificateJB, Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 210, GroupLayout.PREFERRED_SIZE))))
+								.addComponent(CertificateJB, Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 262, GroupLayout.PREFERRED_SIZE))))
 					.addContainerGap(224, Short.MAX_VALUE))
 		);
 		gl_panel.setVerticalGroup(
@@ -354,11 +378,11 @@ public class userMainFrm extends JFrame {
 				.addGroup(gl_panel.createSequentialGroup()
 					.addComponent(IDJLB, GroupLayout.PREFERRED_SIZE, 86, GroupLayout.PREFERRED_SIZE)
 					.addPreferredGap(ComponentPlacement.UNRELATED)
-					.addComponent(CertificateJB, GroupLayout.PREFERRED_SIZE, 65, GroupLayout.PREFERRED_SIZE)
+					.addComponent(CertificateJB, GroupLayout.PREFERRED_SIZE, 70, GroupLayout.PREFERRED_SIZE)
 					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(PreBorrowInfo, GroupLayout.PREFERRED_SIZE, 62, GroupLayout.PREFERRED_SIZE)
+					.addComponent(PreBorrowInfo, GroupLayout.PREFERRED_SIZE, 70, GroupLayout.PREFERRED_SIZE)
 					.addPreferredGap(ComponentPlacement.UNRELATED)
-					.addComponent(HistoryBorrow, GroupLayout.PREFERRED_SIZE, 60, GroupLayout.PREFERRED_SIZE)
+					.addComponent(HistoryBorrow, GroupLayout.PREFERRED_SIZE, 70, GroupLayout.PREFERRED_SIZE)
 					.addContainerGap(41, Short.MAX_VALUE))
 		);
 		panel.setLayout(gl_panel);
@@ -366,9 +390,9 @@ public class userMainFrm extends JFrame {
 		
 		//图片准备
 		int width = 300,height = 100; //这是图片和JLable的宽度和高度   
-		ImageIcon icon = new ImageIcon("src/res/dayly_op.png");  
-		ImageIcon ID_icon = new ImageIcon("src/res/ID_Info.png");  
-		ImageIcon Recom_icon = new ImageIcon("src/res/Recommend.png");
+		ImageIcon icon = new ImageIcon(userMainFrm.class.getResource("/res/dayly_op.png")); 
+		ImageIcon ID_icon = new ImageIcon(userMainFrm.class.getResource("/res/ID_Info.png")); // 
+		ImageIcon Recom_icon = new ImageIcon(userMainFrm.class.getResource("/res/Recommend.png"));//
 		//改变图片大小          
 		icon.setImage(icon.getImage().getScaledInstance(width,height,Image.SCALE_DEFAULT));//80和100为大小 可以自由设置       
 		ID_icon.setImage(ID_icon.getImage().getScaledInstance(width,height,Image.SCALE_DEFAULT));
@@ -394,9 +418,11 @@ public class userMainFrm extends JFrame {
 		);					
 		
 		JButton SearchButton = new JButton("\u56FE\u4E66\u67E5\u8BE2");
-		SearchButton.setBounds(273, 149, 222, 59);
+		SearchButton.setIcon(new ImageIcon(userMainFrm.class.getResource("/manager/image/search.png")));
+		SearchButton.setBounds(243, 139, 262, 70);
 		SearchButton.setFont(new Font("宋体", Font.PLAIN, 35));
 		SearchButton.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent evt) {
 				ResetValue();
 				ShowSelect=1;				
@@ -405,22 +431,26 @@ public class userMainFrm extends JFrame {
 		});
 		
 		JButton BorrowButton = new JButton("\u56FE\u4E66\u501F\u9605");
-		BorrowButton.setBounds(273, 221, 222, 64);
+		BorrowButton.setIcon(new ImageIcon(userMainFrm.class.getResource("/manager/image/return_book.png")));
+		BorrowButton.setBounds(243, 221, 262, 70);
 		BorrowButton.setFont(new Font("宋体", Font.PLAIN, 35));
 		dayly_panel.setLayout(null);		
 		BorrowButton.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent evt) {
 				borrowActionPerformed(evt);
 			}			
 		});
 		
 		JButton ReturnButurn = new JButton("\u56FE\u4E66\u5F52\u8FD8");
+		ReturnButurn.setIcon(new ImageIcon(userMainFrm.class.getResource("/manager/image/bor_book.png")));
 		ReturnButurn.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 							returnactionPerformed(e);	
 			}
 		});
-		ReturnButurn.setBounds(273, 295, 222, 59);
+		ReturnButurn.setBounds(243, 305, 262, 70);
 		ReturnButurn.setFont(new Font("宋体", Font.PLAIN, 35));
 		dayly_panel.add(ReturnButurn);
 		dayly_panel.add(Daily_Op);
@@ -428,7 +458,9 @@ public class userMainFrm extends JFrame {
 		dayly_panel.add(BorrowButton);
 		
 		JButton RecomJB = new JButton("\u56FE\u4E66\u63A8\u8350");
+		RecomJB.setIcon(new ImageIcon(userMainFrm.class.getResource("/manager/image/Recom.png")));
 		RecomJB.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				ResetValue();
 				ShowSelect=5;				
@@ -436,13 +468,14 @@ public class userMainFrm extends JFrame {
 			}
 		});
 		RecomJB.setFont(new Font("宋体", Font.PLAIN, 35));
-		RecomJB.setBounds(278, 130, 207, 59);
+		RecomJB.setBounds(258, 130, 227, 70);
 		RecommendJP.add(RecomJB);
 		SearchJIF.getContentPane().setLayout(groupLayout);
 		
 		//退出按钮
 		JButton exitButton = new JButton("");
 		exitButton.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent exit) {
 				ShowConfirmDialog confrm=new ShowConfirmDialog(null,"提示","是否退出系统");
 					new Thread(
@@ -460,15 +493,30 @@ public class userMainFrm extends JFrame {
 							}while(confrm.getResult()==-1);							
 					if(confrm.getResult()==0)
 				          {
-						     dispose(); //清除主窗口
+					       	Connection con=null;
+						     try {
+								con=dbUtil.getCon();
+							   int num=UserDao.modifyIsLoginField(con,PresentUser, (byte)0);
+							   if(num==1)
+							   {
+								   dispose(); //清除主窗口
+								   System.exit(0);
+							   }
+							} catch (Exception e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+						    
+						     
 				          }		
 				}						
 			}).start();
 			}			
 		});
+		//加图片
 		int exit_width=203,exit_height=65;
 		exitButton.setFont(new Font("宋体", Font.PLAIN, 35));
-		ImageIcon exiticon = new ImageIcon("src/res/exit.PNG");
+		ImageIcon exiticon = new ImageIcon(userMainFrm.class.getResource("/res/exit.PNG"));
 		exiticon.setImage(exiticon.getImage().getScaledInstance(exit_width, exit_height,Image.SCALE_DEFAULT ));
 		exitButton.setIcon(exiticon);
 		GroupLayout gl_ExitJPL = new GroupLayout(ExitJPL);
@@ -493,9 +541,9 @@ public class userMainFrm extends JFrame {
 		//splitPane.setRightComponent(RecomJP);
 		//splitPane.setRightComponent(PreBorrowJP);	//图书归还界面
 		 //splitPane.setRightComponent(HisBorrowJP);
-		splitPane.setRightComponent(CredentialInfoJP);
+		//splitPane.setRightComponent(CredentialInfoJP);
 		//******************************用户信息界面******************************************************/
-		GetPresentUserInfo();
+		//GetPresentUserInfo();
 		JLabel IDJLable = new JLabel("\u8BFB\u8005ID");
 		IDJLable.setIcon(new ImageIcon(userMainFrm.class.getResource("/manager/image/ReaderID.png")));
 		IDJLable.setFont(new Font("华文行楷", Font.PLAIN, 40));
@@ -517,6 +565,7 @@ public class userMainFrm extends JFrame {
 		ReaderName.setText(presentUser.getUserName());
 		JButton UserNameChangeJb = new JButton("\u4FEE\u6539\u7528\u6237\u540D");
 		UserNameChangeJb.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent edit) {
 				UserNameEditactionPerformed(edit);
 			}
@@ -554,6 +603,7 @@ public class userMainFrm extends JFrame {
 		balanceTxt.setText(str);
 		JButton payButton = new JButton("\u7F34\u7EB3\u8D39\u7528");
 		payButton.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent pay) {
 				payactionPerformed(pay);
 			}			
@@ -573,6 +623,7 @@ public class userMainFrm extends JFrame {
 		
 		NewNameButton = new JButton("\u786E\u8BA4\u4FEE\u6539");
 		NewNameButton.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent newName) {
 				NewNameactionPerformed(newName);
 			}		
@@ -666,6 +717,7 @@ public class userMainFrm extends JFrame {
 		
 		JButton PreBorSearButton = new JButton("\u67E5\u8BE2");
 		PreBorSearButton.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				PreBorrowSearchPerformed(e);
 			}			
@@ -691,7 +743,7 @@ public class userMainFrm extends JFrame {
 					.addGap(191)
 					.addGroup(gl_PreBorrowJP.createParallelGroup(Alignment.BASELINE)
 						.addComponent(ReturnJL, GroupLayout.PREFERRED_SIZE, 57, GroupLayout.PREFERRED_SIZE)
-						.addComponent(PreBorSearButton, GroupLayout.PREFERRED_SIZE, 62, GroupLayout.PREFERRED_SIZE))
+						.addComponent(PreBorSearButton, GroupLayout.PREFERRED_SIZE, 92, GroupLayout.PREFERRED_SIZE))
 					.addGap(62)
 					.addComponent(PreBorrowJsp, GroupLayout.PREFERRED_SIZE, 450, GroupLayout.PREFERRED_SIZE)
 					.addContainerGap(961, Short.MAX_VALUE))
@@ -708,6 +760,7 @@ public class userMainFrm extends JFrame {
 			boolean[] columnEditables = new boolean[] {
 				false, false, false
 			};
+			@Override
 			public boolean isCellEditable(int row, int column) {
 				return columnEditables[column];
 			}
@@ -741,6 +794,7 @@ public class userMainFrm extends JFrame {
 		
 		JButton RecomConfirJB = new JButton("\u63A8\u8350");
 		RecomConfirJB.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent rec) {
 				RecomactionPerformed(rec);
 			}
@@ -842,6 +896,7 @@ public class userMainFrm extends JFrame {
 	/****************************查询界面***********************************************/		
 			JButton SearchBookJB = new JButton("\u67E5\u8BE2");
 			SearchBookJB.addActionListener(new ActionListener() {
+				@Override
 				public void actionPerformed(ActionEvent evt) {
 					BookSearchActionPerformed(evt);
 					}		
@@ -872,10 +927,10 @@ public class userMainFrm extends JFrame {
 					.addGroup(gl_OperationJp.createSequentialGroup()
 						.addGap(131)
 						.addGroup(gl_OperationJp.createParallelGroup(Alignment.BASELINE)
-							.addComponent(booktypeJcb, GroupLayout.PREFERRED_SIZE, 58, GroupLayout.PREFERRED_SIZE)
-							.addComponent(BookNameJL, GroupLayout.PREFERRED_SIZE, 56, GroupLayout.PREFERRED_SIZE)
-							.addComponent(BookNameTxt, GroupLayout.PREFERRED_SIZE, 55, GroupLayout.PREFERRED_SIZE)
-							.addComponent(SearchBookJB, GroupLayout.PREFERRED_SIZE, 53, GroupLayout.PREFERRED_SIZE))
+							.addComponent(booktypeJcb, GroupLayout.PREFERRED_SIZE, 75, GroupLayout.PREFERRED_SIZE)
+							.addComponent(BookNameJL, GroupLayout.PREFERRED_SIZE, 75, GroupLayout.PREFERRED_SIZE)
+							.addComponent(BookNameTxt, GroupLayout.PREFERRED_SIZE, 75, GroupLayout.PREFERRED_SIZE)
+							.addComponent(SearchBookJB, GroupLayout.PREFERRED_SIZE, 75, GroupLayout.PREFERRED_SIZE))//修改第四个参数可以改大小
 						.addGap(111)
 						.addComponent(BookSearchJsp, GroupLayout.PREFERRED_SIZE, 1017, GroupLayout.PREFERRED_SIZE)
 						.addContainerGap(409, Short.MAX_VALUE))
@@ -898,6 +953,7 @@ public class userMainFrm extends JFrame {
 				boolean[] columnEditables = new boolean[] {
 					false, false, false, false, false
 				};
+				@Override
 				public boolean isCellEditable(int row, int column) {
 					return columnEditables[column];
 				}
@@ -921,12 +977,13 @@ public class userMainFrm extends JFrame {
 			OperationJp.setLayout(gl_OperationJp);
 	/*****************************借阅历史界面**********************************************/		
 			
-			JLabel label = new JLabel("\u5386\u53F2\u501F\u9605",JLabel.CENTER);
+			JLabel label = new JLabel("\u5386\u53F2\u501F\u9605",SwingConstants.CENTER);
 			label.setEnabled(false);
 			label.setFont(new Font("幼圆", Font.BOLD, 35));
 			
 			JButton HisBorSearchButton = new JButton("\u67E5\u8BE2");
 			HisBorSearchButton.addActionListener(new ActionListener() {
+				@Override
 				public void actionPerformed(ActionEvent e) {
 					hisBorrowactionPerformed(e);
 				}
@@ -947,7 +1004,7 @@ public class userMainFrm extends JFrame {
 									.addGroup(gl_HisBorrowJP.createSequentialGroup()
 										.addComponent(label, GroupLayout.PREFERRED_SIZE, 168, GroupLayout.PREFERRED_SIZE)
 										.addGap(261)
-										.addComponent(HisBorSearchButton, GroupLayout.PREFERRED_SIZE, 155, GroupLayout.PREFERRED_SIZE))))
+										.addComponent(HisBorSearchButton, GroupLayout.PREFERRED_SIZE, 185, GroupLayout.PREFERRED_SIZE))))
 							.addGroup(gl_HisBorrowJP.createSequentialGroup()
 								.addGap(85)
 								.addComponent(PieChartJP, GroupLayout.PREFERRED_SIZE, 847, GroupLayout.PREFERRED_SIZE)
@@ -960,7 +1017,7 @@ public class userMainFrm extends JFrame {
 					.addGroup(gl_HisBorrowJP.createSequentialGroup()
 						.addGap(204)
 						.addGroup(gl_HisBorrowJP.createParallelGroup(Alignment.BASELINE)
-							.addComponent(label, GroupLayout.DEFAULT_SIZE, 57, Short.MAX_VALUE)
+							.addComponent(label, GroupLayout.DEFAULT_SIZE, 100, Short.MAX_VALUE)
 							.addComponent(HisBorSearchButton))
 						.addGap(115)
 						.addComponent(HisBorrowJsp, GroupLayout.PREFERRED_SIZE, 605, GroupLayout.PREFERRED_SIZE)
@@ -997,6 +1054,7 @@ public class userMainFrm extends JFrame {
 				boolean[] columnEditables = new boolean[] {
 					false, false, true, false, false
 				};
+				@Override
 				public boolean isCellEditable(int row, int column) {
 					return columnEditables[column];
 				}
@@ -1013,26 +1071,28 @@ public class userMainFrm extends JFrame {
 			HisBorrowJtable.setFont(new Font("宋体", Font.PLAIN, 36));
 			//HisBorrowJP.add(HisBorrowJtable);
 			HisBorrowJsp.setViewportView(HisBorrowJtable);
-			HisBorrowJP.setLayout(gl_HisBorrowJP);
-			
+			HisBorrowJP.setLayout(gl_HisBorrowJP);			
 			//选择界面
 		    FreshShow();
 		    
 		  /*****初始化事件***/
 	    this.addComponentListener(new ComponentAdapter()//初始化分割比
 	    {
-	        public void componentResized(ComponentEvent e) {
+	        @Override
+			public void componentResized(ComponentEvent e) {
 	        	splitPane.setDividerLocation(split_scale);
 	        }
-	    });
-//		setVisible(true);
-//		splitPane.setDividerLocation(split_scale);//设定分割面板的左右比例(这时候就生效了，如果放在setVisible(true)这据之前就不会有效果。
-//		splitPane.setEnabled(false);            //设置分隔条禁止拖动  	
-		fillBookType();//初始化下拉框
+	    });	
+	    //设置JFrame最大化,要放在setVisible之后才能刷新，否则只执行一次
+		  this.setExtendedState(Frame.MAXIMIZED_BOTH); 
+		  fillBookType();//初始化下拉框
+		  setVisible(true);
+		  splitPane.setDividerLocation(0.25);//设定分割面板的左右比例(这时候就生效了，如果放在setVisible(true)这据之前就不会有效果。
+		 splitPane.setEnabled(false);            //设置分隔条禁止拖动  	    	  
+
 	}
 	
-	
-
+//*************************************绘制用户界面信息*******************************************/	
 	public void FreshShow()
 	{				
 //		booktypeJcb = new JComboBox();
@@ -1079,11 +1139,9 @@ public class userMainFrm extends JFrame {
 	               HisBorrowJP.setVisible(false);
 	               RecomJP.setVisible(true);
 	    	   break;
-	    }	 
-		setVisible(true);
-		splitPane.setDividerLocation(0.25);//设定分割面板的左右比例(这时候就生效了，如果放在setVisible(true)这据之前就不会有效果。
-		splitPane.setEnabled(false);            //设置分隔条禁止拖动  	    	  
-//		fillBookType();//初始化下拉框
+	    }
+	 
+
 	}
 	
 	/**
@@ -1118,7 +1176,7 @@ public class userMainFrm extends JFrame {
 			  tableModel.setRowCount( 0 );
 			}			
 			break;
-		case 4://
+		case 4://读者信息界面
 			NewNameButton.setVisible(false);
 			NewNameJL.setVisible(false);
 			NewNameTxt.setVisible(false);
@@ -1313,7 +1371,8 @@ private void fillHisBorrowTable(HisBorrow hisborrow)
  * 借书表格行点击事件处理
  * @param e
  */
-private void bookSearchJTMousePressed(MouseEvent evt) {
+private void bookSearchJTMousePressed(MouseEvent evt) 
+{
 	int row=BookSearchJT.getSelectedRow();//选中行
 	IsClickJT=true;
 	BookID=Integer.parseInt((String)BookSearchJT.getValueAt(row, 0));
@@ -1357,11 +1416,15 @@ private void borrowActionPerformed(ActionEvent evt)
 			if(currentUser!=null)
 			{
 				int BorrowNumRem=currentUser.getBorrowNumRem();
-				if(BorrowNumRem<=0||currentBook.getBookNum()<=0)
+				if(BorrowNumRem<=0)//||currentBook.getBookNum()<=0
 					{
 					  Dialogutil BorrowError=new Dialogutil(null,"Error!","您所借的书已达上限！");
 					}
-				else if(BookSurplus<=0)
+				else if(currentUser.getBalance()<-10)
+				{
+					Dialogutil BorrowError=new Dialogutil(null,"Error!","您欠款太多！");
+				}
+				else if(currentBook.getBookNum()<=0)
 				{
 					Dialogutil BorrowError=new Dialogutil(null,"Error!","该书已经被借完，请等待他人归还！");
 				}
@@ -1643,60 +1706,61 @@ private void UserNameEditactionPerformed(ActionEvent edit)
 /**
  * 获取当前信息
  */
-private void GetPresentUserInfo()
-{
-	//presentUser
-	Connection con=null;
-	Arrays.fill(BookMonthly,0);
-	try {
-		con=dbUtil.getCon();
-		if(StringUtil.isEmpty(PresentUser))
-		{
-			Dialogutil attention=new Dialogutil(null,"Attention!","用户信息获取失败！");
-			return;
-		}
-		else			
-		{
-			//找到当前书和用户
-			presentUser.setId(PresentUser);
-			StringBuffer sb=new StringBuffer("select * from t_user");
-			//两张表关联查询，有bookTypeID才能查询
-			if(StringUtil.isNotEmpty(presentUser.getId()))
-			{
-				sb.append(" and id=?");
-				PreparedStatement pstmt=con.prepareStatement(sb.toString().replaceFirst("and", "where"));
-				pstmt.setString(1, presentUser.getId());
-				ResultSet rs=pstmt.executeQuery();//执行
-				if(rs.next())
-				{
-					presentUser.setUserName(rs.getString("userName"));
-					presentUser.setBalance(rs.getFloat("balance"));
-					presentUser.setBorrowNumRem(rs.getInt("borrowNUmRem"));
-				}
-			}
-			else
-			{
-				Dialogutil attention=new Dialogutil(null,"Attention!","用户信息获取失败！");
-				return;
-			}					
-		}		
-	} catch (Exception e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
-	}
-}
+//private void GetPresentUserInfo()
+//{
+//	//presentUser
+//	Connection con=null;
+//	Arrays.fill(BookMonthly,0);
+//	try {
+//		con=dbUtil.getCon();
+//		if(StringUtil.isEmpty(PresentUser))
+//		{
+//			Dialogutil attention=new Dialogutil(null,"Attention!","用户信息获取失败！");
+//			return;
+//		}
+//		else			
+//		{
+//			//找到当前书和用户
+//			presentUser.setId(PresentUser);
+//			StringBuffer sb=new StringBuffer("select * from t_user");
+//			//两张表关联查询，有bookTypeID才能查询
+//			if(StringUtil.isNotEmpty(presentUser.getId()))
+//			{
+//				sb.append(" and id=?");
+//				PreparedStatement pstmt=con.prepareStatement(sb.toString().replaceFirst("and", "where"));
+//				pstmt.setString(1, presentUser.getId());
+//				ResultSet rs=pstmt.executeQuery();//执行
+//				if(rs.next())
+//				{
+//					presentUser.setUserName(rs.getString("userName"));
+//					presentUser.setBalance(rs.getFloat("balance"));
+//					presentUser.setBorrowNumRem(rs.getInt("borrowNUmRem"));
+//				}
+//			}
+//			else
+//			{
+//				Dialogutil attention=new Dialogutil(null,"Attention!","用户信息获取失败！");
+//				return;
+//			}					
+//		}		
+//	} catch (Exception e) {
+//		// TODO Auto-generated catch block
+//		e.printStackTrace();
+//	}
+//}
 /**
  * 缴纳罚款
  * @param pay
  */
 private void payactionPerformed(ActionEvent pay) {
 	// TODO Auto-generated method stub
-//	if(IsOpened)
-//	{
-//		return;
-//	}
-//	else
-//	{
+	if(IsOpened)
+	{
+		Dialogutil attention=new Dialogutil(null,"Attention!","已经打开该窗口！");
+		return;
+	}
+	else
+	{
 		if(StringUtil.isEmpty(PresentUser))
 		{
 			Dialogutil attention=new Dialogutil(null,"Attention!","用户信息获取失败！");
@@ -1704,16 +1768,16 @@ private void payactionPerformed(ActionEvent pay) {
 		}
 		else
 		{
-			 this.payfrm=new PayFrm(PresentUser);
-			 payfrm.setVisible(true);
+			 this.payfrm=new PayFrm(PresentUser,this);
+			 payfrm.setVisible(true);			 
 //			 payfrm.addWindowListener(new WindowAdapter(){
 //				 public void windowClosing(WindowEvent e){
 //					 IsOpened=false;//关闭后才能置为false
 //					 }
 //					 });
-//			IsOpened=true;
+			IsOpened=true;
 		}
-//	}
+	}
 }
 /**
  * 修改名称
@@ -1755,8 +1819,7 @@ private void NewNameactionPerformed(ActionEvent newName)
 	{
 		showMessageFrame FailNote=new showMessageFrame(null,"修改用户名失败！",showMessageFrame.NOTE);
 		e.printStackTrace();
-	}
-	
+	}	
 }			
 }
 	

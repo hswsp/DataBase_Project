@@ -12,7 +12,7 @@ public class User {
 	private String password; // 密码
 	private int borrowNumRem;//可借书数量
 	private float balance;
-	
+	private byte IsLogin;
 	public User() {
 		super();
 		// TODO Auto-generated constructor stub
@@ -60,6 +60,12 @@ public class User {
 	public void balanceRedu(float reduce)
 	{
 		this.balance-=reduce;
+	}
+	public byte getIsLogin() {
+		return IsLogin;
+	}
+	public void setIsLogin(byte isLogin) {
+		IsLogin = isLogin;
 	}
 	
 }

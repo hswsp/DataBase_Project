@@ -29,6 +29,7 @@ import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.WindowConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
@@ -36,9 +37,11 @@ import javax.swing.table.DefaultTableModel;
 
 import manager.dao.BookDao;
 import manager.dao.BookTypeDao;
+import manager.dao.BorrowDao;
 import manager.entity.Book;
 import manager.entity.BookType;
 import manager.util.DbUtil;
+import manager.util.Dialogutil;
 import manager.util.ShowConfirmDialog;
 import manager.util.StringUtil;
 import manager.util.showMessageFrame;
@@ -62,10 +65,6 @@ public class BookManagerFrm extends JFrame {
 	private JTextField S_AuthorTxt;
 	private JComboBox S_BookTypeJcb; 
 	private JComboBox bookTypeJcb;
-	
-	private DbUtil dbUtil=new DbUtil();
-	private BookTypeDao bookTypeDao=new BookTypeDao();
-	private BookDao bookDao=new BookDao();
 	private JTextField idTxt;
 	private JTextField bookNameTxt;
 	private final ButtonGroup buttonGroup = new ButtonGroup();
@@ -74,12 +73,19 @@ public class BookManagerFrm extends JFrame {
 	private JTextArea BookDescTxt;
 	private JRadioButton manJrb;
 	private JRadioButton femaleJrb;
+	
+	private DbUtil dbUtil=new DbUtil();
+	private BookTypeDao bookTypeDao=new BookTypeDao();
+	private BookDao bookDao=new BookDao();
+	private BorrowDao borrowDao=new BorrowDao();
+	
 
 	/**
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
+			@Override
 			public void run() {
 				try {
 					BookManagerFrm frame = new BookManagerFrm();
@@ -97,7 +103,7 @@ public class BookManagerFrm extends JFrame {
 	public BookManagerFrm() {
 		setResizable(false);
 		setTitle("\u56FE\u4E66\u7BA1\u7406");
-		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 		setBounds(100,100,(int)( 1900*enlargement_x), (int)(1600*enlargement_y));//设置初始位置（无所谓，后面重置），大小		
 		windowWidth = this.getWidth(); //获得窗口宽
 		windowHeight = this.getHeight(); //获得窗口高
@@ -191,6 +197,7 @@ public class BookManagerFrm extends JFrame {
 		
 		JButton ModifyButton = new JButton("\u4FEE\u6539");
 		ModifyButton.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent evt) 
 			{
 				bookUpdateActionPerformed(evt);
@@ -199,8 +206,9 @@ public class BookManagerFrm extends JFrame {
 		ModifyButton.setIcon(new ImageIcon(BookManagerFrm.class.getResource("/manager/image/modify.png")));
 		ModifyButton.setFont(new Font("宋体", Font.PLAIN, 35));
 		
-		JButton DeleteButton = new JButton("\u5220\u9664");
+		JButton DeleteButton = new JButton("\u6DD8\u6C70");
 		DeleteButton.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				bookDeleteActionPerformed(e);
 			}
@@ -324,6 +332,7 @@ public class BookManagerFrm extends JFrame {
 		
 		JButton S_BookNameJb = new JButton("\u67E5\u8BE2");
 		S_BookNameJb.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				bookSearchActionPerformed(e);
 			}
@@ -394,6 +403,7 @@ public class BookManagerFrm extends JFrame {
 			boolean[] columnEditables = new boolean[] {
 				false, false, false, false, false, false, false
 			};
+			@Override
 			public boolean isCellEditable(int row, int column) {
 				return columnEditables[column];
 			}
@@ -521,13 +531,14 @@ public class BookManagerFrm extends JFrame {
 	 * @param evt
 	 */
 	private void bookDeleteActionPerformed(ActionEvent evt) {
-		String id=idTxt.getText();
-		if(StringUtil.isEmpty(id))
+		int id=Integer.parseInt(idTxt.getText());
+		if(StringUtil.isEmpty(idTxt.getText()))
 		{
 			showMessageFrame note=new showMessageFrame(null,"请选择要删除的记录！",showMessageFrame.NOTE);
 			return;
 		}
 		ShowConfirmDialog confrm=new ShowConfirmDialog(null,"提示","确定要删除该记录吗？");
+		//确认按钮
 		new Thread(
 				new Runnable() {							 
 				    @Override
@@ -547,15 +558,24 @@ public class BookManagerFrm extends JFrame {
 			Connection con=null;
 			try{
 				con=dbUtil.getCon();
-				int deleteNum=bookDao.delete(con, id);
-				if(deleteNum==1)
+				boolean flag=borrowDao.existborrowByBookId(con, id);
+				if(flag)
 				{
-					showMessageFrame note=new showMessageFrame(null,"删除成功！",showMessageFrame.NORMAL);
-					ResetValue();
-					fillTable(new Book());
-				}else
-				{
-					showMessageFrame note=new showMessageFrame(null,"删除失败！",showMessageFrame.NOTE);
+					Dialogutil attention=new Dialogutil(null,"Attention!","该图书还有未还记录，不能删除！");
+					return;
+				}
+				else
+				{	
+					int deleteNum=bookDao.delete(con, id);
+					if(deleteNum==1)
+					{
+						showMessageFrame note=new showMessageFrame(null,"删除成功！",showMessageFrame.NORMAL);
+						ResetValue();
+						fillTable(new Book());
+					}else
+					{
+						showMessageFrame note=new showMessageFrame(null,"删除失败！",showMessageFrame.NOTE);
+					}
 				}
 			}catch(Exception e)
 			{
@@ -672,7 +692,7 @@ public class BookManagerFrm extends JFrame {
 		}else if("女".equals(sex)){
 			this.femaleJrb.setSelected(true);
 		}
-		this.priceTxt.setText((Float)BookTable.getValueAt(row, 4)+"");
+		this.priceTxt.setText(BookTable.getValueAt(row, 4)+"");
 		this.BookDescTxt.setText((String)BookTable.getValueAt(row, 5));
 		String bookTypeName=(String)this.BookTable.getValueAt(row, 6);
 		int n=this.bookTypeJcb.getItemCount();//下拉框有多少项

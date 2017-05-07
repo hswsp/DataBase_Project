@@ -1,7 +1,6 @@
 package manager.util;
 
 import java.awt.BorderLayout;
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
@@ -70,7 +69,7 @@ public class ShowConfirmDialog extends JDialog implements ActionListener {
         contentPane.add(p1, "Center");
         JLabel label = new JLabel(inform);
         label.setFont(new Font("宋体", Font.PLAIN, 35));
-        setBounds((int)(width / 2-180* enlargement_x),(int)(height/2 ),
+        setBounds((int)(width / 2-180* enlargement_x),height/2,
         		(int)(640*enlargement_x),(int)(320*enlargement_y));
         p1.add(label);
         
@@ -113,7 +112,8 @@ public class ShowConfirmDialog extends JDialog implements ActionListener {
     /**
      * 事件处理
      */
-    public void actionPerformed(ActionEvent event) {    
+    @Override
+	public void actionPerformed(ActionEvent event) {    
         Object source = event.getSource();         
         if ((source == setButton))
         {

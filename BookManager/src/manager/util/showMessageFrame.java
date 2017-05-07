@@ -7,6 +7,7 @@ import java.awt.Font;
 import java.awt.Toolkit;
 
 import javax.swing.JLabel;
+import javax.swing.SwingConstants;
 import javax.swing.WindowConstants;
 
 public class showMessageFrame extends javax.swing.JFrame {
@@ -43,7 +44,7 @@ public class showMessageFrame extends javax.swing.JFrame {
             setVisible(true);
             setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
             {
-                text = new JLabel("<html>" + str + "</html>", JLabel.CENTER);
+                text = new JLabel("<html>" + str + "</html>", SwingConstants.CENTER);
                 text.setFont(new Font("ËÎÌו",Font.BOLD, (int)(40*enlargement_x)));
                 getContentPane().add(text, BorderLayout.CENTER);
                 text.setBackground(new java.awt.Color(255, 251, 240));
@@ -56,7 +57,7 @@ public class showMessageFrame extends javax.swing.JFrame {
                 }
             }
             pack();
-            setBounds((int)(width / 2 ),(int)(height/2 ),
+            setBounds(width / 2,height/2,
             		(int)(500*enlargement_x),(int)(100*enlargement_y));
             pack();
             try {

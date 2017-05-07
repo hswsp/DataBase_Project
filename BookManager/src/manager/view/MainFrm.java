@@ -3,28 +3,33 @@ package manager.view;
 import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Font;
+import java.awt.Frame;
+import java.awt.HeadlessException;
 import java.awt.SystemColor;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.ImageIcon;
-import javax.swing.JDesktopPane;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.WindowConstants;
 import javax.swing.border.EmptyBorder;
 
+import manager.entity.Manager;
+import manager.entity.MyDate;
+import manager.util.DateUtil;
+import manager.util.PictureUtil;
 import manager.util.ShowConfirmDialog;
 
 public class MainFrm extends JFrame {
 
 	        private JPanel contentPane;
-	        private JDesktopPane Table; 
 	        //设置跟随分辨率变化窗口
 			Toolkit kit = Toolkit.getDefaultToolkit();
 		    Dimension screenSize = kit.getScreenSize();
@@ -32,15 +37,18 @@ public class MainFrm extends JFrame {
 		    private int screenWidth = (int) screenSize.getWidth();
 		    private double enlargement_x=screenWidth/1920;
 		    private double enlargement_y=screenHeight/1080;
-		   
+		    private MyDate date=new MyDate();
+		    Manager currentManager;
 	/**
 	 * Launch the application. 
 	 */
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
+			@Override
 			public void run() {
 				try {
 					MainFrm frame = new MainFrm();
+					
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -49,41 +57,68 @@ public class MainFrm extends JFrame {
 		});
 	}
 
+	
+	public MainFrm() throws HeadlessException {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
 	/**
 	 * Create the frame.
 	 */
-	public MainFrm() {
+	public MainFrm(Manager currentUser) 
+	{
+		this.currentManager=currentUser;//当前用户
 		setTitle("\u56FE\u4E66\u7BA1\u7406\u5458\u7CFB\u7EDF\u4E3B\u754C\u9762");
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 835, 635);
-		
+		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);//EXIT_ON_CLOSE
+		setBounds(0, 0, screenWidth, screenHeight);		
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
-		
-		Table = new JDesktopPane();
-		Table.setBackground(SystemColor.inactiveCaptionBorder);
+		//添加图片
+		String path = "/res/ManagerBackground.jpg";		
+		//修改图片大小
+		PictureUtil.zoomImage("src"+path,"src"+path, this.getWidth(), this.getHeight());
+        // 背景图片  
+		ImageIcon background = new ImageIcon(MainFrm.class.getResource(path));  
+        // 把背景图片显示在一个标签里面  
+        JLabel label = new JLabel(background);  
+        // 把标签的大小位置设置为图片刚好填充整个面板  
+        label.setBounds(0,0, this.getWidth(), this.getHeight());  
+        // 把内容窗格转化为JPanel，否则不能用方法setOpaque()来使内容窗格透明  
+        JPanel imagePanel = (JPanel) this.getContentPane();  
+        imagePanel.setOpaque(false);  
+        // 把背景图片添加到分层窗格的最底层作为背景  
+       this.getLayeredPane().add(label, new Integer(Integer.MIN_VALUE));
+		//欢迎标签
+        DateUtil.getdateWithMinute(date);
+        String welcomeString;
+        if(date.getHour()<12)
+        {
+        	welcomeString="上午好,"+this.currentManager.getUserName();
+        }
+        else
+        {
+        	welcomeString="下午好,"+this.currentManager.getUserName();
+        }
+		JLabel WelcomeJL = new JLabel(welcomeString);
+		WelcomeJL.setFont(new Font("华文行楷", Font.PLAIN, 40));
+        
 		GroupLayout gl_contentPane = new GroupLayout(contentPane);
 		gl_contentPane.setHorizontalGroup(
 			gl_contentPane.createParallelGroup(Alignment.LEADING)
-				.addComponent(Table, GroupLayout.DEFAULT_SIZE, 3174, Short.MAX_VALUE)
+				.addGroup(Alignment.TRAILING, gl_contentPane.createSequentialGroup()
+					.addContainerGap(2913, Short.MAX_VALUE)
+					.addComponent(WelcomeJL)
+					.addGap(99))
 		);
 		gl_contentPane.setVerticalGroup(
 			gl_contentPane.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_contentPane.createSequentialGroup()
-					.addGap(1)
-					.addComponent(Table, GroupLayout.DEFAULT_SIZE, 1667, Short.MAX_VALUE))
+					.addContainerGap()
+					.addComponent(WelcomeJL)
+					.addContainerGap(1585, Short.MAX_VALUE))
 		);
-		GroupLayout gl_Table = new GroupLayout(Table);
-		gl_Table.setHorizontalGroup(
-			gl_Table.createParallelGroup(Alignment.LEADING)
-				.addGap(0, 3174, Short.MAX_VALUE)
-		);
-		gl_Table.setVerticalGroup(
-			gl_Table.createParallelGroup(Alignment.LEADING)
-				.addGap(0, 1667, Short.MAX_VALUE)
-		);
-		Table.setLayout(gl_Table);
 		contentPane.setLayout(gl_contentPane);
 		
 		JMenuBar MainMenuBar = new JMenuBar();
@@ -104,6 +139,7 @@ public class MainFrm extends JFrame {
 		
 		JMenuItem CategoryServ = new JMenuItem("\u56FE\u4E66\u7C7B\u522B\u7EF4\u62A4");
 		CategoryServ.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent maintenance) {
 				BookTypeManagerFrm bookTypeManagerFrm=new BookTypeManagerFrm();
 				bookTypeManagerFrm.setVisible(true);
@@ -115,6 +151,7 @@ public class MainFrm extends JFrame {
 		
 		JMenuItem CategoryAdd = new JMenuItem("\u56FE\u4E66\u7C7B\u522B\u6DFB\u52A0");
 		CategoryAdd.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent Add) {
 				BookTypeAddFrm bookTypeAddFrm=new BookTypeAddFrm();
 				bookTypeAddFrm.setVisible(true);				
@@ -131,6 +168,7 @@ public class MainFrm extends JFrame {
 		
 		JMenuItem BookAdd = new JMenuItem("\u56FE\u4E66\u91C7\u8D2D");
 		BookAdd.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				BookAddFrm bookAddFrm=new BookAddFrm();
 				bookAddFrm.setVisible(true);			
@@ -142,6 +180,7 @@ public class MainFrm extends JFrame {
 		
 		JMenuItem BookServ = new JMenuItem("\u56FE\u4E66\u7EF4\u62A4");
 		BookServ.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				BookManagerFrm bookManagerFrm=new BookManagerFrm();
 				bookManagerFrm.setVisible(true);				
@@ -153,6 +192,7 @@ public class MainFrm extends JFrame {
 		
 		JMenuItem Exit = new JMenuItem("\u5B89\u5168\u9000\u51FA");
 		Exit.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				ShowConfirmDialog confrm=new ShowConfirmDialog(null,"提示","是否退出系统");
 //				synchronized(confrm)
@@ -194,6 +234,33 @@ public class MainFrm extends JFrame {
 			}).start();
 			}
 		});
+		
+		JMenu menu = new JMenu("\u56FE\u4E66\u7EDF\u8BA1");
+		menu.setIcon(new ImageIcon(MainFrm.class.getResource("/manager/image/statistics.png")));
+		menu.setFont(new Font("宋体", Font.PLAIN, 35));
+		DataServeMenu.add(menu);
+		
+		JMenuItem mntmNewMenuItem = new JMenuItem("\u5F53\u5E74\u56FE\u4E66\u501F\u9605\u60C5\u51B5");
+		mntmNewMenuItem.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				StatisticActonPerformed(arg0);
+			}			
+		});
+		mntmNewMenuItem.setIcon(new ImageIcon(MainFrm.class.getResource("/manager/image/BorrowCircumstance.png")));
+		mntmNewMenuItem.setFont(new Font("宋体", Font.PLAIN, 35));
+		menu.add(mntmNewMenuItem);
+		
+		JMenuItem menuItem = new JMenuItem("\u8BFB\u8005\u63A8\u8350");
+		menuItem.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent evt) {
+				RecommendactionPerformed(evt);
+			}			
+		});
+		menuItem.setIcon(new ImageIcon(MainFrm.class.getResource("/manager/image/htc_recommend.png")));
+		menuItem.setFont(new Font("宋体", Font.PLAIN, 35));
+		menu.add(menuItem);
 		Exit.setFont(new Font("宋体", Font.PLAIN, 35));
 		Exit.setIcon(new ImageIcon(MainFrm.class.getResource("/manager/image/exit.png")));
 		DataServeMenu.add(Exit);
@@ -206,10 +273,12 @@ public class MainFrm extends JFrame {
 		JMenuItem Itemblog = new JMenuItem("\u6211\u7684\u535A\u5BA2");
 		Itemblog.setFont(new Font("宋体", Font.PLAIN, 35));
 		Itemblog.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				//跳转到我的博客
 				new Thread() {
 					//重写run方法
+					@Override
 					public void run() {
 						//构造命令
 						String cmd = "cmd.exe /c start ";//cmd /c start dir 会打开一个新窗口后执行dir指令				
@@ -232,6 +301,18 @@ public class MainFrm extends JFrame {
 		AboutUsMenu.add(Itemblog);
 							
 		//设置JFrame最大化
-		this.setExtendedState(JFrame.MAXIMIZED_BOTH); 
+		this.setExtendedState(Frame.MAXIMIZED_BOTH); 
+	}
+	private void StatisticActonPerformed(ActionEvent arg0) 
+	{									
+		 Statistic  StatisticWindow=new  Statistic();
+		 StatisticWindow.setVisible(true);	
+		
+	}
+	private void RecommendactionPerformed(ActionEvent evt) 
+	{
+		// TODO Auto-generated method stub
+		RecommandFrm RecommandWindow=new  RecommandFrm();
+		RecommandWindow.setVisible(true);
 	}
 }

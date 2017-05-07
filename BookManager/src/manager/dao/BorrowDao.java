@@ -7,7 +7,6 @@ import java.sql.ResultSet;
 import manager.entity.Book;
 import manager.entity.Borrow;
 import manager.entity.HisBorrow;
-import manager.entity.Manager;
 import manager.entity.User;
 import manager.util.DateUtil;
 import manager.util.StringUtil;
@@ -205,7 +204,7 @@ public class BorrowDao {
 	}
 	
 	/**
-	 * 用于画折现图
+	 * 统计用于画折线图
 	 * @param con
 	 * @param user
 	 * @return
@@ -221,6 +220,39 @@ public class BorrowDao {
 		}
 		PreparedStatement pstmt=con.prepareStatement(sb.toString().replaceFirst("and", "where"));
 		pstmt.setString(1, user.getId());
+		return pstmt.executeQuery();//执行
+	}
+	
+	/**
+	 * 指定图书ID下是否有借阅
+	 * @param con
+	 * @param bookTypeId
+	 * @return
+	 * @throws Exception
+	 */
+	public boolean existborrowByBookId(Connection con,int bookId)throws Exception
+	{
+		String sql="select * from unreturned ur,t_book b where b.bookName=ur.BookName and b.id=?";
+		PreparedStatement pstmt=con.prepareStatement(sql);
+		pstmt.setInt(1, bookId);//填写第一个问号
+		ResultSet rs=pstmt.executeQuery();
+		return rs.next();//没有记录就是false
+	}
+	
+	/**
+	 * 总体借阅统计
+	 * @param con
+	 * @param user
+	 * @return
+	 * @throws Exception
+	 */
+	public ResultSet TotalHisBorrowDistri(Connection con)throws Exception
+	{
+		HisBorrow hisborrow=null;
+		StringBuffer sb=new StringBuffer("select * from t_book b,t_borrow bb,t_booktype bt"
+				+ " where b.id=bb.bookId and b.bookTypeId=bt.id");
+		//两张表关联查询，有bookTypeID才能查询
+		PreparedStatement pstmt=con.prepareStatement(sb.toString());
 		return pstmt.executeQuery();//执行
 	}
 }
