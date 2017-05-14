@@ -28,6 +28,11 @@ public class BarChart {
 		// TODO Auto-generated constructor stub
 	}
 
+	/**
+	 * 柱状图构造函数
+	 * @param TypeBuffer 图书种类名称
+	 * @param number   图书种类对应数目
+	 */
 	public  BarChart(StringBuffer[] TypeBuffer,int[] number)
 	  {  
 	  CategoryDataset dataset = getDataSet(TypeBuffer,number);  

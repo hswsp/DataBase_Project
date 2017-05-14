@@ -166,7 +166,7 @@ public class MainFrm extends JFrame {
 		BookMgr.setIcon(new ImageIcon(MainFrm.class.getResource("/manager/image/bookManager.png")));
 		DataServeMenu.add(BookMgr);
 		
-		JMenuItem BookAdd = new JMenuItem("\u56FE\u4E66\u91C7\u8D2D");
+		JMenuItem BookAdd = new JMenuItem("\u56FE\u4E66\u6DFB\u52A0");
 		BookAdd.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -189,6 +189,17 @@ public class MainFrm extends JFrame {
 		BookServ.setFont(new Font("ËÎÌו", Font.PLAIN, 35));
 		BookServ.setIcon(new ImageIcon(MainFrm.class.getResource("/manager/image/edit.png")));
 		BookMgr.add(BookServ);
+		
+		JMenuItem shopJmenu = new JMenuItem("\u56FE\u4E66\u91C7\u8D2D");
+		shopJmenu.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				BookShopFrm bookShopFrm=new BookShopFrm();
+				bookShopFrm.setVisible(true);
+			}
+		});
+		shopJmenu.setIcon(new ImageIcon(MainFrm.class.getResource("/manager/image/shopper.png")));
+		shopJmenu.setFont(new Font("ËÎÌו", Font.PLAIN, 35));
+		BookMgr.add(shopJmenu);
 		
 		JMenuItem Exit = new JMenuItem("\u5B89\u5168\u9000\u51FA");
 		Exit.addActionListener(new ActionListener() {

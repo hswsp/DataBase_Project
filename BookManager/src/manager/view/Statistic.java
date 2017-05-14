@@ -84,6 +84,11 @@ public class Statistic extends JFrame {
 		//this.setExtendedState(JFrame.MAXIMIZED_BOTH); 
 	}
 
+	/**
+	 * 数据获得
+	 * @param TypeBuffer
+	 * @param number
+	 */
 	private void HisBorrowPieChart(StringBuffer[] TypeBuffer,int[] number)
 	{
 		Connection con=null;

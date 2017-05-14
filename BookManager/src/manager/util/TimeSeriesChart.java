@@ -20,7 +20,14 @@ import org.jfree.data.xy.XYDataset;
 
 public class TimeSeriesChart {
 	ChartPanel frame1;
-	public TimeSeriesChart(Dimension v,int []BookMonthly,int CurrentYear){
+	/**
+	 * 折线图构造函数
+	 * @param v
+	 * @param BookMonthly
+	 * @param CurrentYear
+	 */
+	public TimeSeriesChart(Dimension v,int []BookMonthly,int CurrentYear)
+	{
 		XYDataset xydataset = createDataset(BookMonthly,CurrentYear);
 		JFreeChart jfreechart = ChartFactory.createTimeSeriesChart("借阅趋势", "月份", "数量",xydataset, true, true, true);
 		XYPlot xyplot = (XYPlot) jfreechart.getPlot();  // 获取绘图区对象
