@@ -137,4 +137,76 @@ public class TimeSeriesChart {
 	  {
 	    	return frame1;	    	
 	    }
+	  
+	  /**
+		 * 折线图构造函数
+		 * @param BookMonthly
+		 * @param CurrentYear
+		 */
+		public TimeSeriesChart(int []BookMonthly,int CurrentYear)
+		{
+			XYDataset xydataset = createPurChaseDataset(BookMonthly,CurrentYear);
+			JFreeChart jfreechart = ChartFactory.createTimeSeriesChart("购买趋势", "月份", "数量",xydataset, true, true, true);
+			XYPlot xyplot = (XYPlot) jfreechart.getPlot();  // 获取绘图区对象
+			DateAxis dateaxis = (DateAxis) xyplot.getDomainAxis();
+			DecimalFormat df = new DecimalFormat("#0");//整数
+//			NumberAxis numberaxis = (NumberAxis)plot.getRangeAxis();
+//			numberaxis.setStandardTickUnits(NumberAxis.createIntegerTickUnits()); //关键就是这句
+			//y轴整数
+			((NumberAxis) ((XYPlot)jfreechart.getPlot()).getRangeAxis()).setNumberFormatOverride(df);
+			
+	        dateaxis.setDateFormatOverride(new SimpleDateFormat("MMM"));//横轴格式-yyyy
+	        
+	        frame1=new ChartPanel(jfreechart,true);	        
+	        dateaxis.setLabelFont(new Font("黑体",Font.BOLD,30));         //水平底部标题
+	        dateaxis.setTickLabelFont(new Font("宋体",Font.BOLD,30));  //垂直标题
+	       // axis0.setLabelFont(new Font("黑体", Font.PLAIN, 12));// y轴字体
+	        ValueAxis rangeAxis=xyplot.getRangeAxis();//获取柱状
+	        rangeAxis.setLabelFont(new Font("黑体",Font.BOLD,35));
+	        jfreechart.getLegend().setItemFont(new Font("黑体", Font.BOLD, 30));
+	        //设定y在轴显示范围
+		   // NumberAxis domainAxis = (NumberAxis)xyplot.getDomainAxis();
+	        //纵轴从0开始
+	        //((NumberAxis)rangeAxis).setAutoRangeIncludesZero(true); 
+	        rangeAxis.setLowerBound(0);
+	        //找最大值
+	         int max = BookMonthly[0];//定义变量
+	    		for (int x=1; x<BookMonthly.length; x++ )
+	    		{
+	    			if (BookMonthly[x]>max)
+	    			{
+	    				max = BookMonthly[x];
+	    			}
+	    		}   	
+	        rangeAxis.setUpperBound(max+1);
+	     // 设置y轴不是使用自动刻度
+	        ((NumberAxis)rangeAxis).setAutoTickUnitSelection(false);
+	        // 设置刻度
+	        NumberTickUnit numberTickUnit = new NumberTickUnit(1);
+	        ((NumberAxis)rangeAxis).setTickUnit(numberTickUnit);
+	        jfreechart.getTitle().setFont(new Font("宋体",Font.BOLD,35));//设置标题字体
+
+		} 
+		 private static XYDataset createPurChaseDataset(int []BookMonthly,int CurrentYear) 
+		 {  //这个数据集有点多，但都不难理解
+		        TimeSeries timeseries = new TimeSeries(Integer.toString(CurrentYear)+"各月购进图书数量",
+		                org.jfree.data.time.Month.class);//时间轴精确到月
+		        timeseries.add(new Month(1,CurrentYear), BookMonthly[1]);
+		        timeseries.add(new Month(2,CurrentYear), BookMonthly[2]);
+		        timeseries.add(new Month(3,CurrentYear), BookMonthly[3]);
+		        timeseries.add(new Month(4,CurrentYear), BookMonthly[4]);
+		        timeseries.add(new Month(5,CurrentYear), BookMonthly[5]);
+		        timeseries.add(new Month(6,CurrentYear), BookMonthly[6]);
+		        timeseries.add(new Month(7,CurrentYear), BookMonthly[7]);
+		        timeseries.add(new Month(8,CurrentYear), BookMonthly[8]);
+		        timeseries.add(new Month(9,CurrentYear), BookMonthly[9]);
+		        timeseries.add(new Month(10,CurrentYear), BookMonthly[10]);
+		        timeseries.add(new Month(11,CurrentYear), BookMonthly[11]);
+		        timeseries.add(new Month(12,CurrentYear), BookMonthly[12]);
+		       	        
+		        TimeSeriesCollection timeseriescollection = new TimeSeriesCollection();
+		        timeseriescollection.addSeries(timeseries);
+//		        timeseriescollection.addSeries(timeseries1);
+		        return timeseriescollection;
+		    }
 }

@@ -14,6 +14,7 @@ import manager.dao.BookDao;
 import manager.dao.BookTypeDao;
 import manager.entity.Book;
 import manager.entity.BookType;
+import manager.entity.Manager;
 import manager.util.DbUtil;
 import manager.util.StringUtil;
 import manager.util.showMessageFrame;
@@ -22,6 +23,8 @@ import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JLabel;
 import java.awt.Font;
+import java.awt.HeadlessException;
+
 import javax.swing.ImageIcon;
 import javax.swing.JTextField;
 import javax.swing.JComboBox;
@@ -65,6 +68,7 @@ public class BookShopFrm extends JFrame {
 	    private JComboBox bookTypeJCB;
 	    private JTextField shopNum;
 	    private JTable bookTable;
+	    private Manager curManager;
 
 	/**
 	 * Launch the application.
@@ -82,10 +86,16 @@ public class BookShopFrm extends JFrame {
 		});
 	}
 
+	public BookShopFrm() throws HeadlessException {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
 	/**
 	 * Create the frame.
 	 */
-	public BookShopFrm() {
+	public BookShopFrm(Manager currentManager) {
+		this.curManager=currentManager;
 		setTitle("\u56FE\u4E66\u91C7\u8D2D");
 		setResizable(false);
 		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
@@ -302,11 +312,12 @@ public class BookShopFrm extends JFrame {
 				int n=pstmt.executeUpdate();
 				//²åÈë¹ºÂò¼ÇÂ¼
 				java.sql.Date currentDate = new java.sql.Date(System.currentTimeMillis());
-				String sqll="insert into t_perchase values(?,?,?)";
+				String sqll="insert into t_perchase values(null,?,?,?,?)";
 				PreparedStatement pstmtt=con.prepareStatement(sqll);
-				pstmtt.setInt(1, shopBook.getId());
-				pstmtt.setDate(2,currentDate);
-				pstmtt.setInt(3, shopNumber);	
+				pstmtt.setString(1, curManager.getId());
+				pstmtt.setInt(2, shopBook.getId());
+				pstmtt.setDate(3,currentDate);
+				pstmtt.setInt(4, shopNumber);	
 				int m=pstmtt.executeUpdate();
 				if(n==1&&m==1)
 				{

@@ -5,6 +5,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
 import manager.entity.Book;
+import manager.entity.HisBorrow;
+import manager.entity.Manager;
+import manager.entity.User;
 import manager.util.StringUtil;
 
 /**
@@ -158,5 +161,25 @@ public class BookDao {
 		pstmt.setString(1, bookTypeId);//填写第一个问号
 		ResultSet rs=pstmt.executeQuery();
 		return rs.next();//没有记录就是false
+	}
+	
+	/**
+	 * 历史购书记录查询
+	 * @param con
+	 * @param user
+	 * @return
+	 * @throws Exception
+	 */
+	public ResultSet hisShopSearch(Connection con,Manager user)throws Exception{
+		StringBuffer sb=new StringBuffer("select * from t_perchase p,t_manager m,t_book b and m.id=p.managerID and b.id=p.bookID");
+		//两张表关联查询，有bookTypeID才能查询
+		if(StringUtil.isNotEmpty(user.getId()))
+		{
+			sb.append(" and managerID=?");
+		}
+		
+		PreparedStatement pstmt=con.prepareStatement(sb.toString().replaceFirst("and", "where"));
+		pstmt.setString(1, user.getId());
+		return pstmt.executeQuery();//执行
 	}
 }

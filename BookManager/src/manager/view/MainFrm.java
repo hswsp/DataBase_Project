@@ -193,7 +193,7 @@ public class MainFrm extends JFrame {
 		JMenuItem shopJmenu = new JMenuItem("\u56FE\u4E66\u91C7\u8D2D");
 		shopJmenu.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				BookShopFrm bookShopFrm=new BookShopFrm();
+				BookShopFrm bookShopFrm=new BookShopFrm(currentManager);
 				bookShopFrm.setVisible(true);
 			}
 		});
@@ -258,6 +258,17 @@ public class MainFrm extends JFrame {
 				StatisticActonPerformed(arg0);
 			}			
 		});
+		
+		JMenuItem purchaseMenu = new JMenuItem("\u56FE\u4E66\u91C7\u8D2D\u60C5\u51B5\u7EDF\u8BA1");
+		purchaseMenu.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				purchaseCount purchase=new purchaseCount(currentManager);
+				purchase.setVisible(true);
+			}
+		});
+		purchaseMenu.setIcon(new ImageIcon(MainFrm.class.getResource("/manager/image/statistics.png")));
+		purchaseMenu.setFont(new Font("ËÎÌו", Font.PLAIN, 35));
+		menu.add(purchaseMenu);
 		mntmNewMenuItem.setIcon(new ImageIcon(MainFrm.class.getResource("/manager/image/BorrowCircumstance.png")));
 		mntmNewMenuItem.setFont(new Font("ËÎÌו", Font.PLAIN, 35));
 		menu.add(mntmNewMenuItem);
