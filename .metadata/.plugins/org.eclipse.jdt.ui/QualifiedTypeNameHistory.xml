@@ -16,7 +16,6 @@
 <fullyQualifiedTypeName name="javax.swing.plaf.basic.BasicInternalFrameUI"/>
 <fullyQualifiedTypeName name="javax.swing.BorderFactory"/>
 <fullyQualifiedTypeName name="manager.util.Dialogutil"/>
-<fullyQualifiedTypeName name="manager.dao.BookDao"/>
 <fullyQualifiedTypeName name="java.util.Date"/>
 <fullyQualifiedTypeName name="manager.entity.BookRecommend"/>
 <fullyQualifiedTypeName name="javax.swing.ListSelectionModel"/>
@@ -41,7 +40,9 @@
 <fullyQualifiedTypeName name="java.text.SimpleDateFormat"/>
 <fullyQualifiedTypeName name="manager.entity.MyDate"/>
 <fullyQualifiedTypeName name="manager.util.DateUtil"/>
-<fullyQualifiedTypeName name="manager.entity.Manager"/>
 <fullyQualifiedTypeName name="java.net.URL"/>
 <fullyQualifiedTypeName name="java.net.URLDecoder"/>
+<fullyQualifiedTypeName name="manager.entity.Manager"/>
+<fullyQualifiedTypeName name="manager.dao.BookDao"/>
+<fullyQualifiedTypeName name="manager.util.TimeSeriesChart"/>
 </qualifiedTypeNameHistroy>
