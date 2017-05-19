@@ -401,7 +401,7 @@ public class BookShopFrm extends JFrame {
 	}
 	
 	/**
-	 * 借书表格行点击事件处理
+	 * 图书查询表格行点击事件处理
 	 * @param e
 	 */
 	private void bookSearchJTMousePressed(MouseEvent evt) 

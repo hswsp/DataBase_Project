@@ -581,6 +581,7 @@ public class userMainFrm extends JFrame {
 		bookTotalTxt.setEditable(false);
 		bookTotalTxt.setFont(new Font("宋体", Font.PLAIN, 40));
 		bookTotalTxt.setColumns(10);
+		
 		bookTotalTxt.setText(Integer.toString(TotalBookCanBorrow));
 		JLabel bookBorJL = new JLabel("\u5DF2\u501F\u4E66\u6570\u76EE");
 		bookBorJL.setIcon(new ImageIcon(userMainFrm.class.getResource("/manager/image/green_book.png")));
@@ -875,11 +876,12 @@ public class userMainFrm extends JFrame {
 		RecomJsp.add(RecomReasonTxt);
 		RecomJsp.setViewportView(RecomReasonTxt);
 		RecomReasonTxt.setBorder(new LineBorder(new Color(127, 157, 185)));
-		
+		RecomReasonTxt.setLineWrap(true);
 		BookDescTxt = new JTextArea();
 		BookDescTxt.setFont(new Font("宋体", Font.PLAIN, 35));
 		DescJsp.add(BookDescTxt);
 		DescJsp.setViewportView(BookDescTxt);
+		BookDescTxt.setLineWrap(true);
 		RecomJP.setLayout(gl_RecomJP);
 		 // 设置文本域边框
 		BookDescTxt.setBorder(new LineBorder(new Color(127, 157, 185)));
