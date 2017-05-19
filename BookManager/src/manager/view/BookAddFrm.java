@@ -373,6 +373,11 @@ public class BookAddFrm extends JFrame {
 		//获取类别
 		BookType bookType=(BookType) bookTypeJCB.getSelectedItem();
 		int bookTypeId=bookType.getId();		
+		if(bookTypeId==-1)
+		{
+			showMessageFrame note=new showMessageFrame(null,"图书类别不能为空！",showMessageFrame.NOTE);
+			return;
+		}
 		//获取数量
 		Integer booknum=Integer.parseInt(purNumTxt.getText());
 		//出版社

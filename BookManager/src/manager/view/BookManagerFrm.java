@@ -304,6 +304,7 @@ public class BookManagerFrm extends JFrame {
 		BookDescTxt.setFont(new Font("宋体", Font.PLAIN, 35));
 		// 设置文本域边框
 	    BookDescTxt.setBorder(new LineBorder(new Color(127, 157, 185)));
+	    BookDescTxt.setLineWrap(true);
 	    BookDescJsp.add(BookDescTxt);
 		BookDescJsp.setViewportView(BookDescTxt);
 		BookListJp.setLayout(gl_BookListJp);

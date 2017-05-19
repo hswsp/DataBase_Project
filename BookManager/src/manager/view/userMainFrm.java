@@ -437,8 +437,8 @@ public class userMainFrm extends JFrame {
 		dayly_panel.setLayout(null);		
 		BorrowButton.addActionListener(new ActionListener() {
 			@Override
-			public void actionPerformed(ActionEvent evt) {
-				borrowActionPerformed(evt);
+			public void actionPerformed(ActionEvent brevt) {
+				borrowActionPerformed(brevt);
 			}			
 		});
 		
@@ -1151,12 +1151,14 @@ public class userMainFrm extends JFrame {
 	 */
 	private void ResetValue()
 	{
-//		booktypeJcb=null;
-//		BookNameTxt=null;
-//		BookSearchJT=null;
+
+		BookSearchJT.clearSelection();
+		BookID=-1;
+		bookTotalTxt.setText(Integer.toString(TotalBookCanBorrow));
 		switch(ShowSelect)
 		{
-		case 1:break;
+		case 1:
+			break;
 		case 2://当前借阅信息
 			if(this.PreBorrowJtable.getRowCount()>0)
 				{
@@ -1397,7 +1399,7 @@ private void bookReturnClick(MouseEvent ret)
  */
 private void borrowActionPerformed(ActionEvent evt) 
 {
-	if(!IsClickJT)
+	if(!IsClickJT||BookID==-1)
 	{
 		Dialogutil attention=new Dialogutil(null,"Attention!","请选择所要借的书");
 		return;
@@ -1450,6 +1452,8 @@ private void borrowActionPerformed(ActionEvent evt)
 						PieChartJP.add(new PieChart(PieDi,TypeBuffer,TypeNum).getChartPanel());  //添加饼状图  
 						BrokenLineJP.add(new TimeSeriesChart(Linetrend,BookMonthly,CurrentYear).getChartPanel());    //添加折线图  
 						//PieChartJP.repaint();
+						BookID=-1;
+						BookSearchJT.clearSelection();  //取消选择状态
 					}
 					else
 					{
